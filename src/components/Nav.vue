@@ -21,7 +21,7 @@
                                 <small>Settings</small>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="" class="dropdown-item text-danger">
+                            <a class="dropdown-item text-danger" @click="logout()">
                                 <i class="fa fa-fw fa-sign-out"></i>Logout
                             </a>
                         </div>

@@ -6,7 +6,7 @@ import ListExams from '../components/ListExams';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
     mode:'history',
     routes: [
         {
@@ -26,3 +26,27 @@ export default new Router({
         }
     ]
 });
+
+// router.beforeEach((to, from, next) => {
+//     console.log(to);
+//     if(to.path !== '/login') {
+//         if(checkToken()) {
+//             console.error('There is a token, resume. (' + to.path + ')');
+//             next();
+//         } else {
+//             console.error('There is no token, redirect to login. (' + to.path + ')');
+//             next('login');
+//         }
+//     } else {
+//         console.log('You\'re on the login page');
+//         next(); // This is where it should have been
+//     }
+//     // next(); - This is in the wrong place
+// });
+
+
+// function checkToken() {
+//     return true;
+// }
+
+export default router;

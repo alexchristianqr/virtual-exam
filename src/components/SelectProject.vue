@@ -29,8 +29,26 @@
 </template>
 
 <script>
+    import AUTH from "../services/Auth";
+    import ADService from '../services/ADService';
+
     export default {
-        name: "select-project"
+        name: "select-project",
+        created(){
+            console.log("load project");
+        },
+        // beforeMount(){
+        //     console.log(AUTH.authenticate);
+        //     if(!AUTH.authenticate){
+        //         return this.$router.replace('/login');
+        //     }
+        // },
+        methods:{
+            logout(){
+                alert(121);
+                ADService.dispatch("doLogout", {self: this});
+            }
+        }
     }
 </script>
 
