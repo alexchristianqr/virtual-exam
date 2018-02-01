@@ -1,0 +1,132 @@
+.mx-datepicker {
+  //margin: 10px 5px 10px 0;
+  .mx-input {
+    //padding:6px 30px 6px 10px;
+    height: calc(2.25rem + 2px);
+    box-shadow: none;
+  }
+  .mx-datepicker-popup {
+    box-shadow: none;
+  }
+  //.mx-datepicker-popup{
+}
+
+.form-inline > input,
+.form-inline > select,
+.form-inline > label,
+.form-inline > a,
+.form-inline > div,
+.form-inline > button {
+  margin: 0 5px 5px 0;
+}
+
+.card-header {
+  header {
+    font-size: x-large;
+  }
+}
+
+h1 > i,
+h2 > i,
+h3 > i,
+h4 > i,
+h5 > i,
+h6 > i {
+  margin-right: 8px;
+}
+
+//25
+.w-30 {
+  width: 30%;
+}
+
+.w-35 {
+  width: 35%;
+}
+
+.w-40 {
+  width: 40%;
+}
+
+.w-45 {
+  width: 45%;
+}
+
+//50
+.w-55 {
+  width: 55%;
+}
+
+.w-60 {
+  width: 60%;
+}
+
+.w-65 {
+  width: 65%;
+}
+
+.w-70 {
+  width: 70%;
+}
+
+//75
+.w-80 {
+  width: 80%;
+}
+
+.w-85 {
+  width: 85%;
+}
+
+.w-90 {
+  width: 90%;
+}
+
+.w-95 {
+  width: 95%;
+}
+
+.router-link-active {
+  background-color: #494d52;
+  color: #fff !important;
+}
+
+.container-fluid {
+  margin-bottom: 15px;
+}
+
+.dropdown-item.active:not(:disabled), .dropdown-item:active:not(:disabled) {
+  color: #fff;
+  text-decoration: none;
+  background-color: #dedede;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  outline: none !important;
+}
+
+body.face-login {
+  background-color: #003349;
+  .btn-primary {
+    background-color: #003349 !important;
+    border-color: #003349 !important;
+  }
+  .btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 49, 75, 0.5) !important;
+  }
+  .card-login {
+    .card-header {
+      background-color: #003349 !important;
+      color: #fff !important;
+    }
+  }
+  footer.sticky-footer {
+    width: 100% !important;
+    background-color: transparent !important;
+    color: #fff !important;
+  }
+}
