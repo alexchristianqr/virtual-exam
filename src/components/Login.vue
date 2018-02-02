@@ -2,15 +2,14 @@
     <section>
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
-                <b>Sign In</b>
+                <b class="h5">Sign In</b>
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group">
                         <label>Email</label>
                         <div class="input-group mb-1">
-                            <input v-model="params.email" name="email" class="form-control" type="text"
-                                   placeholder="Enter email" title="Registrar" value="">
+                            <input v-model="params.email" name="email" class="form-control" type="text" placeholder="Enter email" title="Registrar" value="">
                             <div class="input-group-append">
                                 <span class="input-group-text">@sapia.com.pe</span>
                             </div>
@@ -20,14 +19,12 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input v-model="params.password" name="password" class="form-control mb-1" type="password"
-                               placeholder="Password">
+                        <input v-model="params.password" name="password" class="form-control mb-1" type="password" placeholder="Password">
                         <span v-if="errors.password !== '' " class="help-block"><small><strong>{{errors.password}}</strong></small></span>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <label class="form-check-label"><input name="rememberme" class="form-check-input"
-                                                                   type="checkbox">Remember Password</label>
+                            <label class="form-check-label"><input name="rememberme" class="form-check-input" type="checkbox">Remember Password</label>
                         </div>
                     </div>
                     <button type="button" class="btn btn-primary btn-block" @click="doLogin()">Log In</button>
@@ -64,8 +61,8 @@
             validate: null,
             data: [],
             params: {
-                email: "",
-                password: ""
+                email: "aquisper@sapia.com.pe",
+                password: "72482060"
             },
             errors: {
                 email: "",
@@ -76,9 +73,9 @@
         methods: {
             doLogin() {
                 ADService.dispatch("doLogin", {self: this});
-                if (!this.validate) {
-                    this.params.password = "";
-                }
+                // if (!this.validate) {
+                //     this.params.password = "";
+                // }
             },
 
         }

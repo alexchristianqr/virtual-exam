@@ -4,8 +4,8 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 import Axios from "axios";
-import bootstrap from 'bootstrap';
-import style from "./assets/vendor/scss/style.scss";
+import 'bootstrap';
+import './assets/vendor/scss/style.scss';
 
 Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 Vue.config.productionTip = false;

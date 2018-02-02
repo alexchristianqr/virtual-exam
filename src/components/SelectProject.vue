@@ -2,8 +2,9 @@
     <section>
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
-                    <router-link class="btn btn-link pl-0" :to="{name:'login'}"><i class="fa fa-angle-left fa-2x"></i></router-link>
-                    <b>Select Your Project</b>
+                <router-link class="btn pl-0" :to="'/login'"><i class="fa fa-angle-left fa-2x"></i>&nbsp;&nbsp;&nbsp;<b class="h5">Select</b></router-link>
+                <!--<router-link class="btn btn-link pl-0" :to="{name:'login'}"><i class="fa fa-angle-left fa-2x"></i></router-link>-->
+                <!--<b>Select Your Project</b>-->
             </div>
             <div class="card-body">
                 <form>
@@ -31,7 +32,7 @@
 <script>
     export default {
         name: "select-project",
-        created(){
+        created() {
             console.log("load project");
         },
         // beforeMount(){
@@ -40,9 +41,7 @@
         //         return this.$router.replace('/login');
         //     }
         // },
-        methods:{
-
-        }
+        methods: {}
     }
 </script>
 

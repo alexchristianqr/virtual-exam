@@ -3,7 +3,7 @@
         <component :is="'nav-exam'"/>
         <div class="card mt-5 mb-5">
             <div class="card-header">
-                <b>Your Exams</b>
+                <b class="h5">Your Exams</b>
                 <hr>
                 <div class="form-inline">
                     <label>
@@ -28,17 +28,51 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="num in 30">
+                        <tr v-for="num in 2">
                             <th scope="row">{{num}}</th>
                             <td>Examen de Control de Cambios en GIT</td>
                             <td>2018-01-31 11:20:01</td>
                             <td>Alex Christian</td>
                             <td>
-                                <!--<router-link class="btn btn-warning btn-sm" :to="{name:'login'}"><i class="fa fa-info"></i></router-link>-->
                                 <div class="btn-group dropdown btn-group-xs" role="group">
                                     <button type="button" class="btn btn-warning" title="Exportar por defecto">
-                                        <i class="fa fa-file-excel-o fa-fw"></i>
-                                        <span>Examen Pendiente</span>
+                                        <i class="fa fa-file-text-o fa-fw"></i>
+                                        <span>Pending</span>
+                                    </button>
+                                    <div class="btn-group open" role="group">
+                                        <button type="button" class="btn btn-light btn-xs dropdown-toggle"
+                                                data-toggle="dropdown"
+                                                aria-expanded="true">
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
+                                            <li>
+                                                <a href class="dropdown-item text-muted">
+                                                    <!--<i class="fa fa-file-excel-o fa-fw"></i>-->
+                                                    <small>Show Base Knowledge</small>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href class="dropdown-item text-muted" data-toggle="modal" data-target="#exampleModal">
+                                                    <!--<i class="fa fa-file-excel-o fa-fw"></i>-->
+                                                    <small>Start Exam</small>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr v-for="num in 2">
+                            <th scope="row">{{num}}</th>
+                            <td>Examen de Control de Cambios en GIT</td>
+                            <td>2018-01-31 11:20:01</td>
+                            <td>Alex Christian</td>
+                            <td>
+                                <div class="btn-group dropdown btn-group-xs" role="group">
+                                    <button type="button" class="btn btn-success" disabled title="Exportar por defecto">
+                                        <i class="fa fa-file-text-o fa-fw"></i>
+                                        <span>Done</span>
                                     </button>
                                     <div class="btn-group open" role="group">
                                         <button type="button" class="btn btn-light btn-xs dropdown-toggle"
@@ -48,14 +82,14 @@
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
                                             <li title="Exportar">
-                                                <button class="dropdown-item text-muted"><i
-                                                        class="fa fa-file-excel-o fa-fw"></i>
+                                                <a href class="dropdown-item text-muted">
+                                                    <!--<i class="fa fa-file-excel-o fa-fw"></i>-->
                                                     <small>Show Solution</small>
-                                                </button>
-                                                <button class="dropdown-item text-muted"><i
-                                                        class="fa fa-file-excel-o fa-fw"></i>
-                                                    <small>Show Base Knoledge</small>
-                                                </button>
+                                                </a>
+                                                <a href class="dropdown-item text-muted">
+                                                    <!--<i class="fa fa-file-excel-o fa-fw"></i>-->
+                                                    <small>Show Base Knowledge</small>
+                                                </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -67,6 +101,27 @@
                 </div>
             </div>
         </div>
+
+        <!-- Logout Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <span class="text-danger">Are you ready to start the exam?</span>
+                        </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">The exam lasts 10 minutes with no option to cancel.</div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <router-link class="btn btn-primary"  data-dismiss="modal" aria-label="Close" :to="'/exam'">Ready</router-link>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </template>
 
@@ -74,13 +129,11 @@
     import Vue from 'vue';
     import Nav from '../components/Nav';
 
-
     Vue.component("nav-exam",Nav);
+
     export default {
         name: "list-exams",
-        methods:{
-
-        }
+        methods:{}
     }
 </script>
 

@@ -1,9 +1,9 @@
 <template>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light" id="mainNav">
-            <a href="#" class="navbar-brand">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light" id="mainNav" style="border-bottom: 1px solid #ddd">
+            <span class="navbar-brand">
                 <b>Interbank</b>
-            </a>
+            </span>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                     data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -21,7 +21,7 @@
                                 <small>Settings</small>
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" @click="logout()">
+                            <a href class="dropdown-item text-danger" @click="logout()">
                                 <i class="fa fa-fw fa-sign-out"></i>Logout
                             </a>
                         </div>

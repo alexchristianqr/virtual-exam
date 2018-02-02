@@ -18,7 +18,7 @@ const ADSERVICE = new Vuex.Store({
             self.errors.password = "";
             self.errors.login = "";
             self.validate = null;
-
+            VueLocalStorage.set("auth", {authenticate: false});
             if (self.params.email === '') {
                 self.errors.email = "El campo email no puede estar vacio!";
             }
@@ -34,6 +34,22 @@ const ADSERVICE = new Vuex.Store({
     }
 });
 
+function doValidation(self) {
+    if (self.params.email !== '' && self.params.password !== '') {
+        if (self.params.email === "aquisper@sapia.com.pe" && self.params.password === "72482060" && VueLocalStorage.get("auth").authenticate === false) {
+            VueLocalStorage.set("auth", {authenticate: true});
+            self.validate = null;
+            doAuth(self);
+        } else {
+            VueLocalStorage.set("auth", {authenticate: false});
+            self.validate = true;
+            self.errors.login = "El campo email o contraseña no es correcto!";
+            self.params.password = "";
+            doAuth(self);
+        }
+    }
+}
+
 function doAuth(self) {
     console.log(VueLocalStorage.get("auth").authenticate);
     if (VueLocalStorage.get("auth").authenticate) {
@@ -42,22 +58,5 @@ function doAuth(self) {
         self.$router.replace('/login');
     }
 }
-
-function doValidation(self) {
-    if (self.params.email !== '' && self.params.password !== '') {
-        if (self.params.email === "aquisper@sapia.com.pe" && self.params.password === "72482060" && AUTH.authenticate === false) {
-            VueLocalStorage.set("auth", {authenticate: true});
-            self.validate = null;
-            doAuth(self);
-        } else {
-            VueLocalStorage.set("auth", {authenticate: false});
-            self.validate = true;
-            self.errors.login = "El campo email o contraseña no es correcto!";
-            doAuth(self);
-
-        }
-    }
-}
-
 
 export default ADSERVICE;
