@@ -5,9 +5,9 @@
 import Vue from 'vue';
 import * as Vuex from "vuex";
 import AUTH from "./Auth";
+import VueLocalStorage from 'vue-local-storage';
 
-Vue.use(Vuex);
-
+Vue.use(Vuex, VueLocalStorage);
 
 const ADSERVICE = new Vuex.Store({
     state: {},
@@ -27,28 +27,30 @@ const ADSERVICE = new Vuex.Store({
             }
             doValidation(self);
         },
-        doLogout({commit},{self}){
-            AUTH.authenticate = false;
+        doLogout({commit}, {self}) {
+            VueLocalStorage.set("auth", {authenticate: false});
             doAuth(self);
         }
     }
 });
-function doAuth(self){
-    console.log(AUTH);
-    if(AUTH.authenticate){
+
+function doAuth(self) {
+    console.log(VueLocalStorage.get("auth").authenticate);
+    if (VueLocalStorage.get("auth").authenticate) {
         self.$router.replace('/project');
-    }else{
+    } else {
         self.$router.replace('/login');
     }
 }
-function doValidation(self){
+
+function doValidation(self) {
     if (self.params.email !== '' && self.params.password !== '') {
         if (self.params.email === "aquisper@sapia.com.pe" && self.params.password === "72482060" && AUTH.authenticate === false) {
-            AUTH.authenticate = true;
+            VueLocalStorage.set("auth", {authenticate: true});
             self.validate = null;
             doAuth(self);
         } else {
-            AUTH.authenticate = false;
+            VueLocalStorage.set("auth", {authenticate: false});
             self.validate = true;
             self.errors.login = "El campo email o contraseña no es correcto!";
             doAuth(self);

@@ -74,9 +74,13 @@
     import Vue from 'vue';
     import Nav from '../components/Nav';
 
+
     Vue.component("nav-exam",Nav);
     export default {
-        name: "list-exams"
+        name: "list-exams",
+        methods:{
+
+        }
     }
 </script>
 

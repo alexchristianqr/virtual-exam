@@ -30,3 +30,13 @@
             </div>
         </nav>
 </template>
+<script>
+    import ADService from '../services/ADService';
+    export default {
+        methods:{
+            logout(){
+                ADService.dispatch("doLogout", {self: this});
+            }
+        }
+    }
+</script>

@@ -29,9 +29,6 @@
 </template>
 
 <script>
-    import AUTH from "../services/Auth";
-    import ADService from '../services/ADService';
-
     export default {
         name: "select-project",
         created(){
@@ -44,10 +41,7 @@
         //     }
         // },
         methods:{
-            logout(){
-                alert(121);
-                ADService.dispatch("doLogout", {self: this});
-            }
+
         }
     }
 </script>
