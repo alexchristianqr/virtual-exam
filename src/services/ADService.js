@@ -51,7 +51,6 @@ function doValidation(self) {
 }
 
 function doAuth(self) {
-    console.log(VueLocalStorage.get("auth").authenticate);
     if (VueLocalStorage.get("auth").authenticate) {
         self.$router.replace('/project');
     } else {

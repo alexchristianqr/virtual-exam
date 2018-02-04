@@ -6,12 +6,15 @@ import ListExams from '../components/ListExams';
 import Exam from '../components/Exam';
 import VueLocalStorage from 'vue-local-storage';
 
-
 Vue.use(Router);
 
 const router = new Router({
     mode: 'history',
     routes: [
+        {
+            path: '*',
+            redirect: '/login'
+        },
         {
             path: '/login',
             name: 'login',
@@ -45,11 +48,10 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
-    console.log("Log.Route:");console.log(VueLocalStorage.get("auth"));
     if (to.path === '/login') {
         VueLocalStorage.set("auth", {authenticate: false});
     }
-    let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
     if (requiresAuth && !VueLocalStorage.get("auth").authenticate) {
         next('/login');
     } else {
