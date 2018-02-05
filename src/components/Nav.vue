@@ -31,7 +31,7 @@
         </nav>
 </template>
 <script>
-    import ADService from '../services/ADService';
+    import ADService from '../services/AuthService';
     export default {
         methods:{
             logout(){

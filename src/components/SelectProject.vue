@@ -3,8 +3,6 @@
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
                 <router-link class="btn pl-0" :to="'/login'"><i class="fa fa-angle-left fa-2x"></i>&nbsp;&nbsp;&nbsp;<b class="h5">Select</b></router-link>
-                <!--<router-link class="btn btn-link pl-0" :to="{name:'login'}"><i class="fa fa-angle-left fa-2x"></i></router-link>-->
-                <!--<b>Select Your Project</b>-->
             </div>
             <div class="card-body">
                 <form>
@@ -30,17 +28,15 @@
 </template>
 
 <script>
+    import AUTH_SERVICE from '../services/AuthService';
     export default {
         name: "select-project",
         created() {
             console.log("load project");
         },
-        // beforeMount(){
-        //     console.log(AUTH.authenticate);
-        //     if(!AUTH.authenticate){
-        //         return this.$router.replace('/login');
-        //     }
-        // },
+        created(){
+            AUTH_SERVICE.dispatch("fetchProjects", {self: this});
+        },
         methods: {}
     }
 </script>

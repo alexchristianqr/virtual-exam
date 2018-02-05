@@ -4,12 +4,13 @@
 
 import Vue from 'vue';
 import * as Vuex from "vuex";
-import AUTH from "./Auth";
 import VueLocalStorage from 'vue-local-storage';
+import Axios from 'axios';
+import ENV from "./ENV";
 
 Vue.use(Vuex, VueLocalStorage);
 
-const ADSERVICE = new Vuex.Store({
+const AUTH_SERVICE = new Vuex.Store({
     state: {},
     mutations: {},
     actions: {
@@ -30,7 +31,29 @@ const ADSERVICE = new Vuex.Store({
         doLogout({commit}, {self}) {
             VueLocalStorage.set("auth", {authenticate: false});
             doAuth(self);
-        }
+        },
+        fetchProjects({commit}, {self}) {
+            Axios.get(ENV.API + "/proyects").then((r) => {
+                // console.log(r.status);
+                // console.log(r.status === 200);
+                console.log(r);
+                // console.log(r.data);
+                if (r.status === 200) {
+                    self.data = r.data;
+                }
+            })
+                .catch((e) => {
+                    console.log(e);
+                    switch (e.response.status) {
+                        case 412:// Exception Laravel
+                            console.error(e.response.data);
+                            break;
+                        default:// Request Laravel 401,422
+                            console.error(e.response.data);
+                            break;
+                    }
+                });
+        },
     }
 });
 
@@ -58,4 +81,4 @@ function doAuth(self) {
     }
 }
 
-export default ADSERVICE;
+export default AUTH_SERVICE;

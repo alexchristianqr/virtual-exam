@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import ADService from '../services/ADService';
+    import AUTH_SERVICE from '../services/AuthService';
 
     export default {
         name: "login",
@@ -72,7 +72,7 @@
         }),
         methods: {
             doLogin() {
-                ADService.dispatch("doLogin", {self: this});
+                AUTH_SERVICE.dispatch("doLogin", {self: this});
                 // if (!this.validate) {
                 //     this.params.password = "";
                 // }
