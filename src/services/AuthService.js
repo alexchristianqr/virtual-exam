@@ -9,6 +9,16 @@ import Axios from 'axios';
 import ENV from "./ENV";
 
 Vue.use(Vuex, VueLocalStorage);
+Axios.defaults.headers.common['X-Sapia-Api-Vue-Salis'] = 'XMLHttpRequest';
+
+// Axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+// Axios.defaults.headers.common['Content-Type'] = 'application/json, text/plain, */*';
+// Axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, Authorization, Access-Control-Allow-Origin';
+
+// Vue.http.headers.common['Access-Control-Allow-Origin'] = '*';
+// Vue.http.headers.common['Content-Type'] = 'application/x-www-form-urlencoded';
+// Vue.http.headers.common['Accept'] = 'application/json, text/plain, */*';
+// Vue.http.headers.common['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, Authorization, Access-Control-Allow-Origin';
 
 const AUTH_SERVICE = new Vuex.Store({
     state: {},
@@ -33,17 +43,15 @@ const AUTH_SERVICE = new Vuex.Store({
             doAuth(self);
         },
         fetchProjects({commit}, {self}) {
-            Axios.get(ENV.API + "/proyects").then((r) => {
-                // console.log(r.status);
-                // console.log(r.status === 200);
-                console.log(r);
-                // console.log(r.data);
-                if (r.status === 200) {
-                    self.data = r.data;
-                }
-            })
+            Axios.get(ENV.API + "/proyects")
+                .then((r) => {
+                    console.log(r);
+                    if (r.status === 200) {
+                        self.data = r.data;
+                    }
+                })
                 .catch((e) => {
-                    console.log(e);
+                    console.error(e);
                     switch (e.response.status) {
                         case 412:// Exception Laravel
                             console.error(e.response.data);
@@ -60,7 +68,7 @@ const AUTH_SERVICE = new Vuex.Store({
 function doValidation(self) {
     if (self.params.email !== '' && self.params.password !== '') {
         if (self.params.email === "aquisper@sapia.com.pe" && self.params.password === "72482060" && VueLocalStorage.get("auth").authenticate === false) {
-            VueLocalStorage.set("auth", {authenticate: true});
+            VueLocalStorage.set("auth", {authenticate: true, id: 2});
             self.validate = null;
             doAuth(self);
         } else {

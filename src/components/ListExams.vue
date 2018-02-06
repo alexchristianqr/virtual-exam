@@ -5,8 +5,7 @@
         <div class="card mt-5 mb-5">
             <div class="card-header">
                 <b class="h5">Your Exams</b>
-                <hr>
-                <div class="form-inline">
+                <div hidden class="form-inline">
                     <label>
                         <select class="form-control">
                             <option value="" selected disabled>Type Exam</option>
@@ -22,24 +21,34 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Updated</th>
-                            <th scope="col">Person</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Fecha Inicio</th>
+                            <th scope="col">Fecha Fin</th>
+                            <th scope="col">Estado</th>
+                            <th scope="col">Duración</th>
+                            <th scope="col">Nota</th>
                             <th scope="col">Action</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr v-for="num in 1">
                             <th scope="row">{{num}}</th>
-                            <td>Examen de Control de Cambios en GIT</td>
-                            <td>2018-01-31 11:20:01</td>
-                            <td>Alex Christian</td>
+                            <td>Microsoft Windows</td>
+                            <td>2018-01-31</td>
+                            <td>2018-01-31</td>
+                            <td>
+                                <span class="text-warning"><b>PENDING</b></span>
+                                <!--<span class="text-danger"><b>EXPIRED</b></span>-->
+                                <!--<span class="text-success"><b>DONE</b></span>-->
+                            </td>
+                            <td>00:10:00</td>
+                            <td>0</td>
                             <td>
                                 <div class="btn-group dropdown btn-group-xs" role="group">
-                                    <button type="button" class="btn btn-warning" title="Exportar por defecto">
+                                    <a href class="btn btn-warning" data-toggle="modal" data-target="#infoModal">
                                         <i class="fa fa-file-text-o fa-fw"></i>
                                         <span>Pending</span>
-                                    </button>
+                                    </a>
                                     <div class="btn-group open" role="group">
                                         <button type="button" class="btn btn-light btn-xs dropdown-toggle"
                                                 data-toggle="dropdown" aria-expanded="true">
@@ -52,8 +61,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href class="dropdown-item text-muted" data-toggle="modal"
-                                                   data-target="#infoModal">
+                                                <a href class="dropdown-item text-muted" data-toggle="modal" data-target="#infoModal">
                                                     <small>Start Exam</small>
                                                 </a>
                                             </li>
@@ -62,17 +70,24 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr v-for="num in 1">
-                            <th scope="row">{{num}}</th>
-                            <td>Examen de Control de Cambios en GIT</td>
-                            <td>2018-01-31 11:20:01</td>
-                            <td>Alex Christian</td>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Github Pro</td>
+                            <td>2018-01-31</td>
+                            <td>2018-01-31</td>
+                            <td>
+                                <!--<span class="text-warning"><b>PENDING</b></span>-->
+                                <!--<span class="text-danger">EXPIRED</span>-->
+                                <span class="text-success"><b>DONE</b></span>
+                            </td>
+                            <td>00:10:00</td>
+                            <td>14</td>
                             <td>
                                 <div class="btn-group dropdown btn-group-xs" role="group">
-                                    <button type="button" class="btn btn-success" disabled title="Exportar por defecto">
+                                    <a href class="btn btn-success">
                                         <i class="fa fa-file-text-o fa-fw"></i>
                                         <span>Done</span>
-                                    </button>
+                                    </a>
                                     <div class="btn-group open" role="group">
                                         <button type="button" class="btn btn-light btn-xs dropdown-toggle"
                                                 data-toggle="dropdown"
@@ -82,11 +97,9 @@
                                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
                                             <li title="Exportar">
                                                 <a href class="dropdown-item text-muted">
-                                                    <!--<i class="fa fa-file-excel-o fa-fw"></i>-->
                                                     <small>Show Solution</small>
                                                 </a>
                                                 <a href class="dropdown-item text-muted">
-                                                    <!--<i class="fa fa-file-excel-o fa-fw"></i>-->
                                                     <small>Show Base Knowledge</small>
                                                 </a>
                                             </li>
@@ -95,17 +108,22 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr v-for="num in 1">
-                            <th scope="row">{{num}}</th>
-                            <td>Examen de Control de Cambios en GIT</td>
-                            <td>2018-01-31 11:20:01</td>
-                            <td>Alex Christian</td>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Java Pro</td>
+                            <td>2018-01-31</td>
+                            <td>2018-01-31</td>
+                            <td>
+                                <span class="text-danger"><b>EXPIRED</b></span>
+                            </td>
+                            <td>00:10:00</td>
+                            <td>-</td>
                             <td>
                                 <div class="btn-group dropdown btn-group-xs" role="group">
-                                    <button type="button" class="btn btn-danger" disabled title="Exportar por defecto">
+                                    <a href class="btn btn-danger">
                                         <i class="fa fa-file-text-o fa-fw"></i>
                                         <span>Expired</span>
-                                    </button>
+                                    </a>
                                     <div class="btn-group open" role="group">
                                         <button type="button" class="btn btn-light btn-xs dropdown-toggle"
                                                 data-toggle="dropdown" aria-expanded="true">
@@ -267,6 +285,7 @@
     import Modal from '../components/Modal';
     import $ from 'jquery';
     import moment from 'moment';
+    import SERVICE from '../services/ExamService';
 
     Vue.component("nav-exam", Nav);
     Vue.component('modal-lg', Modal);
@@ -295,9 +314,13 @@
             tempTime: {},
         }),
         created() {
+            this.fetch();
             console.log("reinicio ventana lista de examenes!");
         },
         methods: {
+            fetch(){
+                SERVICE.dispatch("fetchExams", {self: this});
+            },
             timer() {
                 this.remaining = this.vtime;
                 const getRemainTime = deadline => {

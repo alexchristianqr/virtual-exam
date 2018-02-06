@@ -2,7 +2,7 @@
     <section>
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
-                <router-link class="btn pl-0" :to="'/login'"><i class="fa fa-angle-left fa-2x"></i>&nbsp;&nbsp;&nbsp;<b class="h5">Select</b></router-link>
+                <b class="h5">Select</b>
             </div>
             <div class="card-body">
                 <form>
@@ -18,8 +18,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <router-link class="btn btn-primary btn-block" :to="{name:'list-exams'}"><span>Next</span>
-                        </router-link>
+                        <router-link class="btn btn-primary btn-block" :to="{name:'list-exams'}"><span>Next</span></router-link>
                     </div>
                 </form>
             </div>
@@ -31,13 +30,18 @@
     import AUTH_SERVICE from '../services/AuthService';
     export default {
         name: "select-project",
+        data:()=>({
+            data:[]
+        }),
         created() {
+            this.load();
             console.log("load project");
         },
-        created(){
-            AUTH_SERVICE.dispatch("fetchProjects", {self: this});
-        },
-        methods: {}
+        methods: {
+            load(){
+                AUTH_SERVICE.dispatch("fetchProjects", {self: this});
+            }
+        }
     }
 </script>
 
