@@ -31,46 +31,38 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="num in 1">
-                            <th scope="row">{{num}}</th>
-                            <td>Microsoft Windows</td>
-                            <td>2018-01-31</td>
-                            <td>2018-01-31</td>
+                        <tr v-for="(v,k) in data">
+                            <th scope="row">{{k+1}}</th>
+                            <td>{{v.name}}</td>
+                            <td>{{v.start_date}}</td>
+                            <td>{{v.expiration_date}}</td>
                             <td>
-                                <span class="text-warning"><b>PENDING</b></span>
-                                <!--<span class="text-danger"><b>EXPIRED</b></span>-->
-                                <!--<span class="text-success"><b>DONE</b></span>-->
+                                <span v-if="v.exam_state_id == 1" class="text-primary"><b>{{v.exam_state}}</b></span>
+                                <span v-if="v.exam_state_id == 2" class="text-warning"><b>{{v.exam_state}}</b></span>
+                                <span v-if="v.exam_state_id == 3" class="text-success"><b>{{v.exam_state}}</b></span>
+                                <span v-if="v.exam_state_id == 4" class="text-danger"><b>{{v.exam_state}}</b></span>
+                                <span v-if="v.exam_state_id == 5" class="text-dark"><b>{{v.exam_state}}</b></span>
                             </td>
-                            <td>00:10:00</td>
-                            <td>0</td>
+                            <td>{{v.duration}}</td>
                             <td>
-                                <div class="btn-group dropdown btn-group-xs" role="group">
-                                    <a href class="btn btn-warning" data-toggle="modal" data-target="#infoModal">
-                                        <i class="fa fa-file-text-o fa-fw"></i>
-                                        <span>Pending</span>
-                                    </a>
-                                    <div class="btn-group open" role="group">
-                                        <button type="button" class="btn btn-light btn-xs dropdown-toggle"
-                                                data-toggle="dropdown" aria-expanded="true">
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-                                            <li>
-                                                <a href class="dropdown-item text-muted">
-                                                    <small>Show Base Knowledge</small>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href class="dropdown-item text-muted" data-toggle="modal" data-target="#infoModal">
-                                                    <small>Start Exam</small>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                                <span v-if="v.exam_state_id == 1">{{v.note}}</span>
+                                <span v-if="v.exam_state_id == 2">{{v.note}}</span>
+                                <span v-if="v.exam_state_id == 3">{{v.note}}</span>
+                                <span v-if="v.exam_state_id == 4">{{v.note}}</span>
+                                <span v-if="v.exam_state_id == 5">{{v.note}}</span>
+                            </td>
+                            <td>
+                                <button v-if="v.exam_state_id == 3" class="btn btn-primary">
+                                    <i class="fa fa-file-text-o fa-fw"></i>
+                                    <span>Ver Solución</span>
+                                </button>
+                                <a  v-if="v.exam_state_id == 2" class="btn btn-warning" href data-toggle="modal" data-target="#infoModal">
+                                    <i class="fa fa-file-text-o fa-fw"></i>
+                                    <span>Iniciar Examen</span>
+                                </a>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <th scope="row">2</th>
                             <td>Github Pro</td>
                             <td>2018-01-31</td>
@@ -108,7 +100,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
+                        <tr hidden>
                             <th scope="row">3</th>
                             <td>Java Pro</td>
                             <td>2018-01-31</td>
@@ -207,51 +199,20 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <div v-for="n in 10">
+                                <div v-for="(v,k) in data_exam">
                                     <table class="table table-striped table-vue">
                                         <thead>
                                         <tr>
-                                            <th scope="row" colspan="5"><b>{{n}}.-</b>&nbsp;&nbsp;¿Cómo se dice uno en
-                                                ingles?
-                                            </th>
+                                            <th scope="row" colspan="5"><b>{{k+1}}.-</b>&nbsp;&nbsp;{{v.name}}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
+                                        <tr v-for="(vv,kk) in v.options">
                                             <td width="25%">
-                                                <b>a)</b>
+                                                <b>{{kk+1}}</b>
                                                 <div class="form-check form-check-inline">
-                                                    <input :data-id="n" class="form-check-input" type="radio"
-                                                           :name="'opt'+n"
-                                                           :id="'a'+n" value="a" @click="doChecked()"/>
-                                                    <label class="form-check-label" :for="'a'+n">One</label>
-                                                </div>
-                                            </td>
-                                            <td width="25%">
-                                                <b>b)</b>
-                                                <div class="form-check form-check-inline">
-                                                    <input :data-id="n" class="form-check-input" type="radio"
-                                                           :name="'opt'+n"
-                                                           :id="'b'+n" value="b" @click="doChecked()"/>
-                                                    <label class="form-check-label" :for="'b'+n">Two</label>
-                                                </div>
-                                            </td>
-                                            <td width="25%">
-                                                <b>c)</b>
-                                                <div class="form-check form-check-inline">
-                                                    <input :data-id="n" class="form-check-input" type="radio"
-                                                           :name="'opt'+n"
-                                                           :id="'c'+n" value="c" @click="doChecked()"/>
-                                                    <label class="form-check-label" :for="'c'+n">Three</label>
-                                                </div>
-                                            </td>
-                                            <td width="25%">
-                                                <b>d)</b>
-                                                <div class="form-check form-check-inline">
-                                                    <input :data-id="n" class="form-check-input" type="radio"
-                                                           :name="'opt'+n"
-                                                           :id="'d'+n" value="d" @click="doChecked()"/>
-                                                    <label class="form-check-label" :for="'d'+n">Four</label>
+                                                    <input :data-id="v.id" class="form-check-input" type="radio" :name="'opt'+v.id" :id="'a'+v.id" :value="vv.id" @click="doChecked()"/>
+                                                    <label class="form-check-label" :for="'a'+vv.name">{{vv.name}}</label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -267,8 +228,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="closeModal()"><i
-                            class="fa fa-close fa-fw"></i>Close
+                    <button type="button" class="btn btn-secondary" @click="closeModal()"><i class="fa fa-close fa-fw"></i>Close
                     </button>
                     <button type="button" class="btn btn-primary" @click="saved()"><i class="fa fa-check fa-fw"></i>Send
                     </button>
@@ -294,6 +254,7 @@
         name: "list-exams",
         data: () => ({
             data: [],
+            data_exam: [],
             showModal: false,
             loadComponentExam: false,
             vtime:"00:01:00",
@@ -314,12 +275,11 @@
             tempTime: {},
         }),
         created() {
-            this.fetch();
-            console.log("reinicio ventana lista de examenes!");
+            this.loadExams();
         },
         methods: {
-            fetch(){
-                SERVICE.dispatch("fetchExams", {self: this});
+            loadExams(){
+                SERVICE.dispatch("loadExams", {self: this});
             },
             timer() {
                 this.remaining = this.vtime;
@@ -340,7 +300,6 @@
                     this.timerUpdate = setInterval(() => {
                         let t = getRemainTime(deadline);
                         this.remaining = t.remainHours + ':' + t.remainMinutes + ':' + t.remainSeconds;
-                        console.log(this.remaining);
                         if (t.remainTime <= 1) {
                             clearInterval(this.timerUpdate);
                             this.saveRedirect();
@@ -355,7 +314,7 @@
                     let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
                     $.each(inputToArray, (kkkk, vvvv) => {
                         if ($(vvvv).is(":checked")) {
-                            this.tempRptas.push({id: $(vvvv).data('id'), value: $(vvvv).val(),time:this.remaining})
+                            this.tempRptas.push({exam_id:'1',question_id: $(vvvv).data('id'),answer_id:$(vvvv).val(),user_id:'2'})
                         }
                     });
                 });
@@ -364,6 +323,7 @@
                 this.timer();
                 this.loadComponentExam = true;
                 $('#modal-dialog-dinamic').modal({backdrop: 'static', keyboard: false, show: true});
+                this.load2();
             },
             closeModal() {
                 this.deadInterval();
@@ -376,16 +336,22 @@
             },
             saved() {
                 this.params.rptas = [];
-                this.tempTime = {id: "C02135", username: "Alex Chritian", dni: "72482060",time: this.remaining, rptas: this.tempRptas};
-                this.params.rptas.push(this.tempTime);
+                this.tempTime = this.tempRptas;
+                // this.params.rptas.push(this.tempTime);
+                this.params.rptas=this.tempRptas;
                 this.saveRedirect();
             },
             saveRedirect() {
-                this.request();
-                window.location.reload(true);
+                this.saveExam();
+                // window.location.reload(true);
             },
-            request(){
-              console.log("Haciendo Post a la DB");
+            saveExam(){
+                console.log(this.params.rptas);
+              // console.log("Haciendo Post a la DB");
+                SERVICE.dispatch("saveExam", {self: this});
+            },
+            load2(){
+                SERVICE.dispatch("loadExam", {self: this});
             }
         }
     }

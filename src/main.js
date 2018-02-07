@@ -5,10 +5,11 @@ import App from './App';
 import router from './router';
 import 'bootstrap';
 import './assets/vendor/scss/style.scss';
+import Axios from 'axios';
 
 Vue.config.productionTip = false;
+Axios.defaults.headers.common['X-Sapia-Api-Vue-Salis'] = 'XMLHttpRequest';
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,

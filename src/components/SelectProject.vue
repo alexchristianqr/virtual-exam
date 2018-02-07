@@ -8,17 +8,18 @@
                 <form>
                     <div class="form-group">
                         <label>Project</label>
-                        <select name="proyecto" class="form-control mb-1">
-                            <option value="0">Administrativo</option>
-                            <option value="1">Interbank</option>
-                            <option value="2">Claro Corporativo</option>
-                            <option value="3">Entel</option>
-                            <option value="4">Empresas</option>
-                            <option value="5">Calidda</option>
+                        <select v-model="selectedProject" class="form-control mb-1">
+                            <option value="0" selected>- seleccionar -</option>
+                            <option v-for="(v,k) in data" v-bind:value="v.id">{{v.name}}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <router-link class="btn btn-primary btn-block" :to="{name:'list-exams'}"><span>Next</span></router-link>
+                        <span v-if="selectedProject == '0' ">
+                            <a href class="btn btn-primary btn-block disabled"><span>Next</span></a>
+                        </span>
+                        <span v-else>
+                            <router-link :class=" selectedProject != '0' ? 'btn btn-primary btn-block' : 'btn btn-primary btn-block disabled' " :to="'list-exams'"><span>Next</span></router-link>
+                        </span>
                     </div>
                 </form>
             </div>
@@ -27,19 +28,23 @@
 </template>
 
 <script>
-    import AUTH_SERVICE from '../services/AuthService';
+    import SERVICE from '../services/AuthService';
+
     export default {
         name: "select-project",
-        data:()=>({
-            data:[]
+        data: () => ({
+            data: [],
+            selectedProject:"0",
         }),
         created() {
-            this.load();
-            console.log("load project");
+            this.loadProjects();
         },
         methods: {
-            load(){
-                AUTH_SERVICE.dispatch("fetchProjects", {self: this});
+            loadProjects() {
+                SERVICE.dispatch("loadProjects", {self: this});
+            },
+            change(){
+                alert(this.selectedProject);
             }
         }
     }
