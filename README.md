@@ -1,6 +1,7 @@
 # virtual-exam
 
-> A Vue.js project, Software for project of Interbank Bank.
+> A Vue.js project.
+> Software for Survey of people community
 
 ## Build Setup
 
