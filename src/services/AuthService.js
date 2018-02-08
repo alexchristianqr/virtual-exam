@@ -6,8 +6,8 @@ import Vue from 'vue';
 import * as Vuex from "vuex";
 import VueLocalStorage from 'vue-local-storage';
 import Axios from 'axios';
-import ENV from "./ENV";
-import Util from "./Util";
+import ENV from "../Env";
+import Util from "../Util";
 
 Vue.use(Vuex, VueLocalStorage);
 

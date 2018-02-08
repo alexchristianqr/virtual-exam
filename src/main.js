@@ -8,7 +8,7 @@ import './assets/vendor/scss/style.scss';
 import Axios from 'axios';
 
 Vue.config.productionTip = false;
-Axios.defaults.headers.common['X-Sapia-Api-Vue-Salis'] = 'XMLHttpRequest';
+Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 new Vue({
   el: '#app',

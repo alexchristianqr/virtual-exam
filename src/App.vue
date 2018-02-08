@@ -30,4 +30,7 @@
             max-width: 1200px !important;
         }
     }
+    .table td, .table th {
+        vertical-align: middle !important;
+    }
 </style>
