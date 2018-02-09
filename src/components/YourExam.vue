@@ -2,71 +2,76 @@
     <section>
         <component :is="'nav-exam'"/>
         <div class="card mt-5 mb-5">
-            <div class="card-header">
-                <b class="h5">Your Exam</b>
-                <div hidden class="form-inline">
-                    <label>
-                        <select class="form-control">
-                            <option value="" selected disabled>Type Exam</option>
-                            <option value="user">Pending</option>
-                            <option value="backoffice">Finished</option>
-                        </select>
-                    </label>
+            <div class="card-header pb-0">
+                <!--<b class="h5">Your Exam</b>-->
+                <!--<div class="col-4 mt-3 mb-3">-->
+
+                <!--</div>-->
+                <div class="row">
+                    <div class="col-3 mb-3">
+                        <div class="input-group input-group mt-1">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-dark text-white">Time Remaining</span>
+                            </div>
+                            <span class="form-control">{{remaining}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div hidden class="col-12">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <span><b>Nota:&nbsp;&nbsp;</b>Tiempo agotado!.</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
                 <!--<div class="table-responsive">-->
 
-                    <table class="table table-vue">
-                        <thead>
-                        <tr>
-                            <th scope="row" colspan="5"><span>{{data[next].id}}.-</span><span class="pl-2">{{data[next].question_name}}</span></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="(v,k) in data[next].options_answers">
-                            <td width="110%" class="pl-5">
-                                <b>{{returnLetter(k)}})&nbsp;</b>
-                                <div class="form-check form-check-inline">
-                                    <input title="" :data-id="data[next].id" class="form-check-input" type="radio" :name="'opt'+data[next].id" :id="returnLetter(k)+data[next].id" :value="v.id" @click="doChecked()"/>
-                                    <label class="form-check-label" :for="returnLetter(k)+data[next].id">{{v.name}}</label>
+                <table class="table table-vue">
+                    <thead>
+                    <tr>
+                        <th scope="row" colspan="5"><span>{{data[next].id}}.-</span><span class="pl-2">{{data[next].question_name}}</span>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(v,k) in data[next].options_answers">
+                        <td width="110%" class="pl-5">
+                            <b>{{returnLetter(k)}})&nbsp;</b>
+                            <div class="form-check form-check-inline">
+                                <input title="" :data-id="data[next].id" class="form-check-input" type="radio" :name="'opt'+data[next].id" :id="returnLetter(k)+data[next].id" :value="v.id" @click="doChecked()"/>
+                                <label class="form-check-label" :for="returnLetter(k)+data[next].id">{{v.name}}</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100%" class="text-center">
+                            <div class="row">
+                                <div class="col-6 text-right">
+                                    <button class="btn btn-light" @click="change('-')"><i
+                                            class="fa fa-arrow-left fa-fw"></i>Anterior
+                                    </button>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="100%" class="text-center">
-                                <div class="row">
-                                    <div class="col-6 text-right">
-                                        <button class="btn btn-light" @click="change('-')"><i class="fa fa-arrow-left fa-fw"></i>Anterior</button>
-                                    </div>
-                                    <div class="col-6 text-left">
-                                        <button class="btn btn-light" @click="change('+')"><i class="fa fa-arrow-right fa-fw"></i>Siguiente</button>
-                                    </div>
+                                <div class="col-6 text-left">
+                                    <!--<span v-if="data.length != next+1">-->
+                                        <button v-if="data.length != next+1" class="btn btn-light" @click="change('+')"><i class="fa fa-arrow-right fa-fw"></i>Siguiente</button>
+                                        <button v-else class="btn btn-dark">Saved Exam</button>
+                                    <!--</span>-->
+                                    <!--<span v-else>-->
+                                    <!--</span>-->
                                 </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                        <!--<tbody>-->
-                        <!--<tr>-->
-                            <!--<td width="50%" class="text-center">-->
-                                <!--<button class="btn btn-light" @click="next">Back</button>-->
-                            <!--</td>-->
-                            <!--<td width="50%" class="text-center">-->
-                                <!--<button class="btn btn-light" @click="next">Next</button>-->
-                            <!--</td>-->
-                        <!--</tr>-->
-                        <!--</tbody>-->
-                        <!--<tfoot>-->
-                        <!--<tr>-->
-                            <!--<td class="text-center">-->
-                                <!--<button class="btn btn-light" @click="next-1">Back</button>-->
-                            <!--</td>-->
-                            <!--<td class="text-center">-->
-                                <!--<button class="btn btn-light" @click="next+1">Next</button>-->
-                            <!--</td>-->
-                        <!--</tr>-->
-                        <!--</tfoot>-->
-                    </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
                 <!--</div>-->
             </div>
         </div>
@@ -87,10 +92,10 @@
         data: () => ({
             data: [{}],
             theme_id: 1,
-            next:0,
-            back:0,
-            vtime:"00:01:00",
-            vvtime:1,
+            next: 0,
+            back: 0,
+            vtime: "00:10:00",
+            vvtime: 10,
             remaining: this.vtime,
             mitiempo: 20,
             tsecond: 60,
@@ -105,14 +110,18 @@
             timerUpdate: null,
             tempRptas: [],
             tempTime: {},
+            tempChecked:[],
+            tempRptaChecked:[]
         }),
         created() {
+            this.data = [{}];
             this.theme_id = this.$route.params.theme_id;
             this.loadExam();
         },
         methods: {
             loadExam() {
-                return SERVICE.dispatch("loadExam", {self: this});
+                SERVICE.dispatch("loadExam", {self: this});
+                this.timer();
             },
             returnLetter(key, toUpper = false) {
                 let letter = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -122,24 +131,75 @@
                     return letter[key];
                 }
             },
-            change(signo){
-                    if (signo === "+") {
-                        if(this.next+1 < this.data.length) {
-                            // console.log(this.next);
-                            this.next = this.next + 1;
+            change(signo) {
+                if (signo === "+") {
+                    //condicional para el temporal checked
+                    if(this.tempChecked.length > this.next) {
+                        if(this.next+1 < this.tempChecked.length){
+                            $(document).ready(() => {
+                                let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
+                                $.each(inputToArray, (kkkk, vvvv) => {
+                                    //aplicar checked al volver atras
+                                    if(this.tempChecked[this.next] != undefined){
+                                        if(kkkk == this.tempChecked[this.next].checked_id){
+                                            $(vvvv).prop("checked",true);
+                                        }
+                                    }else{
+                                        return false;
+                                    }
+                                });
+                            });
                         }else{
-                            return false;
-                        }
-                    } else {
-                        // console.log(this.next);
-                        if (this.next >= 1) {
-                            this.next = this.next - 1;
-                        } else {
-                            this.next = 0;
+                            $(document).ready(() => {
+                                let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
+                                $.each(inputToArray, (kkkk, vvvv) => {
+                                    //aplicar checked al iniciar y al dar siguiente
+                                    if(this.data.length == this.next){
+                                        if ($(vvvv).is(":checked")) {
+                                            $(vvvv).prop("checked", true);
+                                        }
+                                    }else{
+                                        if ($(vvvv).is(":checked")) {
+                                            $(vvvv).prop("checked", false);
+                                        }
+                                    }
+                                });
+                            });
                         }
                     }
-                    return this.data[this.next];
-                    // this.loadExam();
+
+
+                    if (this.next + 1 < this.data.length) {
+                        this.next = this.next + 1;
+                    } else {
+                        return false;
+                    }
+
+                } else {
+
+                    $(document).ready(() => {
+                        let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
+                        $.each(inputToArray, (kkkk, vvvv) => {
+                            //aplicar checked al volver atras
+                            if(this.tempChecked[this.next] != undefined){
+                                if(kkkk == this.tempChecked[this.next].checked_id){
+                                    $(vvvv).prop("checked",true);
+                                }
+                            }else{
+                                return false;
+                            }
+                        });
+                    });
+
+                    if (this.next >= 1) {
+                        this.next = this.next - 1;
+                    } else {
+                        this.next = 0;
+                    }
+
+                }
+
+                return this.data[this.next];
 
             },
             timer() {
@@ -170,17 +230,22 @@
                 countDown(new Date());
             },
             doChecked() {
-                this.tempRptas = [];
                 $(document).ready(() => {
                     let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
                     $.each(inputToArray, (kkkk, vvvv) => {
                         if ($(vvvv).is(":checked")) {
-                            console.log(vvvv);
-                            this.tempRptas.push({exam_id:'1',question_id: $(vvvv).data('id'),answer_id:$(vvvv).val(),user_id:'2'})
+                            //aplicar checked normal
+                            if(this.tempChecked.length == this.next){
+                                this.tempChecked.push({question_id:this.data[this.next].id,checked_id:kkkk});
+                            }else{
+                                //aplicar checked para cambiar
+                                this.tempChecked[this.next] = {question_id:this.data[this.next].id,checked_id:kkkk};
+                            }
                         }
                     });
                 });
-                console.log(this.tempRptas);
+                // console.log(this.tempChecked);
+                // this.tempRptaChecked.push(this.tempChecked);
             },
         },
     }

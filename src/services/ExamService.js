@@ -66,6 +66,7 @@ const EXAM_SERVICE = new Vuex.Store({
         loadYourThemes({commit}, {self}) {
             Axios.get(ENV.API + "/your-themes")
                 .then((r) => {
+                    this.storeTheme();
                     if (r.status === 200) {
                         self.data = r.data;
                     }
@@ -105,6 +106,19 @@ const EXAM_SERVICE = new Vuex.Store({
                 })
                 .catch((e) => {
                     Util.fnError(e);
+                });
+        },
+        storeTheme() {
+            alert("slex llego");
+            Axios.put(ENV.API + "/store-theme",{params:{name:"Java desde Cero"}})
+                .then((r) => {
+                    console.log(r);
+                    if (r.status === 200) {
+                    }
+                })
+                .catch((e) => {
+                    console.log(e);
+                    // Util.fnError(e);
                 });
         }
 

@@ -56,31 +56,31 @@ const router = new Router({
             path: '/your-themes',
             name: 'your-themes',
             component: YourThemes,
-            meta: {
-                requiresAuth: true
-            }
+            // meta: {
+            //     requiresAuth: true
+            // }
         },
         {
             path: '/your-exam/:theme_id',
             name: 'your-exam',
             component: YourExam,
-            meta: {
-                requiresAuth: true
-            }
+            // meta: {
+            //     requiresAuth: true
+            // }
         },
     ]
 });
 
-router.beforeEach((to, from, next) => {
-    if (to.path === '/login') {
-        VueLocalStorage.set("auth", {authenticate: false});
-    }
-    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-    if (requiresAuth && !VueLocalStorage.get("auth").authenticate) {
-        next('/login');
-    } else {
-        next();
-    }
-});
+// router.beforeEach((to, from, next) => {
+//     if (to.path === '/login') {
+//         VueLocalStorage.set("auth", {authenticate: false});
+//     }
+//     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+//     if (requiresAuth && !VueLocalStorage.get("auth").authenticate) {
+//         next('/login');
+//     } else {
+//         next();
+//     }
+// });
 
 export default router;

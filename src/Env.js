@@ -1,4 +1,4 @@
 const ENV = {
-    API:"http://localhost:8000"
+    API:"http://api.survey"
 };
 export default ENV;
