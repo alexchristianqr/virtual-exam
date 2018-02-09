@@ -32,13 +32,13 @@
                             <td width="30%">{{v.status}}</td>
                             <td width="15%">
 
-                                <router-link hidden class="btn btn-warning" :to="{name:'your-exam',params:{theme_id:v.id}}">
+                                <router-link hidden class="btn btn-warning" :to="{name:'exam',params:{theme_id:v.id}}">
                                     <i class="fa fa-file-text-o fa-fw"></i>
                                     <span>Pending</span>
                                 </router-link>
 
                                 <div class="btn-group dropdown btn-group-xs" role="group">
-                                    <a class="btn btn-warning" href data-toggle="modal" data-target="#infoModal" @click.prevent="params.theme_id = v.id">
+                                    <a class="btn btn-warning" href data-toggle="modal" data-target="#infoModal" @click.prevent="p_theme_id = v.id">
                                         <i class="fa fa-file-text-o fa-fw"></i>
                                         <span>Pending</span>
                                     </a>
@@ -83,7 +83,7 @@
                     <div class="modal-body">The exam lasts 10 minutes with no option to cancel.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <router-link data-dismiss="modal" class="btn btn-primary" :to="{name:'your-exam',params:{theme_id:params.theme_id}}">Ready</router-link>
+                        <router-link data-dismiss="modal" class="btn btn-primary" :to="{name:'exam',params:{theme_id:p_theme_id}}">Ready</router-link>
                     </div>
                 </div>
             </div>
@@ -94,26 +94,24 @@
 <script>
     import Vue from 'vue';
     import Nav from '../components/Nav';
-    import $ from 'jquery';
     import moment from 'moment';
     import SERVICE from '../services/ExamService';
 
     Vue.component("nav-exam", Nav);
 
     export default {
-        name: "your-themes",
         data: () => ({
             data: [],
-            params:{
-                theme_id:null
-            }
+            moment:moment,
+            id_theme:null,
+            p_theme_id:null
         }),
         created() {
-            this.loadYourThemes();
+            this.loadThemes();
         },
         methods: {
-            loadYourThemes() {
-                return SERVICE.dispatch("loadYourThemes", {self: this});
+            loadThemes() {
+                return SERVICE.dispatch("loadThemes", {self: this});
             }
         },
     }

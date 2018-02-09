@@ -11,7 +11,7 @@ const EXAM_SERVICE = new Vuex.Store({
     state: {},
     mutations: {},
     actions: {
-        loadExams({commit}, {self}) {
+        loadExams2({commit}, {self}) {
             Axios.get(ENV.API + "/exams/listExamsUsers/" + VueLocalStorage.get("auth").id)
                 .then((r) => {
                     if (r.status === 200) {
@@ -22,7 +22,7 @@ const EXAM_SERVICE = new Vuex.Store({
                     Util.fnError(e);
                 });
         },
-        loadExam({commit}, {self}) {
+        loadExam2({commit}, {self}) {
             Axios.get(ENV.API + "/exams/takeExam/1")
                 .then((r) => {
                     if (r.status === 200) {
@@ -33,7 +33,7 @@ const EXAM_SERVICE = new Vuex.Store({
                     Util.fnError(e);
                 });
         },
-        saveExam({commit}, {self}) {
+        saveExam2({commit}, {self}) {
             Axios.post(ENV.API + "/exams/recordResponseExam", {params: self.params.rptas})
                 .then((r) => {
                     if (r.status === 200) {
@@ -44,7 +44,7 @@ const EXAM_SERVICE = new Vuex.Store({
                     Util.fnError(e);
                 });
         },
-        checkedRequest({commit}, {self}) {
+        checkedRequest2({commit}, {self}) {
             Axios.put(ENV.API + "/exams/listExamsUsers/" + VueLocalStorage.get("auth").id, {
                 params: {
                     user_id: u_id,
@@ -62,21 +62,9 @@ const EXAM_SERVICE = new Vuex.Store({
                     Util.fnError(e);
                 });
         },
-
-        loadYourThemes({commit}, {self}) {
-            Axios.get(ENV.API + "/your-themes")
-                .then((r) => {
-                    this.storeTheme();
-                    if (r.status === 200) {
-                        self.data = r.data;
-                    }
-                })
-                .catch((e) => {
-                    Util.fnError(e);
-                });
-        },
-        loadYourExams({commit}, {self}) {
-            Axios.get(ENV.API + "/your-exams/1")
+        //Survey CRUD
+        loadThemes({commit}, {self}) {
+            Axios.get(ENV.API + "/themes")
                 .then((r) => {
                     if (r.status === 200) {
                         self.data = r.data;
@@ -87,7 +75,7 @@ const EXAM_SERVICE = new Vuex.Store({
                 });
         },
         loadExam({commit}, {self}) {
-            Axios.get(ENV.API + "/your-exam/" + self.theme_id)
+            Axios.get(ENV.API + "/exam/" + self.theme_id)
                 .then((r) => {
                     if (r.status === 200) {
                         self.data = r.data;
@@ -108,7 +96,20 @@ const EXAM_SERVICE = new Vuex.Store({
                     Util.fnError(e);
                 });
         },
-        storeTheme() {
+        createTheme({commit}, {self}) {
+            let params={name:"Taller de Scrum Pro",status:"I"};
+            Axios.post(ENV.API + "/create-theme",params)
+                .then((r) => {
+                    if (r.status === 200) {
+                        console.log(r);
+                    }
+                })
+                .catch((e) => {
+                    Util.fnError(e);
+                });
+
+        },
+        updateTheme({commit}, {self}) {
             alert("slex llego");
             Axios.put(ENV.API + "/store-theme",{params:{name:"Java desde Cero"}})
                 .then((r) => {
@@ -120,8 +121,7 @@ const EXAM_SERVICE = new Vuex.Store({
                     console.log(e);
                     // Util.fnError(e);
                 });
-        }
-
+        },
     }
 });
 export default EXAM_SERVICE;
