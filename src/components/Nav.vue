@@ -1,8 +1,8 @@
 <template>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light" id="mainNav" style="border-bottom: 1px solid #ddd">
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark text-white" id="mainNav">
             <span class="navbar-brand">
-                <b>Interbank</b>
+                <b>Virtual SURVEY</b>
             </span>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                     data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"

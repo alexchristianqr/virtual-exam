@@ -49,28 +49,6 @@ const AUTH_SERVICE = new Vuex.Store({
     }
 });
 
-function doValidation(self) {
-    if (self.params.email !== '' && self.params.password !== '') {
-        if (self.params.email === "aquisper@sapia.com.pe" && self.params.password === "72482060" && VueLocalStorage.get("auth").authenticate === false) {
-            VueLocalStorage.set("auth", {authenticate: true, id: 2});
-            self.validate = null;
-            doAuth(self);
-        } else {
-            VueLocalStorage.set("auth", {authenticate: false});
-            self.validate = true;
-            self.errors.login = "El campo email o contraseña no es correcto!";
-            self.params.password = "";
-            doAuth(self);
-        }
-    }
-}
 
-function doAuth(self) {
-    if (VueLocalStorage.get("auth").authenticate) {
-        self.$router.replace('/project');
-    } else {
-        self.$router.replace('/login');
-    }
-}
 
 export default AUTH_SERVICE;

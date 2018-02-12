@@ -5,6 +5,7 @@ import Router from 'vue-router';
 // import ListExams from '../components/ListExams';
 // import Exam from '../components/Exam';
 import Themes from '../components/Themes';
+import CreateUpdateTheme from '../components/CreateUpdateTheme';
 import Exam from '../components/Exam';
 import VueLocalStorage from 'vue-local-storage';
 
@@ -47,26 +48,29 @@ const router = new Router({
         //         requiresAuth: true
         //     }
         // },
-
-
-
-
-
         {
             path: '/themes',
             name: 'themes',
             component: Themes,
-            // meta: {
-            //     requiresAuth: true
-            // }
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/exam/:theme_id',
             name: 'exam',
             component: Exam,
-            // meta: {
-            //     requiresAuth: true
-            // }
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            path: '/create-theme',
+            name: 'create-theme',
+            component: CreateUpdateTheme,
+            meta: {
+                requiresAuth: true
+            }
         },
     ]
 });

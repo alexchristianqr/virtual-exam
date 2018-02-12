@@ -1,4 +1,5 @@
 export default({
+    API:"http://api.survey",
     fnError(e){
         switch (e.response.status) {
             case 412:// Exception Laravel

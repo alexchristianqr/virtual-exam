@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import SERVICE from '../services/AuthService';
+    import SERVICE from '../services/ApiService';
 
     export default {
         name: "login",
