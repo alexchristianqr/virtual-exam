@@ -5,17 +5,16 @@ import Vue from 'vue';
 import * as Vuex from "vuex";
 import VueLocalStorage from 'vue-local-storage';
 import Axios from 'axios';
-import ENV from "../Env";
+import ENV from "./ENV";
 
 Vue.use(Vuex, VueLocalStorage);
-// let intent = null;
+
 const API_SERVICE = new Vuex.Store({
     state: {
-        intent:null
+        intent: null
     },
-    mutations: {},
     actions: {
-        //Login
+        //Auth
         doLogin({commit}, {self}) {
             self.errors.email = "";
             self.errors.password = "";
@@ -32,9 +31,31 @@ const API_SERVICE = new Vuex.Store({
         },
         doLogout({commit}, {self}) {
             VueLocalStorage.set("auth", {authenticate: false});
-            ENV.doAuth(self);
+            this.doAuth(self);
         },
-        //Projects
+        doValidation(self) {
+            if (self.params.email !== '' && self.params.password !== '') {
+                if (self.params.email === "aquisper@sapia.com.pe" && self.params.password === "72482060" && VueLocalStorage.get("auth").authenticate === false) {
+                    VueLocalStorage.set("auth", {authenticate: true, id: 2});
+                    self.validate = null;
+                    this.doAuth(self);
+                } else {
+                    VueLocalStorage.set("auth", {authenticate: false});
+                    self.validate = true;
+                    self.errors.login = "El campo email o contraseña no es correcto!";
+                    self.params.password = "";
+                    this.doAuth(self);
+                }
+            }
+        },
+        doAuth(self) {
+            if (VueLocalStorage.get("auth").authenticate) {
+                self.$router.replace('/project');
+            } else {
+                self.$router.replace('/login');
+            }
+        },
+        //Project
         loadProjects({commit}, {self}) {
             Axios.get(ENV.API + "/proyects")
                 .then((r) => {
@@ -47,12 +68,10 @@ const API_SERVICE = new Vuex.Store({
                     ENV.fnError(e);
                 });
         },
-        //Themes
-        loadThemes({commit}, {self}) {
-            if(this.state.intent != null){
-                window.clearInterval(this.state.intent);
-            }
-            Axios.get(ENV.API + "/themes", {params: self.params})
+        //Theme
+        allThemes({commit}, {self}) {
+            if (this.state.intent != null) window.clearInterval(this.state.intent);
+            Axios.get(ENV.API + "/all-themes", {params: self.params})
                 .then((r) => {
                     if (r.status === 200) {
                         self.loadingTable = false;
@@ -61,34 +80,7 @@ const API_SERVICE = new Vuex.Store({
                 })
                 .catch((e) => {
                     self.method = "loadThemes";
-                    ENV.fnError(e,self,this);
-                });
-        },
-        loadExam({commit}, {self}) {
-            if(this.state.intent != null){
-                window.clearInterval(this.state.intent);
-            }
-            Axios.get(ENV.API + "/exam/" + self.theme_id)
-                .then((r) => {
-                    if (r.status === 200) {
-                        self.loadingTable = false;
-                        self.data = r.data;
-                    }
-                })
-                .catch((e) => {
-                    self.method = "loadExam";
-                    ENV.fnError(e,self,this);
-                });
-        },
-        loadExamSolution({commit}, {self}) {
-            Axios.get(ENV.API + "/exam-solution")
-                .then((r) => {
-                    if (r.status === 200) {
-                        self.data = r.data;
-                    }
-                })
-                .catch((e) => {
-                    ENV.fnError(e);
+                    ENV.fnError(e, self, this);
                 });
         },
         createTheme({commit}, {self}) {
@@ -103,7 +95,33 @@ const API_SERVICE = new Vuex.Store({
                 });
         },
         updateTheme({commit}, {self}) {
-            Axios.put(ENV.API + "/update-theme", {params: {name: "Java desde Cero"}})
+            Axios.put(ENV.API + "/update-theme", self.params)
+                .then((r) => {
+                    if (r.status === 200) {
+                        console.log(r);
+                    }
+                })
+                .catch((e) => {
+                    ENV.fnError(e);
+                });
+        },
+        //Exam
+        exam({commit}, {self}) {
+            if (this.state.intent != null) window.clearInterval(this.state.intent);
+            Axios.get(ENV.API + "/exam/" + self.theme_id)
+                .then((r) => {
+                    if (r.status === 200) {
+                        self.loadingTable = false;
+                        self.data = r.data;
+                    }
+                })
+                .catch((e) => {
+                    self.method = "loadExam";
+                    ENV.fnError(e, self, this);
+                });
+        },
+        createExam({commit}, {self}) {
+            Axios.post(ENV.API + "/create-theme", self.params)
                 .then((r) => {
                     if (r.status === 200) {
                         console.log(r);
@@ -114,7 +132,7 @@ const API_SERVICE = new Vuex.Store({
                 });
         },
         updateUserSurveyTheme({commit}, {self}) {
-            Axios.put(ENV.API + "/update-user-survey-theme", {status: 'D', id: 1})
+            Axios.put(ENV.API + "/update-user-survey-theme", self.params)
                 .then((r) => {
                     if (r.status === 200) {
                         console.log(r);
@@ -125,8 +143,9 @@ const API_SERVICE = new Vuex.Store({
                     ENV.fnError(e);
                 });
         },
-        getSurvey({commit}, {self}) {
-            Axios.get(ENV.API + "/get-survey")
+        //Survey
+        allSurvey({commit}, {self}) {
+            Axios.get(ENV.API + "/all-survey")
                 .then((r) => {
                     if (r.status === 200) {
                         self.dataSurvey = r.data;
@@ -138,4 +157,5 @@ const API_SERVICE = new Vuex.Store({
         }
     }
 });
+
 export default API_SERVICE;

@@ -146,16 +146,16 @@
             }
         }),
         created() {
-            this.loadThemes();
+            this.allThemes();
         },
         methods: {
-            loadThemes() {
-                SERVICE.dispatch("loadThemes", {self: this});
+            allThemes() {
+                SERVICE.dispatch("allThemes", {self: this});
             },
             change(){
                 this.loadingTable = true;
                 this.data = [];
-                this.loadThemes();
+                this.allThemes();
             }
         },
     }

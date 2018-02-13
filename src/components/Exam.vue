@@ -6,13 +6,17 @@
                 <div class="card-header pb-0 mb-0 bg-dark text-light">
                     <div class="row">
                         <div v-if="!loadingTable && data.length <= 0" class="col-1">
-                                <router-link class="btn btn-light btn-lg" :to="'/themes'"><i class="fa fa-arrow-left fa-fw"></i></router-link>
+                            <router-link class="btn btn-light btn-lg" :to="'/themes'"><i
+                                    class="fa fa-arrow-left fa-fw"></i></router-link>
                         </div>
                         <div :class=" (!loadingTable && data.length <= 0) ? 'col-5' : 'col-4'">
-                            <div class="alert alert-light" role="alert"><b class="text-muted">Time Remaining:</b>&nbsp;<span>{{remaining}}</span></div>
+                            <div class="alert alert-light" role="alert"><b class="text-muted">Time
+                                Remaining:</b>&nbsp;<span>{{remaining}}</span></div>
                         </div>
                         <div :class=" (!loadingTable && data.length <= 0) ? 'col-6' : 'col-8'">
-                            <div id="showAlertFinally" v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != vtime" class="alert alert-danger" role="alert">
+                            <div id="showAlertFinally"
+                                 v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != vtime"
+                                 class="alert alert-danger" role="alert">
                                 <span><b>Advertencia:&nbsp;&nbsp;</b>Su examen terminará en <b>{{remaining}}</b></span>
                             </div>
                         </div>
@@ -40,7 +44,8 @@
                     <table v-if="!loadingTable && data.length > 1" class="table table-vue">
                         <thead>
                         <tr>
-                            <th scope="row" colspan="5"><span>{{data[next].id}}.-</span><span class="pl-2">{{data[next].question_name}}</span></th>
+                            <th scope="row" colspan="5"><span>{{data[next].id}}.-</span><span class="pl-2">{{data[next].question_name}}</span>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,8 +53,11 @@
                             <td width="110%" class="pl-5">
                                 <b>{{returnLetter(k)}})&nbsp;</b>
                                 <div class="form-check form-check-inline">
-                                    <input title="" :data-id="data[next].id" class="form-check-input" type="radio" :name="'opt'+data[next].id" :id="returnLetter(k)+data[next].id" :value="v.id" @click="doChecked()"/>
-                                    <label class="form-check-label" :for="returnLetter(k)+data[next].id">{{v.name}}</label>
+                                    <input title="" :data-id="data[next].id" class="form-check-input" type="radio"
+                                           :name="'opt'+data[next].id" :id="returnLetter(k)+data[next].id" :value="v.id"
+                                           @click="doChecked()"/>
+                                    <label class="form-check-label"
+                                           :for="returnLetter(k)+data[next].id">{{v.name}}</label>
                                 </div>
                             </td>
                         </tr>
@@ -57,7 +65,7 @@
                             <td width="100%" class="text-center">
                                 <div class="row">
                                     <div class="col-6 text-right">
-                                        <button :hidden="data[next].id == 1"  class="btn btn-light" @click="change('-')">
+                                        <button :hidden="data[next].id == 1" class="btn btn-light" @click="change('-')">
                                             <i class="fa fa-arrow-left fa-fw"></i>
                                         </button>
                                     </div>
@@ -72,7 +80,6 @@
                         </tr>
                         </tbody>
                     </table>
-
                     <table v-else-if="!loadingTable && data.length <= 0" class="table">
                         <tr>
                             <td colspan="auto" class="text-dark text-center">
@@ -100,7 +107,7 @@
 
     export default {
         data: () => ({
-            loadingTable:true,
+            loadingTable: true,
             data: [{}],
             theme_id: 1,
             next: 0,
@@ -121,17 +128,17 @@
             timerUpdate: null,
             tempRptas: [],
             tempTime: {},
-            tempChecked:[],
-            tempRptaChecked:[]
+            tempChecked: [],
+            tempRptaChecked: []
         }),
         created() {
             this.data = [{}];
             this.theme_id = this.$route.params.theme_id;
-            this.loadExam();
+            this.exam();
         },
         methods: {
-            loadExam() {
-                SERVICE.dispatch("loadExam", {self: this});
+            exam() {
+                SERVICE.dispatch("exam", {self: this});
                 this.timer();
             },
             returnLetter(key, toUpper = false) {
@@ -145,33 +152,35 @@
             change(signo) {
                 if (signo === "+") {
                     //condicional para el temporal checked
-                    if(this.tempChecked.length > this.next) {
-                        if(this.next+1 < this.tempChecked.length){
+                    if (this.tempChecked.length > this.next) {
+                        if (this.next + 1 < this.tempChecked.length) {
                             $(document).ready(() => {
                                 let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
-                                $.each(inputToArray, (kkkk, vvvv) => {
+                                $.each(inputToArray, (k,v) => {
                                     //aplicar checked al volver atras
-                                    if(this.tempChecked[this.next] != undefined){
-                                        if(kkkk == this.tempChecked[this.next].checked_id){
-                                            $(vvvv).prop("checked",true);
+                                    if (this.tempChecked[this.next] != undefined && this.tempChecked[this.next] != {}) {
+                                        if (k == this.tempChecked[this.next].checked_id) {
+                                            $(v).prop("checked", true);
+                                        }else{
+                                            $(v).prop("checked", false);
                                         }
-                                    }else{
+                                    } else {
                                         return false;
                                     }
                                 });
                             });
-                        }else{
+                        } else {
                             $(document).ready(() => {
                                 let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
-                                $.each(inputToArray, (kkkk, vvvv) => {
+                                $.each(inputToArray, (k, v) => {
                                     //aplicar checked al iniciar y al dar siguiente
-                                    if(this.data.length == this.next){
-                                        if ($(vvvv).is(":checked")) {
-                                            $(vvvv).prop("checked", true);
+                                    if (this.data.length == this.next) {
+                                        if ($(v).is(":checked")) {
+                                            $(v).prop("checked", true);
                                         }
-                                    }else{
-                                        if ($(vvvv).is(":checked")) {
-                                            $(vvvv).prop("checked", false);
+                                    } else {
+                                        if ($(v).is(":checked")) {
+                                            $(v).prop("checked", false);
                                         }
                                     }
                                 });
@@ -179,7 +188,7 @@
                         }
                     }
 
-
+                    //algoritmo logico para avanzar
                     if (this.next + 1 < this.data.length) {
                         this.next = this.next + 1;
                     } else {
@@ -192,16 +201,21 @@
                         let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
                         $.each(inputToArray, (kkkk, vvvv) => {
                             //aplicar checked al volver atras
-                            if(this.tempChecked[this.next] != undefined){
-                                if(kkkk == this.tempChecked[this.next].checked_id){
-                                    $(vvvv).prop("checked",true);
+                            //si el contenedor esta definido y solo tiene valores validos
+                            if (this.tempChecked[this.next] != undefined && this.tempChecked[this.next] != {}) {
+                                //encontrar la posicion del input checked
+                                if (kkkk == this.tempChecked[this.next].checked_id) {
+                                    $(vvvv).prop("checked", true);
+                                }else{
+                                    $(vvvv).prop("checked", false);
                                 }
-                            }else{
+                            } else {
                                 return false;
                             }
                         });
                     });
 
+                    //algoritmo logico para retroceder
                     if (this.next >= 1) {
                         this.next = this.next - 1;
                     } else {
@@ -233,13 +247,13 @@
                         let t = getRemainTime(deadline);
                         this.remaining = t.remainHours + ':' + t.remainMinutes + ':' + t.remainSeconds;
                         let $alert = $('#showAlertFinally');
-                            if($alert.hasClass("alert-danger")){
-                                $alert.removeClass("alert-danger");
-                                $alert.addClass("alert-warning");
-                            }else if($alert.hasClass("alert-warning")){
-                                $alert.removeClass("alert-warning");
-                                $alert.addClass("alert-danger");
-                            }
+                        if ($alert.hasClass("alert-danger")) {
+                            $alert.removeClass("alert-danger");
+                            $alert.addClass("alert-warning");
+                        } else if ($alert.hasClass("alert-warning")) {
+                            $alert.removeClass("alert-warning");
+                            $alert.addClass("alert-danger");
+                        }
                         if (t.remainTime <= 1) {
                             clearInterval(this.timerUpdate);
                             this.$router.replace("/themes");
@@ -253,17 +267,22 @@
                     let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]');
                     $.each(inputToArray, (kkkk, vvvv) => {
                         if ($(vvvv).is(":checked")) {
-                            //aplicar checked normal
-                            if(this.tempChecked.length == this.next){
-                                this.tempChecked.push({question_id:this.data[this.next].id,checked_id:kkkk});
-                            }else{
-                                //aplicar checked para cambiar
-                                this.tempChecked[this.next] = {question_id:this.data[this.next].id,checked_id:kkkk};
+                            //Si la longitud del array es igual al next
+                            if (this.tempChecked.length == this.next) {
+                                //cargar con valores validos
+                                this.tempChecked.push({question_id: this.data[this.next].id, checked_id: kkkk});
+                            } else {
+                                //cargar con valores invalidos(vacio)
+                                this.tempChecked[this.next] = {question_id: this.data[this.next].id, checked_id: kkkk};
+                                //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
+                                $.each( this.tempChecked, (k,v) => {
+                                    if(v == undefined) this.tempChecked[k] = {};
+                                });
                             }
                         }
                     });
                 });
-                // console.log(this.tempChecked);
+                console.log(this.tempChecked);
                 // this.tempRptaChecked.push(this.tempChecked);
             },
         },

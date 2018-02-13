@@ -31,11 +31,11 @@
         </nav>
 </template>
 <script>
-    import ADService from '../services/AuthService';
+    import SERVICE from '../services/ApiService';
     export default {
         methods:{
             logout(){
-                ADService.dispatch("doLogout", {self: this});
+                SERVICE.dispatch("doLogout", {self: this});
             }
         }
     }

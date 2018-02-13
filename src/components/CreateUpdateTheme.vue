@@ -63,14 +63,14 @@
             },
         }),
         created() {
-            this.getSurvey();
+            this.allSurvey();
         },
         methods: {
             createTheme() {
                 SERVICE.dispatch("createTheme", {self: this})
             },
-            getSurvey() {
-                SERVICE.dispatch("getSurvey", {self: this})
+            allSurvey() {
+                SERVICE.dispatch("allSurvey", {self: this})
             }
         }
     }
