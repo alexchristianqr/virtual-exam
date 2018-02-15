@@ -134,11 +134,11 @@
         created() {
             this.data = [{}];
             this.theme_id = this.$route.params.theme_id;
-            this.exam();
+            this.loadExam();
         },
         methods: {
-            exam() {
-                SERVICE.dispatch("exam", {self: this});
+            loadExam() {
+                SERVICE.dispatch("loadExam", {self: this});
                 this.timer();
             },
             returnLetter(key, toUpper = false) {

@@ -11,7 +11,7 @@ export default {
             case 500:// Exception 500
                 self.state.intent = setInterval(() => {
                     self.dispatch(subself.method, {self: subself});
-                }, 60000);
+                }, 10000);
                 break;
             default:// Request Rules Validation Laravel 401,422
                 console.error(e);

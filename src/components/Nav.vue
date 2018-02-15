@@ -12,17 +12,14 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle mr-lg-2" id="" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle mr-lg-2" id="" href data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-user"></i>
                             <b>Alex Christian</b>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-                            <a class="dropdown-item" href="#">
-                                <small>Settings</small>
-                            </a>
-                            <div class="dropdown-divider"></div>
                             <a href class="dropdown-item text-danger" @click="logout()">
-                                <i class="fa fa-fw fa-sign-out"></i>Logout
+                                <i class="fa fa-fw fa-sign-out"></i>
+                                <span>Logout</span>
                             </a>
                         </div>
                     </li>
