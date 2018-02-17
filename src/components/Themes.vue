@@ -1,8 +1,6 @@
 <template>
     <section>
-        <component :is="'nav-exam'"/>
-        <div class="card mt-5">
-
+        <div class="card">
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
@@ -14,17 +12,10 @@
                 </div>
                 <hr>
                 <div class="form-inline">
-                    <select v-model="params.user_survey_theme_id" class="form-control" @change="change()">
+                    <select title v-model="params.user_survey_theme_id" class="form-control" @change="change()">
                         <option value="" disabled selected>- Select Survey -</option>
                         <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
                     </select>
-                    <!--<select v-model="params.user_survey_theme_id" class="form-control" @change="change()">-->
-                    <!--<option value="" disabled selected>- Select Survey-</option>-->
-                    <!--<option value="1">Enc Entel</option>-->
-                    <!--<option value="2">Enc Interbank</option>-->
-                    <!--<option value="3">Enc Salud</option>-->
-                    <!--<option value="4">Enc Deportiva</option>-->
-                    <!--</select>-->
                     <input type="search" placeholder="Search" class="form-control">
                 </div>
             </div>
@@ -49,8 +40,8 @@
                         </td>
                     </tr>
                     </tbody>
-                    <tbody v-if="!loadingTable && data.length > 0">
-                    <tr v-for="(v,k) in data">
+                    <tbody v-if="!loadingTable && dataTheme.length > 0">
+                    <tr v-for="(v,k) in dataTheme">
                         <th scope="row" width="5%">{{k+1}}</th>
                         <td width="50%">{{v.theme_name}}</td>
                         <td width="30%">{{v.theme_updated_at}}</td>
@@ -107,7 +98,7 @@
                         </td>
                     </tr>
                     </tbody>
-                    <tbody v-else-if="!loadingTable && data.length <= 0">
+                    <tbody v-else-if="!loadingTable && dataTheme.length <= 0">
                     <tr>
                         <td colspan="5" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
@@ -157,7 +148,7 @@
     export default {
         data: () => ({
             loadingTable: true,
-            data: [],
+            dataTheme: [],
             dataSurvey: [],
             moment: moment,
             id_theme: null,
@@ -172,12 +163,12 @@
         },
         methods: {
             load() {
-                SERVICE.dispatch("allThemes", {self: this});
+                SERVICE.dispatch("allTheme", {self: this});
                 SERVICE.dispatch("allByUserSurvey", {self: this});
             },
             change() {
                 this.loadingTable = true;
-                this.data = [];
+                this.dataTheme = [];
                 this.load();
             }
         },

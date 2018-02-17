@@ -69,17 +69,17 @@ const SERVICE = new Vuex.Store({
                 });
         },
         //Theme
-        allThemes({commit}, {self}) {
+        allTheme({commit}, {self}) {
             if (this.state.intent != null) window.clearInterval(this.state.intent);
-            Axios.get(ENV.API + "/all-themes", {params: self.params})
+            Axios.get(ENV.API + "/all-theme", {params: self.params})
                 .then((r) => {
                     if (r.status === 200) {
                         self.loadingTable = false;
-                        self.data = r.data;
+                        self.dataTheme = r.data;
                     }
                 })
                 .catch((e) => {
-                    self.method = "allThemes";
+                    self.method = "allTheme";
                     ENV.fnError(e, self, this);
                 });
         },
@@ -108,7 +108,7 @@ const SERVICE = new Vuex.Store({
         //Exam
         loadExam({commit}, {self}) {
             if (this.state.intent != null) window.clearInterval(this.state.intent);
-            Axios.get(ENV.API + "/load-exam/" + self.theme_id)
+            Axios.get(ENV.API + "/load-exam",{params:{theme_id:self.theme_id}})
                 .then((r) => {
                     if (r.status === 200) {
                         self.loadingTable = false;
@@ -165,7 +165,63 @@ const SERVICE = new Vuex.Store({
                 .catch((e) => {
                     ENV.fnError(e);
                 });
-        }
+        },
+        //Question
+        allQuestion({commit}, {self}) {
+            if (this.state.intent != null) window.clearInterval(this.state.intent);
+            Axios.get(ENV.API + "/all-question", {params: self.params})
+                .then((r) => {
+                    if (r.status === 200) {
+                        self.loadingTable = false;
+                        self.dataQuestion = r.data;
+                    }
+                })
+                .catch((e) => {
+                    self.method = "allQuestion";
+                    ENV.fnError(e, self, this);
+                });
+        },
+        createQuestion({commit}, {self}) {
+            Axios.post(ENV.API + "/create-question", self.params)
+                .then((r) => {
+                    if (r.status === 200) {
+                        console.log(r);
+                    }
+                })
+                .catch((e) => {
+                    ENV.fnError(e);
+                });
+        },
+        //Answer
+        allAnswer({commit}, {self}) {
+            if (this.state.intent != null) window.clearInterval(this.state.intent);
+            Axios.get(ENV.API + "/all-answer", {params: self.params})
+                .then((r) => {
+                    if (r.status === 200) {
+                        self.loadingTable = false;
+                        self.dataQuestion = r.data;
+                    }
+                })
+                .catch((e) => {
+                    self.method = "allQuestion";
+                    ENV.fnError(e, self, this);
+                });
+        },
+        //Option Answer
+        allOptionAnswer({commit}, {self}) {
+            if (this.state.intent != null) window.clearInterval(this.state.intent);
+            Axios.get(ENV.API + "/all-option-answer", {params: self.params})
+                .then((r) => {
+                    if (r.status === 200) {
+                        self.loadingTable = false;
+                        self.dataOptionAnswer = r.data;
+                    }
+                })
+                .catch((e) => {
+                    self.method = "allQuestion";
+                    ENV.fnError(e, self, this);
+                });
+        },
     }
 });
 

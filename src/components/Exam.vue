@@ -1,17 +1,15 @@
 <template>
     <section>
-        <component :is="'nav-exam'"/>
-        <div class="col-10 offset-1">
-            <div class="card mt-5 mb-5">
-                <div class="card-header pb-0 mb-0 bg-dark text-light">
+            <div class="card mb-5">
+                <div class="card-header pb-0 mb-0 bg-light text-dark">
                     <div class="row">
                         <div v-if="!loadingTable && data.length <= 0" class="col-1">
-                            <router-link class="btn btn-light btn-lg" :to="'/themes'"><i
-                                    class="fa fa-arrow-left fa-fw"></i></router-link>
+                            <router-link class="btn btn-light btn-lg" :to="'/themes'"><i class="fa fa-arrow-left fa-fw"></i></router-link>
                         </div>
                         <div :class=" (!loadingTable && data.length <= 0) ? 'col-5' : 'col-4'">
-                            <div class="alert alert-light" role="alert"><b class="text-muted">Time
-                                Remaining:</b>&nbsp;<span>{{remaining}}</span></div>
+                            <div class="alert alert-light" role="alert">
+                                <b class="text-muted">Time:</b>&nbsp;<span>{{remaining}}</span>
+                            </div>
                         </div>
                         <div :class=" (!loadingTable && data.length <= 0) ? 'col-6' : 'col-8'">
                             <div id="showAlertFinally"
@@ -21,7 +19,7 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="alert alert-light alert-dismissible fade show" role="alert">
+                            <div class="alert alert-info alert-dismissible fade show" role="alert">
                                 <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -92,18 +90,13 @@
                     </table>
                 </div>
             </div>
-        </div>
     </section>
 </template>
 
 <script>
-    import Vue from 'vue';
-    import Nav from '../components/Nav';
+    import SERVICE from '../services/ApiService';
     import $ from 'jquery';
     import moment from 'moment';
-    import SERVICE from '../services/ApiService';
-
-    Vue.component("nav-exam", Nav);
 
     export default {
         data: () => ({
@@ -112,13 +105,9 @@
             theme_id: 1,
             next: 0,
             back: 0,
-            vtime: "00:10:00",
-            vvtime: 600,
+            vtime: "00:01:00",
+            vvtime: 60,
             remaining: this.vtime,
-            mitiempo: 20,
-            tsecond: 60,
-            tminute: 10,
-            thour: 1,
             isMinute: 0,
             isSecond: 0,
             selectedValue: "1",
@@ -206,7 +195,7 @@
                                 //encontrar la posicion del input checked
                                 if (kkkk == this.tempChecked[this.next].checked_id) {
                                     $(vvvv).prop("checked", true);
-                                }else{
+                                } else {
                                     $(vvvv).prop("checked", false);
                                 }
                             } else {
@@ -256,7 +245,7 @@
                         }
                         if (t.remainTime <= 1) {
                             clearInterval(this.timerUpdate);
-                            this.$router.replace("/themes");
+                            // this.$router.replace("/themes");
                         }
                     }, 1000);
                 };
@@ -282,8 +271,6 @@
                         }
                     });
                 });
-                console.log(this.tempChecked);
-                // this.tempRptaChecked.push(this.tempChecked);
             },
         },
     }

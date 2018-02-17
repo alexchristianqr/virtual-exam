@@ -24,10 +24,14 @@
                         </div>
                     </li>
                 </ul>
+                <component :is="'sidebar'"/>
             </div>
         </nav>
 </template>
 <script>
+    import Vue from 'vue';
+    import Sidebar from '../components/Sidebar';
+    Vue.component("sidebar", Sidebar);
     import SERVICE from '../services/ApiService';
     export default {
         methods:{

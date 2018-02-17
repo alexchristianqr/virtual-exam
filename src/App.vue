@@ -1,23 +1,38 @@
 <template>
-    <div>
-        <div id="app">
-            <br>
-            <router-view/>
-            <br>
-        </div>
-        <footer class="sticky-footer w-100 mt-5" style="background-color: transparent !important;">
+    <section>
+        <template v-if="$route.path !== '/login'">
+            <div>
+                <div class="content-wrapper">
+                    <div class="container-fluid">
+                        <component :is="'nav-sidebar'"/>
+                        <router-view/>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template v-else>
+            <div>
+                <router-view/>
+            </div>
+        </template>
+        <footer class="sticky-footer" style="background-color: transparent !important;">
             <div class="container">
                 <div class="text-center">
-                    <small>Copyright © Corporación Sapia</small>
+                    <small>Copyright © Corporación Sapia {{new Date().getFullYear()}}</small>
                 </div>
             </div>
         </footer>
-    </div>
+    </section>
 </template>
 
 <script>
+    import Vue from 'vue';
+    import NavSidebar from './components/Nav';
+
+    Vue.component("nav-sidebar", NavSidebar);
+
     export default {
-        name: 'App'
+        name: 'App',
     }
 </script>
 

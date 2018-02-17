@@ -1,12 +1,14 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// import Login from '../components/Login';
+import Login from '../components/Login';
 // import SelectProject from '../components/SelectProject';
 // import ListExams from '../components/ListExams';
 // import Exam from '../components/Exam';
 import Themes from '../components/Themes';
 import CreateUpdateTheme from '../components/CreateUpdateTheme';
 import Exam from '../components/Exam';
+import Questions from '../components/Questions';
+import CreateUpdateQuestion from '../components/CreateUpdateQuestion';
 import VueLocalStorage from 'vue-local-storage';
 
 Vue.use(Router);
@@ -18,11 +20,11 @@ const router = new Router({
         //     path: '*',
         //     redirect: '/login'
         // },
-        // {
-        //     path: '/login',
-        //     name: 'login',
-        //     component: Login
-        // },
+        {
+            path: '/login',
+            name: 'login',
+            component: Login
+        },
         // {
         //     path: '/project',
         //     name: 'project',
@@ -49,28 +51,19 @@ const router = new Router({
         //     }
         // },
         {
-            path: '/themes',
-            name: 'themes',
-            component: Themes,
-            meta: {
-                requiresAuth: true
-            }
+            path: '/themes', name: 'themes', component: Themes, meta: {requiresAuth: true}
         },
         {
-            path: '/exam/:theme_id',
-            name: 'exam',
-            component: Exam,
-            meta: {
-                requiresAuth: true
-            }
+            path: '/exam', name: 'exam', component: Exam, meta: {requiresAuth: true}
         },
         {
-            path: '/create-theme',
-            name: 'create-theme',
-            component: CreateUpdateTheme,
-            meta: {
-                requiresAuth: true
-            }
+            path: '/create-theme', name: 'create-theme', component: CreateUpdateTheme, meta: {requiresAuth: true}
+        },
+        {
+            path: '/questions', name: 'questions', component: Questions, meta: {requiresAuth: true}
+        },
+        {
+            path: '/create-question', name: 'create-question', component: CreateUpdateQuestion, meta: {requiresAuth: true}
         },
     ]
 });

@@ -1,8 +1,6 @@
 <template>
     <section>
-        <component :is="'nav-exam'"/>
-        <div class="col-10 offset-1">
-            <div class="card mt-5">
+        <div class="card">
                 <form @submit.prevent="createTheme()">
                     <div class="card-header bg-light text-dark">
                         <div class="row">
@@ -47,7 +45,6 @@
                     </div>
                 </form>
             </div>
-        </div>
     </section>
 </template>
 
@@ -57,7 +54,6 @@
     export default {
         name: "create-update-theme",
         data: () => ({
-            service: SERVICE,
             dataSurvey: [],
             dataError: {},
             showError: false,
