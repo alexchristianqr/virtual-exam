@@ -1,6 +1,6 @@
 <template>
     <section>
-            <div class="card mb-5">
+        <div class="card mb-5">
                 <div class="card-header pb-0 mb-0 bg-light text-dark">
                     <div class="row">
                         <div v-if="!loadingTable && data.length <= 0" class="col-1">
@@ -90,6 +90,22 @@
                     </table>
                 </div>
             </div>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content bg-danger text-white">
+                            <div class="modal-body">
+                                <div class="mt-auto mb-auto">
+                                    <b>Dear user, </b><br>
+                                    <span>the duration of the exam has ended, then click on accept to return to the exam list, locate the exam and see the score obtained.</span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar</router-link>
+                            </div>
+                        </div>
+                    </div>
+                </div>
     </section>
 </template>
 
@@ -105,8 +121,8 @@
             theme_id: 1,
             next: 0,
             back: 0,
-            vtime: "00:01:00",
-            vvtime: 60,
+            vtime: "00:00:05",
+            vvtime: 5,
             remaining: this.vtime,
             isMinute: 0,
             isSecond: 0,
@@ -245,6 +261,7 @@
                         }
                         if (t.remainTime <= 1) {
                             clearInterval(this.timerUpdate);
+                            $('#exampleModalCenter').modal("show");
                             // this.$router.replace("/themes");
                         }
                     }, 1000);

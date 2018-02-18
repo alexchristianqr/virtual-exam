@@ -65,6 +65,9 @@ const router = new Router({
         {
             path: '/create-question', name: 'create-question', component: CreateUpdateQuestion, meta: {requiresAuth: true}
         },
+        {
+            path: '/edit-question', name: 'edit-question', component: CreateUpdateQuestion, meta: {requiresAuth: true}
+        },
     ]
 });
 

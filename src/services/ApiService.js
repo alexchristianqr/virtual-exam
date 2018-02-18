@@ -8,6 +8,7 @@ import Axios from 'axios';
 import ENV from "./ENV";
 
 Vue.use(Vuex);
+Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 const SERVICE = new Vuex.Store({
     state: {
@@ -102,13 +103,13 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e);
+                    ENV.fnError(e, self);
                 });
         },
         //Exam
         loadExam({commit}, {self}) {
             if (this.state.intent != null) window.clearInterval(this.state.intent);
-            Axios.get(ENV.API + "/load-exam",{params:{theme_id:self.theme_id}})
+            Axios.get(ENV.API + "/load-exam", {params: {theme_id: self.theme_id}})
                 .then((r) => {
                     if (r.status === 200) {
                         self.loadingTable = false;
@@ -128,7 +129,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e);
+                    ENV.fnError(e, self);
                 });
         },
         updateUserSurveyTheme({commit}, {self}) {
@@ -140,7 +141,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e);
+                    ENV.fnError(e, self);
                 });
         },
         //Survey
@@ -152,7 +153,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e);
+                    ENV.fnError(e, self, this);
                 });
         },
         allSurvey({commit}, {self}) {
@@ -163,7 +164,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e);
+                    ENV.fnError(e, self, this);
                 });
         },
         //Question
@@ -185,11 +186,22 @@ const SERVICE = new Vuex.Store({
             Axios.post(ENV.API + "/create-question", self.params)
                 .then((r) => {
                     if (r.status === 200) {
-                        console.log(r);
+                        self.$router.replace("/questions");
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e);
+                    ENV.fnError(e, self);
+                });
+        },
+        updateQuestion({commit}, {self}) {
+            Axios.put(ENV.API + "/update-question/" + self.question_id, self.params)
+                .then((r) => {
+                    if (r.status === 200) {
+                        self.$router.replace("/questions");
+                    }
+                })
+                .catch((e) => {
+                    ENV.fnError(e, self);
                 });
         },
         //Answer

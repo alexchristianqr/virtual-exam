@@ -5,7 +5,10 @@
                     <div class="card-header bg-light text-dark">
                         <div class="row">
                             <div class="col-6 mt-auto mb-auto">
-                                <b class="h4">New Theme</b>
+                                <b class="h4">
+                                    <span v-if="isPost">New Theme</span>
+                                    <span v-else>Update Theme</span>
+                                </b>
                             </div>
                             <div class="col-6 text-right">
                                 <router-link class="btn btn-light" :to="'/themes'"><i
@@ -18,8 +21,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div v-if="Object.keys(dataError).length > 0"
-                             class="alert alert-danger alert-dismissible fade show pb-0" role="alert">
+                        <div v-if="Object.keys(dataError).length > 0" class="alert alert-danger alert-dismissible fade show pb-0" role="alert">
                             <h5>Errors Found!</h5>
                             <div v-for="(v) in dataError">
                                 <p><b><i class="fa fa-close fa-fw"></i></b>{{v[0]}}</p>
@@ -54,6 +56,7 @@
     export default {
         name: "create-update-theme",
         data: () => ({
+            isPost: true,
             dataSurvey: [],
             dataError: {},
             showError: false,

@@ -45,6 +45,12 @@
                             <span class="nav-link-text">All</span>
                         </router-link>
                     </li>
+                    <li>
+                        <router-link :to="'/create-question'" class="nav-link">
+                            <i class="fa fa-fw fa-plus"></i>
+                            <span class="nav-link-text">Create</span>
+                        </router-link>
+                    </li>
                 </ul>
             </li>
         </ul>
