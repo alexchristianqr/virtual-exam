@@ -1,17 +1,17 @@
 <template>
     <section>
         <div class="card">
-            <form @submit.prevent="createOrUpdateQuestion()">
+            <form @submit.prevent="createOrUpdateOptionAnswer()">
                 <div class="card-header bg-light text-dark">
                     <div class="row">
                         <div class="col-6 mt-auto mb-auto">
                             <b class="h4">
-                                <span v-if="isPost">New Question</span>
-                                <span v-else>Update Question</span>
+                                <span v-if="isPost">New Option Answer</span>
+                                <span v-else>Update Option Answer</span>
                             </b>
                         </div>
                         <div class="col-6 text-right">
-                            <router-link class="btn btn-light" :to="'/questions'"><i class="fa fa-arrow-left fa-fw"></i><span>Volver</span></router-link>
+                            <router-link class="btn btn-light" :to="'/options-answers'"><i class="fa fa-arrow-left fa-fw"></i><span>Volver</span></router-link>
                             <button type="submit" class="btn btn-info"><i class="fa fa-check fa-fw"></i>
                                 <span v-if="isPost">Save</span>
                                 <span v-else>Update</span>
@@ -28,15 +28,32 @@
                         </div>
                     </div>
                     <div class="row">
+
+                        <!--<div class="input-group">-->
+                            <!--<select title="" class="form-control" v-model="params.question_id" @change="change()">-->
+                                <!--<option value="" selected>- Select Question -</option>-->
+                                <!--<option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>-->
+                            <!--</select>-->
+                            <!--<div class="input-group-append">-->
+                                <!--<span class="input-group-text"><i class="fa fa-filter"></i></span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+
                         <div class="col-6">
                             <div class="form-group">
-                                <label>Theme</label>
-                                <select title="ancuesta" class="form-control" v-model="params.theme_id" required @change="changeLoadOptionAnswers()">
-                                    <option value="" disabled selected>- Select Theme -</option>
-                                    <option v-for="(v) in dataTheme" :value="v.id">{{v.name}}</option>
-                                </select>
+                                <label>Question</label>
+                                <div class="input-group">
+                                    <select title="" class="form-control" v-model="params.question_id" @change="change()">
+                                        <option value="" selected>- Select Question -</option>
+                                        <option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>
+                                    </select>
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fa fa-filter"></i></span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                         <div :class="isPost ? 'col-6': 'col-3' ">
                             <div class="form-group">
                                 <label>Level</label>
@@ -64,17 +81,6 @@
                                 <input title="question" v-model="params.name" type="text" class="form-control" required>
                             </div>
                         </div>
-                        <template v-if="params.theme_id != '' ">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label>Answer Correct</label>
-                                    <select title v-model="params.option_answer_id" class="form-control">
-                                        <option value="">- Select Answer -</option>
-                                        <option v-for="(v) in dataOptionAnswer" :value="v.id">{{v.name}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </template>
                     </div>
                 </div>
             </form>
@@ -86,7 +92,7 @@
     import SERVICE from '../services/ApiService';
 
     export default {
-        name: "create-update-question",
+        name: "create-update-option-answer",
         data:()=>({
             isPost: true,
             dataTheme: [],
@@ -94,9 +100,9 @@
             dataOptionAnswer: [],
             dataError: {},
             showError: false,
-            question_id:"",
             params: {
                 theme_id: "",
+                question_id: "",
                 name: "",
                 option_answer_id: "",
                 level: "F",
@@ -104,33 +110,26 @@
             },
         }),
         created() {
-            this.allTheme();
-            SERVICE.dispatch("allOptionAnswer", {self: this});
-            if(this.$route.params.dataQuestion != undefined && Object.keys(this.$route.params.dataQuestion).length) this.editQuestion();
+            // this.allTheme();
+            // SERVICE.dispatch("allOptionAnswer", {self: this});
+            SERVICE.dispatch("allQuestion", {self: this});
+            if(this.$route.params.dataOptionAnswer != undefined && Object.keys(this.$route.params.dataOptionAnswer).length) this.editOptionAnswer();
         },
         methods: {
-            createOrUpdateQuestion() {
+            createOrUpdateOptionAnswer() {
                 if(this.isPost){
                     SERVICE.dispatch("createQuestion", {self: this})
                 } else {//isPut
                     SERVICE.dispatch("updateQuestion", {self: this})
                 }
             },
-            editQuestion(){
+            editOptionAnswer(){
                 this.isPost = false;//isPut
-                this.dataQuestion = this.$route.params.dataQuestion;
-                this.question_id = this.dataQuestion.id;
-                this.params.theme_id = this.dataQuestion.theme_id;
-                this.params.name = this.dataQuestion.name;
-                this.params.option_answer_id = this.dataQuestion.option_answer_id;
-                this.params.level = this.dataQuestion.level;
-                this.params.status = this.dataQuestion.status;
-            },
-            allTheme() {
-                SERVICE.dispatch("allTheme", {self: this})
-            },
-            changeLoadOptionAnswers(){
-                SERVICE.dispatch("allOptionAnswer", {self: this})
+                this.dataOptionAnswer = this.$route.params.dataOptionAnswer;
+                this.params.question_id = this.dataOptionAnswer.question_id;
+                // this.params.theme_id = this.dataOptionAnswer.theme_id;
+                this.params.name = this.dataOptionAnswer.name;
+                this.params.status = this.dataOptionAnswer.status;
             },
         }
     }

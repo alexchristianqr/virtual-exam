@@ -53,6 +53,26 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Reports">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#c" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fa-check-square"></i>
+                    <span class="nav-link-text">Options Answers</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="c">
+                    <li>
+                        <router-link :to="'/options-answers'" class="nav-link">
+                            <i class="fa fa-fw fa-list-alt"></i>
+                            <span class="nav-link-text">All</span>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="'/create-option-answer'" class="nav-link">
+                            <i class="fa fa-fw fa-plus"></i>
+                            <span class="nav-link-text">Create</span>
+                        </router-link>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">

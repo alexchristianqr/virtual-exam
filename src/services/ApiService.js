@@ -215,7 +215,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    self.method = "allQuestion";
+                    self.method = "allAnswer";
                     ENV.fnError(e, self, this);
                 });
         },
@@ -230,7 +230,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    self.method = "allQuestion";
+                    self.method = "allOptionAnswer";
                     ENV.fnError(e, self, this);
                 });
         },

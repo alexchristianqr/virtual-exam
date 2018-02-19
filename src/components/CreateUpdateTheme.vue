@@ -24,7 +24,7 @@
                         <div v-if="Object.keys(dataError).length > 0" class="alert alert-danger alert-dismissible fade show pb-0" role="alert">
                             <h5>Errors Found!</h5>
                             <div v-for="(v) in dataError">
-                                <p><b><i class="fa fa-close fa-fw"></i></b>{{v[0]}}</p>
+                                <p><i class="fa fa-close fa-fw"></i>{{v[0]}}</p>
                             </div>
                         </div>
                         <div class="row">

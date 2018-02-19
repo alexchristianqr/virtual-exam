@@ -9,6 +9,8 @@ import CreateUpdateTheme from '../components/CreateUpdateTheme';
 import Exam from '../components/Exam';
 import Questions from '../components/Questions';
 import CreateUpdateQuestion from '../components/CreateUpdateQuestion';
+import OptionsAnswers from '../components/OptionsAnswers';
+import CreateUpdateOptionAnswer from '../components/CreateUpdateOptionAnswer';
 import VueLocalStorage from 'vue-local-storage';
 
 Vue.use(Router);
@@ -67,6 +69,15 @@ const router = new Router({
         },
         {
             path: '/edit-question', name: 'edit-question', component: CreateUpdateQuestion, meta: {requiresAuth: true}
+        },
+        {
+            path: '/options-answers', name: 'options-answers', component: OptionsAnswers, meta: {requiresAuth: true}
+        },
+        {
+            path: '/create-option-answer', name: 'create-option-answer', component: CreateUpdateOptionAnswer, meta: {requiresAuth: true}
+        },
+        {
+            path: '/edit-option-answer', name: 'edit-option-answer', component: CreateUpdateOptionAnswer, meta: {requiresAuth: true}
         },
     ]
 });
