@@ -61,7 +61,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Question Name</label>
-                                <input title="question" v-model="params.name" type="text" class="form-control" required>
+                                <input title v-model="params.name" type="text" class="form-control" required>
                             </div>
                         </div>
                         <template v-if="params.theme_id != '' ">

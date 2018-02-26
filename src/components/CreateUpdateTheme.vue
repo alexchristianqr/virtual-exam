@@ -28,13 +28,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-7">
                                 <div class="form-group">
                                     <label>Title</label>
                                     <input title="tema" v-model="params.name" type="text" class="form-control" required>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="form-group">
                                     <label>Survey</label>
                                     <select title="ancuesta" class="form-control" v-model="params.user_survey_id" required>

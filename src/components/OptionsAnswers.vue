@@ -13,7 +13,7 @@
                 <hr>
                 <div class="form-inline">
                     <div class="input-group">
-                        <select title="" class="form-control" v-model="params.theme_id" @change="changeTheme()">
+                        <select title="" class="form-control bg-light" v-model="params.theme_id" @change="changeTheme()">
                             <option value="" selected>- Select Theme -</option>
                             <option v-for="(v) in dataTheme" :value="v.id">{{v.name}}</option>
                         </select>
@@ -21,8 +21,8 @@
                             <span class="input-group-text"><i class="fa fa-filter"></i></span>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <select title="" class="form-control" v-model="params.question_id" @change="change()">
+                    <div v-if="params.theme_id !== '' " class="input-group">
+                        <select title="" class="form-control bg-light" v-model="params.question_id" @change="change()">
                             <option value="" selected>- Select Question -</option>
                             <option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>
                         </select>
@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="input-group">
-                        <select title="" class="form-control" v-model="params.status" @change="changeTheme()">
+                        <select title="" class="form-control bg-light" v-model="params.status" @change="changeTheme()">
                             <option value="" selected>- Select Status -</option>
                             <option value="A">Activo</option>
                             <option value="I">Inactivo</option>
@@ -40,7 +40,7 @@
                             <span class="input-group-text"><i class="fa fa-filter"></i></span>
                         </div>
                     </div>
-                    <button class="btn btn-success" @click="changeTheme()"><i class="fa fa-refresh"></i></button>
+                    <button class="btn btn-success" @click="refresh()"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
             <div class="card-body">
@@ -147,6 +147,12 @@
                 SERVICE.dispatch("allOptionAnswer", {self: this});
             },
             changeTheme(){
+                this.params.question_id = "";
+                this.loadingTable = true;
+                SERVICE.dispatch("allOptionAnswer", {self: this});
+                SERVICE.dispatch("allQuestion", {self: this});
+            },
+            refresh(){
                 this.loadingTable = true;
                 SERVICE.dispatch("allOptionAnswer", {self: this});
                 SERVICE.dispatch("allQuestion", {self: this});

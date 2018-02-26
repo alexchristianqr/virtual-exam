@@ -16,7 +16,7 @@
                         <option value="" disabled selected>- Select Survey -</option>
                         <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
                     </select>
-                    <input type="search" placeholder="Search" class="form-control">
+                    <input type="search" placeholder="Search" class="form-control w-45">
                 </div>
             </div>
             <div class="card-body">
@@ -26,13 +26,15 @@
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Last Updated</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Score</th>
                         <th scope="col">Status</th>
                         <th scope="col">Actions</th>
                     </tr>
                     </thead>
                     <tbody v-if="loadingTable" class="table">
                     <tr>
-                        <td colspan="5" class="text-dark text-center">
+                        <td colspan="7" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
                                 <i class="fa fa-circle-o-notch fa-spin fa-2x mb-2"></i>
                                 <p>Obteniendo Informacion!</p>
@@ -43,52 +45,23 @@
                     <tbody v-if="!loadingTable && dataTheme.length > 0">
                     <tr v-for="(v,k) in dataTheme">
                         <th scope="row" width="5%">{{k+1}}</th>
-                        <td width="50%">{{v.theme_name}}</td>
-                        <td width="30%">{{v.theme_updated_at}}</td>
-                        <td width="30%">{{v.theme_status}}</td>
-                        <td width="15%">
-                            <div v-if="v.user_survey_theme_status == 'P' " class="btn-group dropdown btn-group-xs"
-                                 role="group">
-                                <a class="btn btn-warning" href data-toggle="modal" data-target="#infoModal"
-                                   @click.prevent="p_theme_id = v.theme_id">
-                                    <i class="fa fa-file-text-o fa-fw"></i>
-                                    <span>PENDING</span>
-                                </a>
-                                <div class="btn-group open" role="group">
-                                    <button type="button" class="btn btn-light btn-xs dropdown-toggle"
-                                            data-toggle="dropdown" aria-expanded="true">
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-                                        <li title="Exportar">
-                                            <a href class="dropdown-item text-muted" data-toggle="modal"
-                                               data-target="#infoModal" @click.prevent="p_theme_id = v.theme_id">
-                                                <small>Start Examen</small>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div v-if="v.user_survey_theme_status == 'D' " class="btn-group dropdown btn-group-xs"
-                                 role="group">
-                                <button type="button" class="btn btn-success">
-                                    <i class="fa fa-file-text-o fa-fw"></i>
-                                    <span>DONE</span>
-                                </button>
-                                <div class="btn-group open" role="group">
-                                    <button type="button" class="btn btn-light btn-xs dropdown-toggle"
-                                            data-toggle="dropdown" aria-expanded="true">
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-                                        <li title="Exportar">
-                                            <a href class="dropdown-item text-muted">
-                                                <small>Solution</small>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <td>{{v.theme_name}}</td>
+                        <td>{{v.theme_updated_at}}</td>
+                        <td>{{util.toHHMMSS(v.theme_duration)}}</td>
+                        <td>{{v.theme_score}}</td>
+                        <td>
+                            <i v-if="v.theme_status === 'A' " class="fa fa-circle text-success"></i>
+                            <i v-if="v.theme_status === 'I' " class="fa fa-circle text-danger"></i>
+                        </td>
+                        <td>
+                            <a v-if="v.user_survey_theme_status == 'P' " class="btn btn-warning" href data-toggle="modal" data-target="#infoModal" @click.prevent="p_dataTheme = v">
+                                <i class="fa fa-file-text-o fa-fw"></i>
+                                <span>PENDING</span>
+                            </a>
+                            <button v-if="v.user_survey_theme_status == 'D' " type="button" class="btn btn-success">
+                                <i class="fa fa-file-text-o fa-fw"></i>
+                                <span>DONE</span>
+                            </button>
                             <div v-if="v.user_survey_theme_status == 'E' ">
                                 <button type="button" class="btn btn-danger">
                                     <i class="fa fa-file-text-o fa-fw"></i>
@@ -100,7 +73,7 @@
                     </tbody>
                     <tbody v-else-if="!loadingTable && dataTheme.length <= 0">
                     <tr>
-                        <td colspan="5" class="text-dark text-center">
+                        <td colspan="7" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
                                 <i class="fa fa-exclamation-triangle fa-2x mb-2"></i>
                                 <p>Usted no cuenta con información disponible!</p>
@@ -112,7 +85,7 @@
             </div>
         </div>
         <!-- Info Modal-->
-        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade in" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -124,11 +97,11 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">The exam lasts 10 minutes with no option to cancel.</div>
+                    <div class="modal-body">The exam lasts <b>{{util.toHHMMSS(p_dataTheme.theme_duration)}}</b> minutes with no option to cancel.</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <router-link data-dismiss="modal" class="btn btn-primary"
-                                     :to="{name:'exam',params:{theme_id:p_theme_id}}">Ready
+                        <router-link data-dismiss="modal" class="btn btn-primary" :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
+                            Ready
                         </router-link>
                     </div>
                 </div>
@@ -142,23 +115,27 @@
     import Nav from '../components/Nav';
     import moment from 'moment';
     import SERVICE from '../services/ApiService';
+    import Util from '../services/Util';
+    import Storage from 'vue-local-storage';
 
     Vue.component("nav-exam", Nav);
 
     export default {
         data: () => ({
+            util:Util,
             loadingTable: true,
             dataTheme: [],
             dataSurvey: [],
             moment: moment,
             id_theme: null,
-            p_theme_id: null,
+            p_dataTheme: {},
             params: {
                 user_id: "1",
                 user_survey_theme_id: "1"
             }
         }),
         created() {
+            console.log(Storage.get("auth_user"));
             this.load();
         },
         methods: {

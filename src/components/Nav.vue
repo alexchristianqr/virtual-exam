@@ -14,7 +14,7 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle mr-lg-2" id="" href data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-user"></i>
-                            <b>Alex Christian</b>
+                            <b>{{storage.get("auth_user").name}}</b>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
                             <a href class="dropdown-item text-danger" @click="logout()">
@@ -31,9 +31,15 @@
 <script>
     import Vue from 'vue';
     import Sidebar from '../components/Sidebar';
-    Vue.component("sidebar", Sidebar);
     import SERVICE from '../services/ApiService';
+    import Storage from 'vue-local-storage';
+
+    Vue.component("sidebar", Sidebar);
+
     export default {
+        data:()=>({
+           storage:Storage,
+        }),
         methods:{
             logout(){
                 SERVICE.dispatch("doLogout", {self: this});

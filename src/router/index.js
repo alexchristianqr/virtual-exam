@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Storage from 'vue-local-storage';
 import Login from '../components/Login';
 // import SelectProject from '../components/SelectProject';
 // import ListExams from '../components/ListExams';
@@ -11,21 +12,17 @@ import Questions from '../components/Questions';
 import CreateUpdateQuestion from '../components/CreateUpdateQuestion';
 import OptionsAnswers from '../components/OptionsAnswers';
 import CreateUpdateOptionAnswer from '../components/CreateUpdateOptionAnswer';
-import VueLocalStorage from 'vue-local-storage';
 
 Vue.use(Router);
 
 const router = new Router({
     mode: 'history',
     routes: [
-        // {
-        //     path: '*',
-        //     redirect: '/login'
-        // },
         {
-            path: '/login',
-            name: 'login',
-            component: Login
+            path: '*', redirect: '/login'
+        },
+        {
+            path: '/login', name: 'login', component: Login
         },
         // {
         //     path: '/project',
@@ -82,16 +79,13 @@ const router = new Router({
     ]
 });
 
-// router.beforeEach((to, from, next) => {
-//     if (to.path === '/login') {
-//         VueLocalStorage.set("auth", {authenticate: false});
-//     }
-//     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-//     if (requiresAuth && !VueLocalStorage.get("auth").authenticate) {
-//         next('/login');
-//     } else {
-//         next();
-//     }
-// });
+router.beforeEach((to, from, next) => {
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    if (requiresAuth && Storage.get("auth_user") == undefined) {
+        next('/login');
+    } else {
+        next();
+    }
+});
 
 export default router;

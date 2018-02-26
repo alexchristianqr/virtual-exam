@@ -28,44 +28,16 @@
                         </div>
                     </div>
                     <div class="row">
-
-                        <!--<div class="input-group">-->
-                            <!--<select title="" class="form-control" v-model="params.question_id" @change="change()">-->
-                                <!--<option value="" selected>- Select Question -</option>-->
-                                <!--<option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>-->
-                            <!--</select>-->
-                            <!--<div class="input-group-append">-->
-                                <!--<span class="input-group-text"><i class="fa fa-filter"></i></span>-->
-                            <!--</div>-->
-                        <!--</div>-->
-
-                        <div class="col-6">
+                        <div :class=" isPost ? 'col-12' : 'col-10' ">
                             <div class="form-group">
                                 <label>Question</label>
-                                <div class="input-group">
-                                    <select title="" class="form-control" v-model="params.question_id" @change="change()">
-                                        <option value="" selected>- Select Question -</option>
-                                        <option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>
-                                    </select>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text"><i class="fa fa-filter"></i></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div :class="isPost ? 'col-6': 'col-3' ">
-                            <div class="form-group">
-                                <label>Level</label>
-                                <select title v-model="params.level" class="form-control" required>
-                                    <option value="" selected disabled>- Select Level -</option>
-                                    <option value="F">Facil</option>
-                                    <option value="R">Regular</option>
-                                    <option value="D">Dificil</option>
+                                <select title="" class="form-control" v-model="params.question_id">
+                                    <option value="" selected>- Select Question -</option>
+                                    <option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>
                                 </select>
                             </div>
                         </div>
-                        <div v-if="!isPost" class="col-3">
+                        <div v-if="!isPost" class="col-2">
                             <div class="form-group">
                                 <label>Status</label>
                                 <select title v-model="params.status" class="form-control" required>
@@ -77,7 +49,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Question Name</label>
+                                <label>Option Answer Name</label>
                                 <input title="question" v-model="params.name" type="text" class="form-control" required>
                             </div>
                         </div>
@@ -101,33 +73,29 @@
             dataError: {},
             showError: false,
             params: {
-                theme_id: "",
+                option_answer_id: "",
                 question_id: "",
                 name: "",
-                option_answer_id: "",
-                level: "F",
                 status:"A",
             },
         }),
         created() {
-            // this.allTheme();
-            // SERVICE.dispatch("allOptionAnswer", {self: this});
             SERVICE.dispatch("allQuestion", {self: this});
             if(this.$route.params.dataOptionAnswer != undefined && Object.keys(this.$route.params.dataOptionAnswer).length) this.editOptionAnswer();
         },
         methods: {
             createOrUpdateOptionAnswer() {
                 if(this.isPost){
-                    SERVICE.dispatch("createQuestion", {self: this})
+                    SERVICE.dispatch("createOptionAnswer", {self: this})
                 } else {//isPut
-                    SERVICE.dispatch("updateQuestion", {self: this})
+                    SERVICE.dispatch("updateOptionAnswer", {self: this})
                 }
             },
             editOptionAnswer(){
                 this.isPost = false;//isPut
                 this.dataOptionAnswer = this.$route.params.dataOptionAnswer;
+                this.params.option_answer_id = this.dataOptionAnswer.id;
                 this.params.question_id = this.dataOptionAnswer.question_id;
-                // this.params.theme_id = this.dataOptionAnswer.theme_id;
                 this.params.name = this.dataOptionAnswer.name;
                 this.params.status = this.dataOptionAnswer.status;
             },
