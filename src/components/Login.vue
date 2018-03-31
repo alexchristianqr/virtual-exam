@@ -1,7 +1,7 @@
 <template>
     <section>
         <div class="card card-login mx-auto mt-5">
-            <div class="card-header">
+            <div class="card-header bg-dark text-white">
                 <b class="h5">Sign In</b>
             </div>
             <div class="card-body">
@@ -27,21 +27,19 @@
                             <label class="form-check-label"><input name="rememberme" class="form-check-input" type="checkbox">Remember Password</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Log In</button>
-                    <!--<router-link class="btn btn-primary btn-block" :to="{name:'project'}" @click="doLogin()"><span>Log In</span>-->
-                    <!--</router-link>-->
+                    <button type="submit" class="btn btn-dark btn-block">Log In</button>
                 </form>
                 <div>
                     <br>
                     <div class="row">
                         <div class="col-6">
                             <div class="text-left text-nowrap">
-                                <a class="small" href="">Register an Account</a>
+                                <a class="small text-muted" href="#">Register an Account</a>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="text-right text-nowrap">
-                                <a class="small" href="">Forgot Password?</a>
+                                <a class="small text-muted" href="#">Forgot Password?</a>
                             </div>
                         </div>
                     </div>
@@ -52,7 +50,7 @@
 </template>
 
 <script>
-    import SERVICE from '../services/ApiService';
+    import SERVICE from '../api/ApiService';
 
     export default {
         name: "login",
@@ -61,20 +59,18 @@
             validate: null,
             data: [],
             params: {
-                email: "bennie.oconnell@carter.com",
+                email: "aquispe.developer@gmail.com",
                 password: "secret"
             },
             errors: {
                 email: "",
                 password: "",
-                login: ""
             }
         }),
         methods: {
             doLogin() {
                 SERVICE.dispatch("doLogin", {self: this});
             },
-
         }
     }
 </script>

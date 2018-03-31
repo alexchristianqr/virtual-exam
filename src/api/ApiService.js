@@ -2,50 +2,14 @@
  * Created by aquispe on 10/02/2018.
  **/
 import Vue from 'vue';
-import * as Vuex from "vuex";
+import * as Vuex from 'vuex';
 import Storage from 'vue-local-storage';
 import Axios from 'axios';
+import ENV from '../env';
+import Util from '../util';
 
-Vue.use(Vuex);
+Vue.use(Vuex,Storage);
 Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-// Axios.defaults.headers.common['X-CSRF-Auth-Token'] = 'sdaskljlkjlzakljsahdklasdud24323lkjlkfsdfsdf';
-
-const ENV = {
-    API: "http://service-api/api",
-    //e : error; subself : this de la vista; self: this de la clase
-    fnError(e, subself = null, self = null) {
-        switch (e.response.status) {
-            case 412:// Exception Laravel
-                console.error(e);
-                break;
-            case 422:// Exception Laravel
-                subself.dataError = e.response.data;
-                break;
-            default:// code 500
-                self.state.intent = setInterval(() => {
-                    self.dispatch(subself.method, {self: subself});
-                }, 10000);
-                break;
-        }
-    },
-    fnErrorAuth(e, subself = null, self = null){
-        switch (e.response.status) {
-            case 401://Error authentication
-                console.error(e);
-                subself.errors.login = e.response.data.msg;
-                break;
-            case 422://Exception rules
-                if(e.response.data.password !== undefined)
-                    subself.errors.password = e.response.data.password[0];
-                if(e.response.data.email !== undefined)
-                    subself.errors.email = e.response.data.email[0];
-                break;
-            default://Status code 500
-                console.error(e);
-                break;
-        }
-    }
-};
 
 const SERVICE = new Vuex.Store({
     state: {
@@ -54,34 +18,22 @@ const SERVICE = new Vuex.Store({
     actions: {
         //Auth
         doLogin({commit}, {self}) {
-
             Axios.post(ENV.API + "/login", self.params)
                 .then((r) => {
-                        console.log(r);
                     if (r.status === 200) {
-                        Storage.set("auth_user",r.data);
+                        Storage.set("data_auth",r.data[0]);
                         window.location = "/themes";
                         // self.$router.replace("/themes");
                     }
                 })
                 .catch((e) => {
-                    ENV.fnErrorAuth(e, self);
+                    console.log(e);
+                    // ENV.fnErrorAuth(e, self);
                 });
-            // self.errors.email = "";
-            // self.errors.password = "";
-            // self.errors.login = "";
-            // self.validate = null;
-            // Storage.set("auth", {authenticate: false});
-            // if (self.params.email === '') {
-            //     self.errors.email = "El campo email no puede estar vacio!";
-            // }
-            // if (self.params.password === '') {
-            //     self.errors.password = "El campo password no puede estar vacio!";
-            // }
-            // ENV.doValidation(self);
         },
         doLogout({commit}, {self}) {
-            Storage.remove("auth_user");
+            Storage.remove("data_auth");
+            self.$router.replace("/login")
             // this.doAuth(self);
         },
         doValidation(self) {
@@ -110,19 +62,18 @@ const SERVICE = new Vuex.Store({
         loadProjects({commit}, {self}) {
             Axios.get(ENV.API + "/proyects")
                 .then((r) => {
-                    console.log(r.data);
                     if (r.status === 200) {
                         self.data = r.data;
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e);
+                    Util.fnError(e);
                 });
         },
         //Theme
         allTheme({commit}, {self}) {
             if (this.state.intent != null) window.clearInterval(this.state.intent);
-            Axios.get(ENV.API + "/all-theme", {params: self.params,headers:{'X-CSRF-Auth-Token':Storage.get("auth_user").api_key}})
+            Axios.get(ENV.API + "/all-theme", {params: self.params})
                 .then((r) => {
                     if (r.status === 200) {
                         self.loadingTable = false;
@@ -131,7 +82,7 @@ const SERVICE = new Vuex.Store({
                 })
                 .catch((e) => {
                     self.method = "allTheme";
-                    ENV.fnError(e, self, this);
+                    Util.fnError(e, self, this);
                 });
         },
         createTheme({commit}, {self}) {
@@ -142,7 +93,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
         updateTheme({commit}, {self}) {
@@ -153,7 +104,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
         //Exam
@@ -168,7 +119,7 @@ const SERVICE = new Vuex.Store({
                 })
                 .catch((e) => {
                     self.method = "loadExam";
-                    ENV.fnError(e, self, this);
+                    Util.fnError(e, self, this);
                 });
         },
         createExam({commit}, {self}) {
@@ -179,19 +130,18 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
         updateUserSurveyTheme({commit}, {self}) {
             Axios.put(ENV.API + "/update-exam", self.params)
                 .then((r) => {
                     if (r.status === 200) {
-                        console.log(r);
                         self.$router.replace("/themes");
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
         //Survey
@@ -203,7 +153,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self, this);
+                    Util.fnError(e, self, this);
                 });
         },
         allSurvey({commit}, {self}) {
@@ -214,7 +164,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self, this);
+                    Util.fnError(e, self, this);
                 });
         },
         //Question
@@ -229,7 +179,7 @@ const SERVICE = new Vuex.Store({
                 })
                 .catch((e) => {
                     self.method = "allQuestion";
-                    ENV.fnError(e, self, this);
+                    Util.fnError(e, self, this);
                 });
         },
         createQuestion({commit}, {self}) {
@@ -240,7 +190,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
         updateQuestion({commit}, {self}) {
@@ -251,7 +201,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
         //Answer
@@ -266,7 +216,7 @@ const SERVICE = new Vuex.Store({
                 })
                 .catch((e) => {
                     self.method = "allAnswer";
-                    ENV.fnError(e, self, this);
+                    Util.fnError(e, self, this);
                 });
         },
         //Option Answer
@@ -281,7 +231,7 @@ const SERVICE = new Vuex.Store({
                 })
                 .catch((e) => {
                     self.method = "allOptionAnswer";
-                    ENV.fnError(e, self, this);
+                    Util.fnError(e, self, this);
                 });
         },
         createOptionAnswer({commit}, {self}) {
@@ -292,7 +242,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
         updateOptionAnswer({commit}, {self}) {
@@ -303,7 +253,7 @@ const SERVICE = new Vuex.Store({
                     }
                 })
                 .catch((e) => {
-                    ENV.fnError(e, self);
+                    Util.fnError(e, self);
                 });
         },
     }

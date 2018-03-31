@@ -61,7 +61,7 @@
 </template>
 
 <script>
-    import SERVICE from '../services/ApiService';
+    import SERVICE from '../api/ApiService';
 
     export default {
         name: "create-update-option-answer",

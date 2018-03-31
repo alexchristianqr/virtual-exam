@@ -4,7 +4,7 @@
             <div>
                 <div class="content-wrapper">
                     <div class="container-fluid">
-                        <component :is="'nav-sidebar'"/>
+                        <nav-header/>
                         <router-view/>
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                 <router-view/>
             </div>
         </template>
-        <footer class="sticky-footer" style="background-color: transparent !important;">
+        <footer :class="$route.path == '/login' ? 'sticky-footer w-100' : 'sticky-footer' " style="background-color: transparent !important;">
             <div class="container">
                 <div class="text-center">
                     <small>Copyright © Corporación Sapia {{new Date().getFullYear()}}</small>
@@ -26,13 +26,11 @@
 </template>
 
 <script>
-    import Vue from 'vue';
-    import NavSidebar from './components/Nav';
-
-    Vue.component("nav-sidebar", NavSidebar);
+    import NavHeader from './components/NavHeader';
 
     export default {
         name: 'App',
+        components:{NavHeader}
     }
 </script>
 

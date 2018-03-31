@@ -7,7 +7,8 @@
                         <b class="h4">Themes</b>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-light"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span></router-link>
+                        <router-link :to="'/create-theme'" class="btn btn-light"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span>
+                        </router-link>
                     </div>
                 </div>
                 <hr>
@@ -54,7 +55,8 @@
                             <i v-if="v.theme_status === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
                         <td>
-                            <a v-if="v.user_survey_theme_status == 'P' " class="btn btn-warning" href data-toggle="modal" data-target="#infoModal" @click.prevent="p_dataTheme = v">
+                            <a v-if="v.user_survey_theme_status == 'P' " class="btn btn-warning" href
+                               data-toggle="modal" data-target="#infoModal" @click.prevent="p_dataTheme = v">
                                 <i class="fa fa-file-text-o fa-fw"></i>
                                 <span>PENDING</span>
                             </a>
@@ -97,7 +99,9 @@
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">The exam lasts <b>{{util.toHHMMSS(p_dataTheme.theme_duration)}}</b> minutes with no option to cancel.</div>
+                    <div class="modal-body">The exam lasts <b>{{util.toHHMMSS(p_dataTheme.theme_duration)}}</b> minutes
+                        with no option to cancel.
+                    </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                         <router-link data-dismiss="modal" class="btn btn-primary" :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
@@ -111,18 +115,16 @@
 </template>
 
 <script>
-    import Vue from 'vue';
-    import Nav from '../components/Nav';
+    import NavHeader from '../components/NavHeader';
     import moment from 'moment';
-    import SERVICE from '../services/ApiService';
-    import Util from '../services/Util';
-    import Storage from 'vue-local-storage';
-
-    Vue.component("nav-exam", Nav);
+    import SERVICE from '../api/ApiService';
+    import Util from '../util';
 
     export default {
+        name: "themes",
+        components: {NavHeader},
         data: () => ({
-            util:Util,
+            util: Util,
             loadingTable: true,
             dataTheme: [],
             dataSurvey: [],
@@ -131,11 +133,10 @@
             p_dataTheme: {},
             params: {
                 user_id: "1",
-                user_survey_theme_id: "1"
+                user_survey_theme_id: "1",
             }
         }),
         created() {
-            console.log(Storage.get("auth_user"));
             this.load();
         },
         methods: {
