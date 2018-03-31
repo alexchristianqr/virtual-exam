@@ -1,7 +1,6 @@
-# virtual-exam
+# Encuesta Virtual
 
-> A Vue.js project.
-> Software for Survey of people community
+Aplicación web, cuya finalidad cumple temas de capacitación en linea, creación de preguntas, respuestas, estadística de desarrollo y más.
 
 ## Build Setup
 
