@@ -4,7 +4,7 @@
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
-                        <b class="h4">Questions</b>
+                        <span class="card-title">Questions</span>
                     </div>
                     <div class="col-6 text-right">
                         <router-link :to="'/create-question'" class="btn btn-light"><i class="fa fa-plus fa-fw"></i><span>Add Question</span></router-link>
@@ -118,7 +118,7 @@
     import SERVICE from '../api/ApiService';
 
     export default {
-        name: "questions",
+        name: "Questions",
         data: () => ({
             loadingTable: true,
             dataTheme: [],

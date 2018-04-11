@@ -4,11 +4,10 @@
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
-                        <b class="h4">Themes</b>
+                        <span class="card-title">Themes List</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-light"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span>
-                        </router-link>
+                        <router-link :to="'/create-theme'" class="btn btn-light"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span></router-link>
                     </div>
                 </div>
                 <hr>
@@ -115,14 +114,12 @@
 </template>
 
 <script>
-    import NavHeader from '../components/NavHeader';
     import moment from 'moment';
     import SERVICE from '../api/ApiService';
     import Util from '../util';
 
     export default {
-        name: "themes",
-        components: {NavHeader},
+        name: "Themes",
         data: () => ({
             util: Util,
             loadingTable: true,

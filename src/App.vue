@@ -15,7 +15,8 @@
                 <router-view/>
             </div>
         </template>
-        <footer :class="$route.path == '/login' ? 'sticky-footer w-100' : 'sticky-footer' " style="background-color: transparent !important;">
+        <footer :class="$route.path == '/login' ? 'sticky-footer w-100' : 'sticky-footer' "
+                style="background-color: transparent !important;">
             <div class="container">
                 <div class="text-center">
                     <small>Copyright © Corporación Sapia {{new Date().getFullYear()}}</small>
@@ -26,23 +27,26 @@
 </template>
 
 <script>
-    import NavHeader from './components/NavHeader';
 
-    export default {
-        name: 'App',
-        components:{NavHeader}
-    }
+  import NavHeader from './components/layouts/NavHeader'
+
+  export default {
+    name: 'App',
+    components: {NavHeader},
+  }
 </script>
 
 <style>
     @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
     @import "../node_modules/font-awesome/css/font-awesome.min.css";
     @import "assets/vendor/css/sb-admin.css";
-    @media (min-width: 992px){
+
+    @media (min-width: 992px) {
         .modal-lg {
             max-width: 1200px !important;
         }
     }
+
     .table td, .table th {
         vertical-align: middle !important;
     }

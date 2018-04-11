@@ -20,13 +20,16 @@ const SERVICE = new Vuex.Store({
     doLogin({commit}, {self}) {
       Axios.post(Env.API + '/login', self.params).then((r) => {
         if (r.status === 200) {
-          Storage.set('data_auth', r.data[0])
+          self.dataNotify = {}
+          Storage.set('data_auth', r.data)
           window.location = '/themes'
           // self.$router.replace("/themes");
         }
       }).catch((e) => {
-        console.log(e)
-        // Env.fnErrorAuth(e, self);
+        self.dataNotify = e.response
+        self.dataNotify.classAlert = 'alert alert-dark alert-dismissible fade show mb-0 border-0 '
+        self.dataNotify.style = 'border-radius:0'
+        console.error(e)
       })
     },
     doLogout({commit}, {self}) {

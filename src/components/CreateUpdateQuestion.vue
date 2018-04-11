@@ -5,10 +5,10 @@
                 <div class="card-header bg-light text-dark">
                     <div class="row">
                         <div class="col-6 mt-auto mb-auto">
-                            <b class="h4">
+                            <span class="card-title">
                                 <span v-if="isPost">New Question</span>
                                 <span v-else>Update Question</span>
-                            </b>
+                            </span>
                         </div>
                         <div class="col-6 text-right">
                             <router-link class="btn btn-light" :to="'/questions'"><i class="fa fa-arrow-left fa-fw"></i><span>Volver</span></router-link>
@@ -86,7 +86,7 @@
     import SERVICE from '../api/ApiService';
 
     export default {
-        name: "create-update-question",
+        name: "CreateUpdateQuestion",
         data:()=>({
             isPost: true,
             dataTheme: [],

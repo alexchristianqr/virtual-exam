@@ -5,13 +5,16 @@
             <div class="card-header bg-light">
                 <span class="card-title">Sign In</span>
             </div>
+            <div v-show="Object.keys(dataNotify).length > 0" class="card-header p-0 mb-0">
+                <notify v-show="Object.keys(dataNotify).length > 0" :dataNotify="dataNotify" @eventClose="eventClose"/>
+            </div>
             <div class="card-body">
                 <form @submit.prevent="doLogin()">
                     <div class="form-group">
                         <label>Username</label>
                         <div class="input-group mb-1">
-                            <input v-model="params.email" name="email" class="form-control" type="text"
-                                   placeholder="Enter email" title="Registrar" required>
+                            <input v-model="params.username" name="username" class="form-control" type="text"
+                                   placeholder="Enter username" title="Registrar" required>
                             <div class="input-group-append">
                                 <span class="input-group-text">@sapia.com.pe</span>
                             </div>
@@ -56,16 +59,18 @@
 <script>
   import SERVICE from '../api/ApiService'
   import Logo    from './layouts/Logo'
+  import Notify  from './layouts/Notify'
 
   export default {
     name: 'Login',
-    components: {Logo},
+    components: {Notify, Logo},
     data: () => ({
       loading: false,
       validate: null,
       data: [],
+      dataNotify:{},
       params: {
-        email: 'aquisper',
+        username: 'aquisper',
         password: 'secret',
       },
       errors: {
@@ -77,6 +82,9 @@
       doLogin() {
         SERVICE.dispatch('doLogin', {self: this})
       },
+      eventClose(){
+        this.dataNotify = {}
+      }
     },
   }
 </script>

@@ -2,7 +2,7 @@
     <div>
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
-                <b class="h5">Select</b>
+                <span class="card-title">Project</span>
             </div>
             <div class="card-body">
                 <form>
@@ -31,7 +31,7 @@
     import SERVICE from '../api/ApiService';
 
     export default {
-        name: "select-project",
+        name: "SelectProject",
         data: () => ({
             data: [],
             selectedProject:"0",

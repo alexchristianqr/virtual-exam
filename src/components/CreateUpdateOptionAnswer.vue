@@ -5,10 +5,10 @@
                 <div class="card-header bg-light text-dark">
                     <div class="row">
                         <div class="col-6 mt-auto mb-auto">
-                            <b class="h4">
+                            <span class="card-title">
                                 <span v-if="isPost">New Option Answer</span>
                                 <span v-else>Update Option Answer</span>
-                            </b>
+                            </span>
                         </div>
                         <div class="col-6 text-right">
                             <router-link class="btn btn-light" :to="'/options-answers'"><i
@@ -67,7 +67,7 @@
   import SERVICE from '../api/ApiService'
 
   export default {
-    name: 'create-update-option-answer',
+    name: 'CreateUpdateOptionAnswer',
     data: () => ({
       isPost: true,
       dataTheme: [],

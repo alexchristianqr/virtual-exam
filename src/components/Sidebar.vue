@@ -80,7 +80,7 @@
 
 <script>
     export default {
-        name: "sidebar"
+        name: "Sidebar"
     }
 </script>
 

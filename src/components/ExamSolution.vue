@@ -4,7 +4,7 @@
 
 <script>
     export default {
-        name: "exam-solution"
+        name: "ExamSolution"
     }
 </script>
 

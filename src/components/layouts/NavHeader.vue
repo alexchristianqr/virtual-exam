@@ -2,7 +2,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark text-white" id="mainNav">
             <span class="navbar-brand">
-                <h5 class="m-auto">Virtual Survey</h5>
+                <span class="h5 m-auto">Virtual Survey</span>
             </span>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
@@ -14,7 +14,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mr-lg-2" id="" href data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-fw fa-user"></i>
-                        <span class="h6 m-auto">{{storage.get("data_auth").name}} <small>(aquispe.developer@gmail.com)</small></span>
+                        <span class="h6 m-auto">{{storage.get("data_auth").name}} <small>( {{storage.get("data_auth").email}} )</small></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right w-100 mt-3" aria-labelledby="alertsDropdown">
                         <a href class="dropdown-item text-danger" @click.prevent="logout()">
@@ -29,14 +29,14 @@
     </nav>
 </template>
 <script>
-    import Sidebar from '../components/Sidebar';
-    import SERVICE from '../api/ApiService';
+    import SERVICE from '../../api/ApiService';
     import Storage from 'vue-local-storage';
+    import Sidebar from '../Sidebar'
 
     export default {
-        name: "nav-header",
-        components:{Sidebar},
-        data: () => ({
+        name: "NavHeader",
+      components: {Sidebar},
+      data: () => ({
             storage: Storage,
         }),
         methods: {
