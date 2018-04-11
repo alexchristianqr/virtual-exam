@@ -53,7 +53,9 @@
                         <td width="110%" class="pl-5">
                             <b>{{returnLetter(k)}})&nbsp;</b>
                             <div class="form-check form-check-inline">
-                                <input title="" :data-id="data[next].id" class="form-check-input" type="radio"
+                                <input title="" :data-id="data[next].id"
+                                       class="form-check-input"
+                                       type="radio"
                                        :name="'opt'+data[next].id" :id="returnLetter(k)+data[next].id" :value="v.id"
                                        @click="doChecked()"/>
                                 <label class="form-check-label" :for="returnLetter(k)+data[next].id">{{v.name}}</label>
@@ -64,16 +66,19 @@
                         <td width="100%" class="text-center">
                             <div class="row">
                                 <div class="col-6 text-right">
-                                    <button :hidden="parseInt(Object.keys(data)[next]) === 0 " class="btn btn-light"
+                                    <button :hidden="parseInt(Object.keys(data)[next]) === 0 "
+                                            class="btn btn-secondary"
                                             @click="change('-')">
                                         <i class="fa fa-arrow-left fa-fw"></i>
+                                        <span>Anterior</span>
                                     </button>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <button v-if="data.length != next+1" class="btn btn-light" @click="change('+')">
+                                    <button v-if="data.length != next+1" class="btn btn-secondary" @click="change('+')">
                                         <i class="fa fa-arrow-right fa-fw"></i>
+                                        <span>Siguiente</span>
                                     </button>
-                                    <button v-else="" class="btn btn-dark">Saved Exam</button>
+                                    <button v-else="" class="btn btn-secondary">Saved Exam</button>
                                 </div>
                             </div>
                         </td>

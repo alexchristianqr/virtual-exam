@@ -16,7 +16,7 @@
                             <input v-model="params.username" name="username" class="form-control" type="text"
                                    placeholder="Enter username" title="Registrar" required>
                             <div class="input-group-append">
-                                <span class="input-group-text">@sapia.com.pe</span>
+                                <span class="input-group-text bg-white">@sapia.com.pe</span>
                             </div>
                         </div>
                         <span v-if="errors.email !== '' " class="help-block"><small><strong>{{errors.email}}</strong></small></span>

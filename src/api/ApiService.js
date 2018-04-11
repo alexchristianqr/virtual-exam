@@ -8,7 +8,7 @@ import Axios     from 'axios'
 import Env       from '../env'
 import Util      from '../util'
 
-Vue.use(Vuex, Storage)
+Vue.use(Vuex)
 Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 
 const SERVICE = new Vuex.Store({
@@ -18,6 +18,7 @@ const SERVICE = new Vuex.Store({
   actions: {
     //Auth
     doLogin({commit}, {self}) {
+      Storage.set('data_auth', {role:{name:'guest'}})
       Axios.post(Env.API + '/login', self.params).then((r) => {
         if (r.status === 200) {
           self.dataNotify = {}

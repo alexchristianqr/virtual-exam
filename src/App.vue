@@ -1,19 +1,24 @@
 <template>
     <div>
         <template v-if="$route.path !== '/login'">
-            <div>
-                <div class="content-wrapper">
-                    <div class="container-fluid">
-                        <nav-header/>
+            <nav-header :role="role"/>
+            <template v-if="role.name !== 'guest'">
+                <div class="content-wrapper bg-light">
+                    <div class="container-fluid mb-5">
                         <router-view/>
                     </div>
                 </div>
-            </div>
+            </template>
+            <template v-else>
+                <div class="container">
+                    <div class="col-10 mx-auto mt-4 mb-5">
+                        <router-view/>
+                    </div>
+                </div>
+            </template>
         </template>
         <template v-else>
-            <div>
-                <router-view/>
-            </div>
+            <router-view/>
         </template>
         <footer :class="$route.path == '/login' ? 'sticky-footer w-100' : 'sticky-footer' "
                 style="background-color: transparent !important;">
@@ -29,10 +34,18 @@
 <script>
 
   import NavHeader from './components/layouts/NavHeader'
+  import Storage   from 'vue-local-storage'
 
   export default {
     name: 'App',
     components: {NavHeader},
+    data: () => ({
+      storage: Storage,
+      role: {name: 'guest'},
+    }),
+    beforeMount() {
+      this.role = Storage.get('data_auth').role
+    },
   }
 </script>
 
