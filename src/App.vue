@@ -44,7 +44,7 @@
       role: {name: 'guest'},
     }),
     beforeMount() {
-      this.role = Storage.get('data_auth').role
+      this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
     },
   }
 </script>

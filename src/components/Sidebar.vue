@@ -1,7 +1,7 @@
 <template>
     <div>
-        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion" style="overflow-y: auto;overflow-x: hidden">
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Reports">
+        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Themes">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#a" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-sitemap"></i>
                     <span class="nav-link-text">Themes</span>
@@ -27,7 +27,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Reports">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Questions">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#b" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-file-text-o"></i>
                     <span class="nav-link-text">Questions</span>
@@ -47,7 +47,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Reports">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Options Answers">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#c" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-check-square"></i>
                     <span class="nav-link-text">Options Answers</span>

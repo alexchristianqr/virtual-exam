@@ -17,22 +17,28 @@
                         <span class="h6 m-auto">{{storage.get('data_auth').name}} <small>( {{storage.get('data_auth').email}} )</small></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-left w-100 mt-3" aria-labelledby="alertsDropdown">
-                        <a href class="dropdown-item text-muted text-right">
-                            Intereses
-                            <i class="fa fa-filter fa-fw"></i>
-                        </a>
-                        <a href class="dropdown-item text-muted text-right">
-                            Configuración
-                            <i class="fa fa-tasks fa-fw"></i>
-                        </a>
-                        <a href class="dropdown-item text-muted text-right">
-                            General
-                            <i class="fa fa-cogs fa-fw"></i>
-                        </a>
-                        <a href class="dropdown-item text-muted text-right">
-                            Security by RSA
-                            <i class="fa fa-lock fa-fw"></i>
-                        </a>
+                            <a href class="dropdown-item text-muted text-right">
+                                Cambiar Tema
+                                <i class="fa fa-circle fa-fw"></i>
+                            </a>
+                        <template v-if="role.name !== 'guest' ">
+                            <a href class="dropdown-item text-muted text-right">
+                                Intereses
+                                <i class="fa fa-filter fa-fw"></i>
+                            </a>
+                            <a href class="dropdown-item text-muted text-right">
+                                Configuración
+                                <i class="fa fa-tasks fa-fw"></i>
+                            </a>
+                            <a href class="dropdown-item text-muted text-right">
+                                General
+                                <i class="fa fa-cogs fa-fw"></i>
+                            </a>
+                            <a href class="dropdown-item text-muted text-right">
+                                Security by RSA
+                                <i class="fa fa-lock fa-fw"></i>
+                            </a>
+                        </template>
                         <div class="dropdown-divider"></div>
                         <a href class="dropdown-item text-danger" @click.prevent="logout()">
                             <i class="fa fa-fw fa-sign-out"></i>
@@ -41,7 +47,7 @@
                     </div>
                 </li>
             </ul>
-            <sidebar v-show="role.name !== 'guest' "/>
+            <sidebar v-if="role.name !== 'guest' "/>
         </div>
     </nav>
 </template>

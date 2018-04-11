@@ -6,6 +6,7 @@ import router from './router';
 import Axios from 'axios';
 import $ from 'jquery';
 import 'bootstrap';
+import 'tooltip';
 import './assets/vendor/scss/style.scss';
 
 Vue.config.productionTip = false;
@@ -20,9 +21,9 @@ new Vue({
 
 $(document).ready(() => {
     // Configure tooltips for collapsed side navigation
-    // $('.navbar-sidenav [data-toggle="tooltip"]').tooltip({
-    //     template: '<div class="tooltip navbar-sidenav-tooltip" role="tooltip" style="pointer-events: none;"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
-    // })
+    $('.navbar-sidenav [data-toggle="tooltip"]').tooltip({
+        template: '<div class="tooltip navbar-sidenav-tooltip" role="tooltip" style="pointer-events: none;"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
+    })
     // Toggle the side navigation
     $("#sidenavToggler").click((e) => {
         e.preventDefault();
@@ -52,7 +53,7 @@ $(document).ready(() => {
         }
     });
     // Configure tooltips globally
-    // $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip()
     // Smooth scrolling using jQuery easing
     $(document).on('click', 'a.scroll-to-top', (event) => {
         let $anchor = $(this);
