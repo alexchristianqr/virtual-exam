@@ -7,7 +7,7 @@
                         <span class="card-title">Options Answers</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-option-answer'" class="btn btn-light"><i class="fa fa-plus fa-fw"></i><span>Add Option Answer</span></router-link>
+                        <router-link :to="'/create-option-answer'" class="btn btn-link text-secondary"><i class="fa fa-plus fa-fw"></i><span>Add Option Answer</span></router-link>
                     </div>
                 </div>
                 <hr>

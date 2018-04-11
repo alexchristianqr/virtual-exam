@@ -4,19 +4,24 @@
             <form @submit.prevent="createTheme()">
                 <div class="card-header bg-light text-dark">
                     <div class="row">
-                        <div class="col-6 mt-auto mb-auto">
+                        <div class="col-3 mt-auto mb-auto">
                             <span class="card-title">
                                 <span v-if="isPost">New Theme</span>
                                 <span v-else>Update Theme</span>
                             </span>
                         </div>
-                        <div class="col-6 text-right">
-                            <router-link class="btn btn-light" :to="'/themes'"><i
-                                    class="fa fa-arrow-left fa-fw"></i><span>Volver</span></router-link>
-                            <button type="submit" class="btn btn-info"><i
-                                    class="fa fa-check fa-fw"></i><span>Save</span></button>
-                            <button type="reset" class="btn btn-danger"><i
-                                    class="fa fa-close fa-fw"></i><span>Cancel</span>
+                        <div class="col-9 text-right">
+                            <router-link class="btn btn-link text-secondary" :to="'/themes'">
+                                <i class="fa fa-angle-left fa-fw"></i>
+                                <span>Volver</span>
+                            </router-link>
+                            <button type="submit" class="btn btn-outline-primary w-20">
+                                <i class="fa fa-check fa-fw"></i>
+                                <span>Save</span>
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary w-20">
+                                <i class="fa fa-close fa-fw"></i>
+                                <span>Cancel</span>
                             </button>
                         </div>
                     </div>

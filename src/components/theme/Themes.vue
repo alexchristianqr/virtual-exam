@@ -7,7 +7,7 @@
                         <span class="card-title">Themes List</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-light"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span></router-link>
+                        <router-link :to="'/create-theme'" class="btn btn-link text-secondary"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span></router-link>
                     </div>
                 </div>
                 <hr>
@@ -92,7 +92,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                            <span class="text-danger">Are you ready to start the exam?</span>
+                            <span class="text-secondary">Are you ready to start the exam?</span>
                         </h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
@@ -102,8 +102,8 @@
                         with no option to cancel.
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <router-link data-dismiss="modal" class="btn btn-primary" :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <router-link data-dismiss="modal" class="btn btn-outline-primary" :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
                             Ready
                         </router-link>
                     </div>

@@ -19,12 +19,6 @@
                             <span class="nav-link-text">Create</span>
                         </router-link>
                     </li>
-                    <li>
-                        <router-link :to="'/search-theme'" class="nav-link">
-                            <i class="fa fa-fw fa-search"></i>
-                            <span class="nav-link-text">Search</span>
-                        </router-link>
-                    </li>
                 </ul>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Questions">

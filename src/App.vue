@@ -28,13 +28,18 @@
                 </div>
             </div>
         </footer>
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded">
+            <i class="fa fa-angle-up"></i>
+        </a>
     </div>
 </template>
 
 <script>
   import NavHeader from './components/layouts/NavHeader'
   import Storage   from 'vue-local-storage'
-  import Sbadmin   from './sb-admin'
+  import Sbadmin   from './assets/js/sb-admin'
 
   export default {
     name: 'App',

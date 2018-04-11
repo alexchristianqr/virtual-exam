@@ -8,7 +8,7 @@
                         </router-link>
                     </div>
                     <div :class=" (!loadingTable && data.length <= 0) ? 'col-5' : 'col-4'">
-                        <div class="alert alert-light" role="alert">
+                        <div class="alert alert-secondary" role="alert">
                             <b class="text-muted">Time:</b>&nbsp;<span>{{remaining}}</span>
                         </div>
                     </div>

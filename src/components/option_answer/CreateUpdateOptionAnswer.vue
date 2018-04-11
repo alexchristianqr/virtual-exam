@@ -4,21 +4,26 @@
             <form @submit.prevent="createOrUpdateOptionAnswer()">
                 <div class="card-header bg-light text-dark">
                     <div class="row">
-                        <div class="col-6 mt-auto mb-auto">
+                        <div class="col-3 mt-auto mb-auto">
                             <span class="card-title">
                                 <span v-if="isPost">New Option Answer</span>
                                 <span v-else>Update Option Answer</span>
                             </span>
                         </div>
-                        <div class="col-6 text-right">
-                            <router-link class="btn btn-light" :to="'/options-answers'"><i
-                                    class="fa fa-arrow-left fa-fw"></i><span>Volver</span></router-link>
-                            <button type="submit" class="btn btn-info"><i class="fa fa-check fa-fw"></i>
+                        <div class="col-9 text-right">
+                            <router-link class="btn btn-link text-secondary" :to="'/options-answers'">
+                                <i class="fa fa-angle-left fa-fw"></i>
+                                <span>Volver</span>
+                            </router-link>
+                            <button type="submit" class="btn btn-outline-primary w-20">
+                                <i class="fa fa-check fa-fw"></i>
                                 <span v-if="isPost">Save</span>
                                 <span v-else>Update</span>
                             </button>
-                            <button type="reset" class="btn btn-danger"><i
-                                    class="fa fa-close fa-fw"></i><span>Cancel</span></button>
+                            <button type="reset" class="btn btn-outline-secondary w-20">
+                                <i class="fa fa-close fa-fw"></i>
+                                <span>Cancel</span>
+                            </button>
                         </div>
                     </div>
                 </div>
