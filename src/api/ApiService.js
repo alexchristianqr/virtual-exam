@@ -5,7 +5,7 @@ import Vue       from 'vue'
 import * as Vuex from 'vuex'
 import Storage   from 'vue-local-storage'
 import Axios     from 'axios'
-import ENV       from '../env'
+import Env       from '../env'
 import Util      from '../util'
 
 Vue.use(Vuex, Storage)
@@ -18,7 +18,7 @@ const SERVICE = new Vuex.Store({
   actions: {
     //Auth
     doLogin({commit}, {self}) {
-      Axios.post(ENV.API + '/login', self.params).then((r) => {
+      Axios.post(Env.API + '/login', self.params).then((r) => {
         if (r.status === 200) {
           Storage.set('data_auth', r.data[0])
           window.location = '/themes'
@@ -26,7 +26,7 @@ const SERVICE = new Vuex.Store({
         }
       }).catch((e) => {
         console.log(e)
-        // ENV.fnErrorAuth(e, self);
+        // Env.fnErrorAuth(e, self);
       })
     },
     doLogout({commit}, {self}) {
@@ -60,7 +60,7 @@ const SERVICE = new Vuex.Store({
     },
     //Project
     loadProjects({commit}, {self}) {
-      Axios.get(ENV.API + '/proyects').then((r) => {
+      Axios.get(Env.API + '/proyects').then((r) => {
         if (r.status === 200) {
           self.data = r.data
         }
@@ -71,7 +71,7 @@ const SERVICE = new Vuex.Store({
     //Theme
     allTheme({commit}, {self}) {
       if (this.state.intent != null) window.clearInterval(this.state.intent)
-      Axios.get(ENV.API + '/all-theme', {params: self.params}).then((r) => {
+      Axios.get(Env.API + '/all-theme', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataTheme = r.data
@@ -82,7 +82,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     createTheme({commit}, {self}) {
-      Axios.post(ENV.API + '/create-theme', self.params).then((r) => {
+      Axios.post(Env.API + '/create-theme', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/themes')
         }
@@ -91,7 +91,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     updateTheme({commit}, {self}) {
-      Axios.put(ENV.API + '/update-theme', self.params).then((r) => {
+      Axios.put(Env.API + '/update-theme', self.params).then((r) => {
         if (r.status === 200) {
           console.log(r)
         }
@@ -102,7 +102,7 @@ const SERVICE = new Vuex.Store({
     //Exam
     loadExam({commit}, {self}) {
       if (this.state.intent != null) window.clearInterval(this.state.intent)
-      Axios.get(ENV.API + '/load-exam', {params: {theme_id: self.theme_id}}).
+      Axios.get(Env.API + '/load-exam', {params: {theme_id: self.theme_id}}).
       then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
@@ -115,7 +115,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     createExam({commit}, {self}) {
-      Axios.post(ENV.API + '/create-exam', self.params).then((r) => {
+      Axios.post(Env.API + '/create-exam', self.params).then((r) => {
         if (r.status === 200) {
           console.log(r)
         }
@@ -124,7 +124,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     updateUserSurveyTheme({commit}, {self}) {
-      Axios.put(ENV.API + '/update-exam', self.params).then((r) => {
+      Axios.put(Env.API + '/update-exam', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/themes')
         }
@@ -134,7 +134,7 @@ const SERVICE = new Vuex.Store({
     },
     //Survey
     allByUserSurvey({commit}, {self}) {
-      Axios.get(ENV.API + '/all-by-user-survey', {params: self.params}).
+      Axios.get(Env.API + '/all-by-user-survey', {params: self.params}).
       then((r) => {
         if (r.status === 200) {
           self.dataSurvey = r.data
@@ -145,7 +145,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     allSurvey({commit}, {self}) {
-      Axios.get(ENV.API + '/all-survey').then((r) => {
+      Axios.get(Env.API + '/all-survey').then((r) => {
         if (r.status === 200) {
           self.dataSurvey = r.data
         }
@@ -156,7 +156,7 @@ const SERVICE = new Vuex.Store({
     //Question
     allQuestion({commit}, {self}) {
       if (this.state.intent != null) window.clearInterval(this.state.intent)
-      Axios.get(ENV.API + '/all-question', {params: self.params}).then((r) => {
+      Axios.get(Env.API + '/all-question', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataQuestion = r.data
@@ -167,7 +167,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     createQuestion({commit}, {self}) {
-      Axios.post(ENV.API + '/create-question', self.params).then((r) => {
+      Axios.post(Env.API + '/create-question', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/questions')
         }
@@ -176,7 +176,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     updateQuestion({commit}, {self}) {
-      Axios.put(ENV.API + '/update-question/' + self.question_id, self.params).
+      Axios.put(Env.API + '/update-question/' + self.question_id, self.params).
       then((r) => {
         if (r.status === 200) {
           self.$router.replace('/questions')
@@ -189,7 +189,7 @@ const SERVICE = new Vuex.Store({
     //Answer
     allAnswer({commit}, {self}) {
       if (this.state.intent != null) window.clearInterval(this.state.intent)
-      Axios.get(ENV.API + '/all-answer', {params: self.params}).then((r) => {
+      Axios.get(Env.API + '/all-answer', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataQuestion = r.data
@@ -202,7 +202,7 @@ const SERVICE = new Vuex.Store({
     //Option Answer
     allOptionAnswer({commit}, {self}) {
       if (this.state.intent != null) window.clearInterval(this.state.intent)
-      Axios.get(ENV.API + '/all-option-answer', {params: self.params}).
+      Axios.get(Env.API + '/all-option-answer', {params: self.params}).
       then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
@@ -215,7 +215,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     createOptionAnswer({commit}, {self}) {
-      Axios.post(ENV.API + '/create-option-answer', self.params).then((r) => {
+      Axios.post(Env.API + '/create-option-answer', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/options-answers')
         }
@@ -224,7 +224,7 @@ const SERVICE = new Vuex.Store({
       })
     },
     updateOptionAnswer({commit}, {self}) {
-      Axios.put(ENV.API + '/update-option-answer', self.params).then((r) => {
+      Axios.put(Env.API + '/update-option-answer', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/options-answers')
         }

@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <div>
         <div class="card">
             <form @submit.prevent="createOrUpdateQuestion()">
                 <div class="card-header bg-light text-dark">
@@ -79,7 +79,7 @@
                 </div>
             </form>
         </div>
-    </section>
+    </div>
 </template>
 
 <script>

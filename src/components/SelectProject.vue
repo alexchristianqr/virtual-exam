@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <div>
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
                 <b class="h5">Select</b>
@@ -24,7 +24,7 @@
                 </form>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <script>

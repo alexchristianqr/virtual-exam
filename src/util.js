@@ -1,7 +1,3 @@
-/**
- * Created by aquispe on 24/02/2018.
- **/
-
 export default {
     toHHMMSS(sec) {
         let sec_num = parseInt(sec, 10), // don't forget the second param

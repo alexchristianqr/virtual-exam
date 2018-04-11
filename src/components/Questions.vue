@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <div>
         <div class="card">
             <div class="card-header bg-light text-dark">
                 <div class="row">
@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <script>

@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <div>
         <template v-if="$route.path !== '/login'">
             <div>
                 <div class="content-wrapper">
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </footer>
-    </section>
+    </div>
 </template>
 
 <script>

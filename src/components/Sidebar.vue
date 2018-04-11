@@ -1,5 +1,5 @@
 <template>
-    <section>
+    <div>
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion" style="overflow-y: auto;overflow-x: hidden">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Reports">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#a" data-parent="#exampleAccordion">
@@ -75,7 +75,7 @@
                 </a>
             </li>
         </ul>
-    </section>
+    </div>
 </template>
 
 <script>

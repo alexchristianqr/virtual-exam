@@ -1,15 +1,17 @@
 <template>
-    <section>
+    <div>
+        <logo/>
         <div class="card card-login mx-auto mt-5">
-            <div class="card-header bg-dark text-white">
-                <b class="h5">Sign In</b>
+            <div class="card-header bg-light">
+                <span class="card-title">Sign In</span>
             </div>
             <div class="card-body">
                 <form @submit.prevent="doLogin()">
                     <div class="form-group">
-                        <label>Email</label>
+                        <label>Username</label>
                         <div class="input-group mb-1">
-                            <input v-model="params.email" name="email" class="form-control" type="text" placeholder="Enter email" title="Registrar" required>
+                            <input v-model="params.email" name="email" class="form-control" type="text"
+                                   placeholder="Enter email" title="Registrar" required>
                             <div class="input-group-append">
                                 <span class="input-group-text">@sapia.com.pe</span>
                             </div>
@@ -19,15 +21,17 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input v-model="params.password" name="password" class="form-control mb-1" type="password" placeholder="Password" required>
+                        <input v-model="params.password" name="password" class="form-control mb-1" type="password"
+                               placeholder="Password" required>
                         <span v-if="errors.password !== '' " class="help-block"><small><strong>{{errors.password}}</strong></small></span>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <label class="form-check-label"><input name="rememberme" class="form-check-input" type="checkbox">Remember Password</label>
+                            <label class="form-check-label"><input name="rememberme" class="form-check-input"
+                                                                   type="checkbox">Remember Password</label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-dark btn-block">Log In</button>
+                    <button type="submit" class="btn btn-secondary btn-block">Log In</button>
                 </form>
                 <div>
                     <br>
@@ -46,33 +50,35 @@
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </template>
 
 <script>
-    import SERVICE from '../api/ApiService';
+  import SERVICE from '../api/ApiService'
+  import Logo    from './layouts/Logo'
 
-    export default {
-        name: "login",
-        data: () => ({
-            loading: false,
-            validate: null,
-            data: [],
-            params: {
-                email: "aquispe.developer@gmail.com",
-                password: "secret"
-            },
-            errors: {
-                email: "",
-                password: "",
-            }
-        }),
-        methods: {
-            doLogin() {
-                SERVICE.dispatch("doLogin", {self: this});
-            },
-        }
-    }
+  export default {
+    name: 'Login',
+    components: {Logo},
+    data: () => ({
+      loading: false,
+      validate: null,
+      data: [],
+      params: {
+        email: 'aquisper',
+        password: 'secret',
+      },
+      errors: {
+        email: '',
+        password: '',
+      },
+    }),
+    methods: {
+      doLogin() {
+        SERVICE.dispatch('doLogin', {self: this})
+      },
+    },
+  }
 </script>
 
 <style scoped>
