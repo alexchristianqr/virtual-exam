@@ -115,7 +115,7 @@
 </template>
 
 <script>
-    import SERVICE from '../api/ApiService';
+    import SERVICE from '../../api/ApiService';
 
     export default {
         name: "Questions",

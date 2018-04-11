@@ -20,7 +20,7 @@
         <template v-else>
             <router-view/>
         </template>
-        <footer :class="$route.path == '/login' ? 'sticky-footer w-100' : 'sticky-footer' "
+        <footer :class="getClass()"
                 style="background-color: transparent !important;">
             <div class="container">
                 <div class="text-center">
@@ -32,9 +32,9 @@
 </template>
 
 <script>
-
   import NavHeader from './components/layouts/NavHeader'
   import Storage   from 'vue-local-storage'
+  import Sbadmin   from './sb-admin'
 
   export default {
     name: 'App',
@@ -43,24 +43,26 @@
       storage: Storage,
       role: {name: 'guest'},
     }),
-    beforeMount() {
+    beforeMount () {
       this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
     },
+    watch: {
+      $route () {
+        this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
+        Sbadmin.init()
+        this.getClass()
+        console.log('execute listening route!')
+      }
+    },
+    methods:{
+      getClass(){
+        return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer'
+      }
+    }
   }
 </script>
 
-<style>
-    @import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+<style lang="scss">
+    @import "assets/scss/app";
     @import "../node_modules/font-awesome/css/font-awesome.min.css";
-    @import "assets/vendor/css/sb-admin.css";
-
-    @media (min-width: 992px) {
-        .modal-lg {
-            max-width: 1200px !important;
-        }
-    }
-
-    .table td, .table th {
-        vertical-align: middle !important;
-    }
 </style>

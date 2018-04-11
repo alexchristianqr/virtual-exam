@@ -13,7 +13,7 @@
                     <div class="form-group">
                         <label>Username</label>
                         <div class="input-group mb-1">
-                            <input v-model="params.username" name="username" class="form-control" type="text"
+                            <input v-model="params.username" ref="inputUsername" name="username" class="form-control" type="text"
                                    placeholder="Enter username" title="Registrar" required>
                             <div class="input-group-append">
                                 <span class="input-group-text bg-white">@sapia.com.pe</span>
@@ -24,17 +24,25 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input v-model="params.password" name="password" class="form-control mb-1" type="password"
+                        <input v-model="params.password" ref="inputPassword" name="password" class="form-control mb-1" type="password"
                                placeholder="Password" required>
                         <span v-if="errors.password !== '' " class="help-block"><small><strong>{{errors.password}}</strong></small></span>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
-                            <label class="form-check-label"><input name="rememberme" class="form-check-input"
-                                                                   type="checkbox">Remember Password</label>
+                            <label class="form-check-label">
+                                <input name="rememberme" class="form-check-input" type="checkbox">Remember Password
+                            </label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-secondary btn-block">Log In</button>
+                    <template v-if="!loading">
+                        <button type="submit" class="btn btn-secondary btn-block">Log In</button>
+                    </template>
+                    <template v-else>
+                        <button type="submit" class="btn btn-secondary btn-block" disabled>
+                            <i class="fa fa-circle-o-notch fa-spin"></i>
+                        </button>
+                    </template>
                 </form>
                 <div>
                     <br>
@@ -57,9 +65,9 @@
 </template>
 
 <script>
-  import SERVICE from '../api/ApiService'
-  import Logo    from './layouts/Logo'
-  import Notify  from './layouts/Notify'
+  import SERVICE from '../../api/ApiService'
+  import Logo    from '../layouts/Logo'
+  import Notify  from '../layouts/Notify'
 
   export default {
     name: 'Login',
@@ -80,6 +88,7 @@
     }),
     methods: {
       doLogin() {
+        this.loading = true;
         SERVICE.dispatch('doLogin', {self: this})
       },
       eventClose(){

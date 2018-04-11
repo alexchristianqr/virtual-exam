@@ -28,10 +28,10 @@
 </template>
 
 <script>
-    import SERVICE from '../api/ApiService';
+    import SERVICE from '../../api/ApiService';
 
     export default {
-        name: "SelectProject",
+        name: "Project",
         data: () => ({
             data: [],
             selectedProject:"0",

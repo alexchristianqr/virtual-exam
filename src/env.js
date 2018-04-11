@@ -1,3 +1,3 @@
 export default {
-    API: "http://service.apis.survey/api",
+    API: "http://service.apis.exam.sapia.pe/api",
 }

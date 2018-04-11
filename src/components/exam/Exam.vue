@@ -120,10 +120,10 @@
 </template>
 
 <script>
-  import SERVICE from '../api/ApiService'
+  import SERVICE from '../../api/ApiService'
   import $       from 'jquery'
   import moment  from 'moment'
-  import Util    from '../util'
+  import Util    from '../../util'
 
   export default {
     name: 'Exam',

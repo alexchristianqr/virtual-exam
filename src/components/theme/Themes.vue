@@ -114,9 +114,9 @@
 </template>
 
 <script>
-    import moment from 'moment';
-    import SERVICE from '../api/ApiService';
-    import Util from '../util';
+    import moment  from 'moment';
+    import SERVICE from '../../api/ApiService';
+    import Util    from '../../util';
 
     export default {
         name: "Themes",
