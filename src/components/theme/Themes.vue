@@ -7,7 +7,7 @@
                         <span class="card-title">Themes List</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-link text-secondary"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span></router-link>
+                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span></router-link>
                     </div>
                 </div>
                 <hr>
@@ -92,19 +92,26 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                            <span class="text-secondary">Are you ready to start the exam?</span>
+                            <span class="text-secondary">¿Estás listo para iniciar el examen?</span>
                         </h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">The exam lasts <b>{{util.toHHMMSS(p_dataTheme.theme_duration)}}</b> minutes
-                        with no option to cancel.
+                    <div class="modal-body">
+                        <span>El examen tine una duración de <b>{{util.toHHMMSS(p_dataTheme.theme_duration)}}</b> minutos, sin opcion de cancelar.</span>
+                        <br>
+                        <br>
+                        <small class="text-secondary"><b>Nota:</b> El tiempo del examen es exacto asi que no hay opciones de retroceso.</small>
                     </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <router-link data-dismiss="modal" class="btn btn-outline-primary" :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
-                            Ready
+                    <div class="modal-footer w-100">
+                        <button class="btn btn-outline-secondary w-30" type="button" data-dismiss="modal">
+                            <i class="fa fa-close fa-fw"></i>
+                            <span>Cancelar</span>
+                        </button>
+                        <router-link data-dismiss="modal" class="btn btn-outline-primary w-30" :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
+                            <i class="fa fa-check fa-fw"></i>
+                            <span>Listo</span>
                         </router-link>
                     </div>
                 </div>

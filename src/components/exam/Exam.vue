@@ -148,42 +148,32 @@
       tempChecked: [],
       tempRptaChecked: [],
     }),
-    beforeCreate() {
+    beforeCreate () {
       window.clearInterval(this.timerUpdate)
       console.log('event before-create: cleaned interval!')
-    }
-    ,
-    created() {
+    },
+    created () {
       this.data = [{}]
       this.p_duration = Util.toHHMMSS(this.$route.params.dataTheme.theme_duration)
       this.p_duration2 = this.$route.params.dataTheme.theme_duration
       this.theme_id = this.$route.params.dataTheme.theme_id
       this.loadExam()
-    }
-    ,
-    watch: {
-      $route() {
-        console.log('escucheeeeeeeeeeeeeeeeee')
-        console.log(this.$route)
-      },
-    }
-    ,
+    },
     methods: {
-      loadExam() {
+      loadExam () {
         SERVICE.dispatch('loadExam', {self: this})
         this.timer()
       }
       ,
-      returnLetter(key, toUpper = false) {
+      returnLetter (key, toUpper = false) {
         let letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
         if (toUpper) {
           return (letter[key]).toString().toUpperCase()
         } else {
           return letter[key]
         }
-      }
-      ,
-      change(signo) {
+      },
+      change (signo) {
         if (signo === '+') {
           //condicional para el temporal checked
           if (this.tempChecked.length > this.next) {
@@ -260,9 +250,8 @@
 
         return this.data[this.next]
 
-      }
-      ,
-      timer() {
+      },
+      timer () {
         this.remaining = this.p_duration
         const getRemainTime = deadline => {
           let m = moment(this.remaining, 'HH:mm:ss').minute()
@@ -297,9 +286,8 @@
           }, 1000)
         }
         countDown(new Date())
-      }
-      ,
-      doChecked() {
+      },
+      doChecked () {
         $(document).ready(() => {
           let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]')
           $.each(inputToArray, (kkkk, vvvv) => {
@@ -319,10 +307,8 @@
             }
           })
         })
-      }
-      ,
+      },
     }
-    ,
   }
 </script>
 
