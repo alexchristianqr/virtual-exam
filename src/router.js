@@ -13,6 +13,8 @@ import Users                    from './components/user/Users'
 import UserHistory              from './components/user/UserHistory'
 import ExamSolution             from './components/exam/ExamSolution'
 
+import PageNotFound             from './components/errors/404'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -24,7 +26,7 @@ const router = new Router({
     //Views Authorized
     {path: '/themes', name: 'themes', component: Themes, meta: {requiresAuth: true,title:'Tema'}},
     {path: '/exam', name: 'exam', component: Exam, meta: {requiresAuth: true,title:'Examen'}},
-    {path: '/create-theme', name: 'create-theme', component: CreateUpdateTheme, meta: {requiresAuth: true,title:'Crear Tema'}},
+    {path: '/create-theme', name: 'create-theme', component: CreateUpdateTheme, meta: {requiresAuth: true,title:'Crear Tema',roleId:1}},
     {path: '/questions', name: 'questions', component: Questions, meta: {requiresAuth: true,title:'Pregunta'}},
     {path: '/create-question', name: 'create-question', component: CreateUpdateQuestion, meta: {requiresAuth: true,title:'Crear Pregunta'}},
     {path: '/edit-question', name: 'edit-question', component: CreateUpdateQuestion, meta: {requiresAuth: true,title:'Editar Pregunta'}},
@@ -34,6 +36,8 @@ const router = new Router({
     {path: '/users', name: 'users', component: Users, meta: {requiresAuth: true,title:'Usuario'}},
     {path: '/user-history/:user_id', name: 'user-history', component: UserHistory, meta: {requiresAuth: true,title:'Usuario'}},
     {path: '/exam-solution/:exam_id', name: 'exam-solution', component: ExamSolution, meta: {requiresAuth: true,title:'Usuario'}},
+
+    {path: '/page-not-found',name:'page-not-found',component:PageNotFound}
   ]
 })
 
@@ -41,6 +45,7 @@ router.beforeEach((to, from, next) => {
   //modificamos el valor del titulo del documento web
   setTtitle(to)
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const roleId = to.meta.roleId
   //validamos si la ruta en la que estamos es Login
   if (to.path === '/login') {
     Storage.remove('data_auth')
@@ -49,7 +54,20 @@ router.beforeEach((to, from, next) => {
   if (requiresAuth && Storage.get('data_auth') == null) {
     next('/login')
   } else {
-    next()
+    if(!requiresAuth && Storage.get('data_auth') != null){
+      if(Storage.get('data_auth').role.id == roleId){
+        next()
+      }else{
+        next('/page-not-found')
+      }
+    }else{
+        // alert("jaja")
+      if(Storage.get('data_auth').role.id == roleId){
+        next()
+      }else{
+        next('/page-not-found')
+      }
+    }
   }
 })
 
