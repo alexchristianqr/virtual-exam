@@ -30,9 +30,9 @@
         </footer>
 
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded">
-            <i class="fa fa-angle-up"></i>
-        </a>
+        <!--<a class="scroll-to-top rounded">-->
+        <!--<i class="fa fa-angle-up"></i>-->
+        <!--</a>-->
     </div>
 </template>
 
@@ -55,12 +55,11 @@
       $route () {
         this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
         Sbadmin.init()
-        this.getClass()
-        console.log('execute listening route!')
+        console.log('Sbadmin reload!')
       }
     },
-    methods:{
-      getClass(){
+    methods: {
+      getClass () {
         return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer'
       }
     }

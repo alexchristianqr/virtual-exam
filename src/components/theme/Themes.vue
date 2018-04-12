@@ -4,32 +4,45 @@
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
-                        <span class="card-title">Themes List</span>
+                        <span class="card-title">Temas</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Add Theme</span></router-link>
+                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                     </div>
                 </div>
                 <hr>
                 <div class="form-inline">
-                    <select title v-model="params.user_survey_theme_id" class="form-control" @change="change()">
-                        <option value="" disabled selected>- Select Survey -</option>
-                        <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
-                    </select>
-                    <input type="search" placeholder="Search" class="form-control w-45">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-filter"></i></span>
+                        </div>
+                        <select title v-model="params.user_survey_theme_id" class="form-control" @change="change()">
+                            <option value="" selected>Seleccionar Categoria</option>
+                            <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
+                        </select>
+                    </div>
+                    <div v-show="params.user_survey_theme_id != ''" class="input-group w-35">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search" placeholder="Buscar tema" class="form-control">
+                        <div v-if="input_search_theme != ''" class="input-group-append">
+                            <button title="limpiar busqueda" @click.prevent="(input_search_theme='') ($refs.inputSearchTheme.focus())" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
-                <table class="table">
+                <table class="table table-sm">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Last Updated</th>
-                        <th scope="col">Duration</th>
-                        <th scope="col">Score</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Actions</th>
+                        <th><b>#</b></th>
+                        <th>Nombre Tema</th>
+                        <th>Actualizado</th>
+                        <th>Duración</th>
+                        <th>Nota</th>
+                        <th width="5%" class="text-center">Estado</th>
+                        <th width="10%" class="text-right">Acción</th>
                     </tr>
                     </thead>
                     <tbody v-if="loadingTable" class="table">
@@ -43,19 +56,23 @@
                     </tr>
                     </tbody>
                     <tbody v-if="!loadingTable && dataTheme.length > 0">
-                    <tr v-for="(v,k) in dataTheme">
-                        <th scope="row" width="5%">{{k+1}}</th>
+                    <tr v-for="(v,k) in fiteredDataTheme">
+                        <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
                         <td>{{v.theme_updated_at}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.theme_score}}</td>
-                        <td>
+                        <td class="text-center">
                             <i v-if="v.theme_status === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.theme_status === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
-                        <td>
-                            <a v-if="v.user_survey_theme_status == 'P' " class="btn btn-warning" href
-                               data-toggle="modal" data-target="#infoModal" @click.prevent="p_dataTheme = v">
+                        <td class="text-right">
+                            <a v-if="v.user_survey_theme_status == 'P' "
+                               class="btn btn-warning btn-sm"
+                               href
+                               data-toggle="modal"
+                               data-target="#infoModal"
+                               @click.prevent="p_dataTheme = v">
                                 <i class="fa fa-file-text-o fa-fw"></i>
                                 <span>PENDING</span>
                             </a>
@@ -130,6 +147,7 @@
         data: () => ({
             util: Util,
             loadingTable: true,
+            computedThemes:[],
             dataTheme: [],
             dataSurvey: [],
             moment: moment,
@@ -137,12 +155,18 @@
             p_dataTheme: {},
             params: {
                 user_id: "1",
-                user_survey_theme_id: "1",
-            }
+                user_survey_theme_id: "",
+            },
+          input_search_theme:''
         }),
         created() {
             this.load();
         },
+      computed:{
+        fiteredDataTheme(){
+          return this.dataTheme.filter((item)=>{return item.theme_name.toLowerCase().indexOf(this.input_search_theme.toLowerCase()) > -1})
+        }
+      },
         methods: {
             load() {
                 SERVICE.dispatch("allTheme", {self: this});

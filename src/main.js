@@ -14,7 +14,7 @@ new Vue({
   router,
   beforeCreate(){
     Sbadmin.init();
-    console.log('execute listening app!');
+    console.log('Sbadmin reload!')
   },
   components: {App},
   template: '<App/>'

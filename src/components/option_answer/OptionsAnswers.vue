@@ -4,55 +4,61 @@
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
-                        <span class="card-title">Options Answers</span>
+                        <span class="card-title">Opciones de Respuesta</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-option-answer'" class="btn btn-link text-secondary"><i class="fa fa-plus fa-fw"></i><span>Add Option Answer</span></router-link>
+                        <router-link :to="'/create-option-answer'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                     </div>
                 </div>
                 <hr>
                 <div class="form-inline">
+                    <div class="input-group w-35">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input type="search" placeholder="Search" class="form-control">
+                    </div>
                     <div class="input-group">
-                        <select title="" class="form-control bg-light" v-model="params.theme_id" @change="changeTheme()">
-                            <option value="" selected>- Select Theme -</option>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-filter"></i></span>
+                        </div>
+                        <select title="" class="form-control" v-model="params.theme_id" @change="changeTheme()">
+                            <option value="" selected>Seleccionar Tema</option>
                             <option v-for="(v) in dataTheme" :value="v.id">{{v.name}}</option>
                         </select>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fa fa-filter"></i></span>
-                        </div>
                     </div>
                     <div v-if="params.theme_id !== '' " class="input-group">
-                        <select title="" class="form-control bg-light" v-model="params.question_id" @change="change()">
-                            <option value="" selected>- Select Question -</option>
-                            <option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>
-                        </select>
-                        <div class="input-group-append">
+                        <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-filter"></i></span>
                         </div>
+                        <select title="" class="form-control" v-model="params.question_id" @change="change()">
+                            <option value="" selected>Seleccionar Pregunta</option>
+                            <option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>
+                        </select>
                     </div>
                     <div class="input-group">
-                        <select title="" class="form-control bg-light" v-model="params.status" @change="changeTheme()">
-                            <option value="" selected>- Select Status -</option>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-filter"></i></span>
+                        </div>
+                        <select title="" class="form-control" v-model="params.status" @change="changeTheme()">
+                            <option value="" selected>Seleccionar Estado</option>
                             <option value="A">Activo</option>
                             <option value="I">Inactivo</option>
                         </select>
-                        <div class="input-group-append">
-                            <span class="input-group-text"><i class="fa fa-filter"></i></span>
-                        </div>
                     </div>
                     <button class="btn btn-success" @click="refresh()"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-sm table-hover">
                         <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Last Updated</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Actions</th>
+                            <th><b>#</b></th>
+                            <th width="60%">Nombre Respuesta</th>
+                            <th width="20%">Actualizado</th>
+                            <th width="5%" class="text-center">Estado</th>
+                            <th width="10%" class="text-right">Acción</th>
                         </tr>
                         </thead>
                         <tbody v-if="loadingTable" class="table">
@@ -67,18 +73,18 @@
                         </tbody>
                         <tbody v-if="!loadingTable && dataOptionAnswer.length > 0">
                         <tr v-for="(v,k) in dataOptionAnswer">
-                            <th scope="row" width="5%">{{k+1}}</th>
+                            <th>{{k+1}}</th>
                             <td>{{v.name}}</td>
                             <td>{{v.updated_at}}</td>
-                            <td>
-                                <i v-if="v.status === 'A' " class="fa fa-circle text-success"></i>
-                                <i v-else="" class="fa fa-circle text-danger"></i>
+                            <td class="text-center">
+                                <i title="Activo" v-if="v.status === 'A' " class="fa fa-circle text-success"></i>
+                                <i title="Inactivo" v-else="" class="fa fa-circle text-danger"></i>
                             </td>
-                            <td width="15%">
-                                <div class="btn-group dropdown btn-group-xs" role="group">
-                                    <router-link class="btn btn-warning" :to="{name:'edit-option-answer',params:{dataOptionAnswer:v}}"><i class="fa fa-edit fa-fw"></i></router-link>
+                            <td class="text-right">
+                                <div class="btn-group dropdown btn-group-sm" role="group">
+                                    <router-link class="btn btn-warning btn-sm" :to="{name:'edit-option-answer',params:{dataOptionAnswer:v}}"><i class="fa fa-edit fa-fw"></i></router-link>
                                     <div class="btn-group open" role="group">
-                                        <button type="button" class="btn btn-light btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">

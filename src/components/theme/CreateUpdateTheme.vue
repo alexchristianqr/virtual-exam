@@ -6,8 +6,8 @@
                     <div class="row">
                         <div class="col-3 mt-auto mb-auto">
                             <span class="card-title">
-                                <span v-if="isPost">New Theme</span>
-                                <span v-else>Update Theme</span>
+                                <span v-if="isPost">Crear Tema</span>
+                                <span v-else>Actualizar Tema</span>
                             </span>
                         </div>
                         <div class="col-9 text-right">
@@ -17,11 +17,11 @@
                             </router-link>
                             <button type="submit" class="btn btn-outline-primary w-20">
                                 <i class="fa fa-check fa-fw"></i>
-                                <span>Save</span>
+                                <span>Crear</span>
                             </button>
                             <button type="reset" class="btn btn-outline-secondary w-20">
                                 <i class="fa fa-close fa-fw"></i>
-                                <span>Cancel</span>
+                                <span>Cancelar</span>
                             </button>
                         </div>
                     </div>
@@ -37,15 +37,15 @@
                     <div class="row">
                         <div class="col-7">
                             <div class="form-group">
-                                <label>Title</label>
+                                <label>Nombre Tema</label>
                                 <input title="tema" v-model="params.name" type="text" class="form-control" required>
                             </div>
                         </div>
                         <div class="col-5">
                             <div class="form-group">
-                                <label>Survey</label>
+                                <label>Categoria</label>
                                 <select title="ancuesta" class="form-control" v-model="params.user_survey_id" required>
-                                    <option value="" disabled selected>- select survey -</option>
+                                    <option value="" disabled selected>Seleccionar Categoria</option>
                                     <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
                                 </select>
                             </div>

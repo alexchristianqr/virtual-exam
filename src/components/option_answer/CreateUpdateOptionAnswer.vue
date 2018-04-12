@@ -6,8 +6,8 @@
                     <div class="row">
                         <div class="col-3 mt-auto mb-auto">
                             <span class="card-title">
-                                <span v-if="isPost">New Option Answer</span>
-                                <span v-else>Update Option Answer</span>
+                                <span v-if="isPost">Crear Opcion Respuesta</span>
+                                <span v-else>Actualizar Opcion Respuesta</span>
                             </span>
                         </div>
                         <div class="col-9 text-right">
@@ -17,12 +17,12 @@
                             </router-link>
                             <button type="submit" class="btn btn-outline-primary w-20">
                                 <i class="fa fa-check fa-fw"></i>
-                                <span v-if="isPost">Save</span>
-                                <span v-else>Update</span>
+                                <span v-if="isPost">Crear</span>
+                                <span v-else>Actualizar</span>
                             </button>
                             <button type="reset" class="btn btn-outline-secondary w-20">
                                 <i class="fa fa-close fa-fw"></i>
-                                <span>Cancel</span>
+                                <span>Cancelar</span>
                             </button>
                         </div>
                     </div>
@@ -36,9 +36,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div :class=" isPost ? 'col-12' : 'col-10' ">
+                        <div class="col-6">
                             <div class="form-group">
-                                <label>Question</label>
+                                <label>Tema</label>
+                                <select title="ancuesta" class="form-control" v-model="params.theme_id" required @change="changeLoadOptionAnswers()">
+                                    <option value="" disabled selected>Seleccionar Tema</option>
+                                    <option v-for="(v) in dataTheme" :value="v.id">{{v.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div v-show="params.theme_id!=''" :class=" isPost ? 'col-6' : 'col-10' ">
+                            <div class="form-group">
+                                <label>Pregunta</label>
                                 <select title="" class="form-control" v-model="params.question_id">
                                     <option value="" selected>- Select Question -</option>
                                     <option v-for="(v) in dataQuestion" :value="v.id">{{v.name}}</option>
@@ -47,7 +56,7 @@
                         </div>
                         <div v-if="!isPost" class="col-2">
                             <div class="form-group">
-                                <label>Status</label>
+                                <label>Estado</label>
                                 <select title v-model="params.status" class="form-control" required>
                                     <option value="" selected disabled>- Select Status -</option>
                                     <option value="A">Activo</option>
@@ -57,7 +66,7 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Option Answer Name</label>
+                                <label>Nombre Opcion Respuesta</label>
                                 <input title="question" v-model="params.name" type="text" class="form-control" required>
                             </div>
                         </div>
@@ -81,6 +90,7 @@
       dataError: {},
       showError: false,
       params: {
+        theme_id:'',
         option_answer_id: '',
         question_id: '',
         name: '',
@@ -88,11 +98,14 @@
       },
     }),
     created() {
-      SERVICE.dispatch('allQuestion', {self: this})
-      if (this.$route.params.dataOptionAnswer != undefined &&
-        Object.keys(this.$route.params.dataOptionAnswer).length) this.editOptionAnswer()
+      this.load()
     },
     methods: {
+      load(){
+        SERVICE.dispatch("allTheme", {self: this});
+        SERVICE.dispatch('allQuestion', {self: this})
+        if (this.$route.params.dataOptionAnswer != undefined && Object.keys(this.$route.params.dataOptionAnswer).length) this.editOptionAnswer()
+      },
       createOrUpdateOptionAnswer() {
         if (this.isPost) {
           SERVICE.dispatch('createOptionAnswer', {self: this})

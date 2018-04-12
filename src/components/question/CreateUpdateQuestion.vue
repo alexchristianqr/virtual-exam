@@ -6,8 +6,8 @@
                     <div class="row">
                         <div class="col-3 mt-auto mb-auto">
                             <span class="card-title">
-                                <span v-if="isPost">New Question</span>
-                                <span v-else>Update Question</span>
+                                <span v-if="isPost">Crear Pregunta</span>
+                                <span v-else>Actualizar Pregunta</span>
                             </span>
                         </div>
                         <div class="col-9 text-right">
@@ -17,12 +17,12 @@
                             </router-link>
                             <button type="submit" class="btn btn-outline-primary w-20">
                                 <i class="fa fa-check fa-fw"></i>
-                                <span v-if="isPost">Save</span>
-                                <span v-else>Update</span>
+                                <span v-if="isPost">Crear</span>
+                                <span v-else>Actualizar</span>
                             </button>
                             <button type="reset" class="btn btn-outline-secondary w-20">
                                 <i class="fa fa-close fa-fw"></i>
-                                <span>Cancel</span>
+                                <span>Cancelar</span>
                             </button>
                         </div>
                     </div>
@@ -37,18 +37,18 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
-                                <label>Theme</label>
+                                <label>Tema</label>
                                 <select title="ancuesta" class="form-control" v-model="params.theme_id" required @change="changeLoadOptionAnswers()">
-                                    <option value="" disabled selected>- Select Theme -</option>
+                                    <option value="" disabled selected>Seleccionar Tema</option>
                                     <option v-for="(v) in dataTheme" :value="v.id">{{v.name}}</option>
                                 </select>
                             </div>
                         </div>
                         <div :class="isPost ? 'col-6': 'col-3' ">
                             <div class="form-group">
-                                <label>Level</label>
+                                <label>Nivel de Dificultad</label>
                                 <select title v-model="params.level" class="form-control" required>
-                                    <option value="" selected disabled>- Select Level -</option>
+                                    <option value="" selected disabled>Seleccionar Nivel</option>
                                     <option value="F">Facil</option>
                                     <option value="R">Regular</option>
                                     <option value="D">Dificil</option>
@@ -57,9 +57,9 @@
                         </div>
                         <div v-if="!isPost" class="col-3">
                             <div class="form-group">
-                                <label>Status</label>
+                                <label>Estado</label>
                                 <select title v-model="params.status" class="form-control" required>
-                                    <option value="" selected disabled>- Select Status -</option>
+                                    <option value="" selected disabled>- Seleccionar Estado -</option>
                                     <option value="A">Activo</option>
                                     <option value="I">Inactivo</option>
                                 </select>
@@ -67,14 +67,14 @@
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label>Question Name</label>
+                                <label>Nombre Pregunta</label>
                                 <input title v-model="params.name" type="text" class="form-control" required>
                             </div>
                         </div>
                         <template v-if="params.theme_id != '' ">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Answer Correct</label>
+                                    <label>Respuesta Correcta</label>
                                     <select title v-model="params.option_answer_id" class="form-control">
                                         <option value="">- Select Answer -</option>
                                         <option v-for="(v) in dataOptionAnswer" :value="v.id">{{v.name}}</option>
