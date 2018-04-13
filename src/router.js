@@ -98,7 +98,7 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Usuario', roleId: [1, 2, 3]},
     },
     //View Errors
-    {path: '/know', name: 'know', component: PageKnow},
+    {path: '/know', name: 'know', component: PageKnow,meta:{back:'Login'}},
   ],
 })
 

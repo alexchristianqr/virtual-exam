@@ -1,7 +1,7 @@
 <template>
     <div>
         <template v-if="$route.path !== '/login'">
-            <nav-header :role="role"/>
+            <nav-header v-if="$route.path !== '/know'" :role="role"/>
             <template v-if="role.name !== 'guest'">
                 <div class="content-wrapper bg-light">
                     <div class="container-fluid mb-5">
@@ -11,7 +11,7 @@
             </template>
             <template v-else>
                 <div class="container">
-                    <div class="col-10 mx-auto mt-4 mb-5">
+                    <div :class="$route.path !== '/know' ? 'col-10 mx-auto mt-4 mb-5' : 'col-10 mx-auto'">
                         <router-view/>
                     </div>
                 </div>
@@ -20,8 +20,7 @@
         <template v-else>
             <router-view/>
         </template>
-        <footer :class="getClass()"
-                style="background-color: transparent !important;">
+        <footer :class="getClass()" style="background-color: transparent !important;">
             <div class="container">
                 <div class="text-center">
                     <small>Copyright © Corporación Sapia {{new Date().getFullYear()}}</small>
@@ -49,18 +48,35 @@
       role: {name: 'guest'},
     }),
     beforeMount () {
-      this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
+      this.validateRoleAuthorized()
+      this.validateShowPageKnow()
     },
     watch: {
       $route () {
-        this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
-        Sbadmin.init()
-        console.log('Sbadmin reload!')
+        this.loadSbadmin()
+        this.validateRoleAuthorized()
+        this.validateShowPageKnow()
       }
     },
     methods: {
       getClass () {
         return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer'
+      },
+      loadSbadmin () {
+        Sbadmin.init()
+        console.log('Sbadmin reload!')
+      },
+      validateRoleAuthorized () {
+        this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
+      },
+      validateShowPageKnow () {
+        if (this.$route.path == '/know') {
+          document.body.classList.remove('fixed-nav')
+          document.body.classList.remove('sticky-footer')
+        } else {
+          document.body.classList.add('fixed-nav')
+          document.body.classList.add('sticky-footer')
+        }
       }
     }
   }
