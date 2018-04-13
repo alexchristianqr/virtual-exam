@@ -18,7 +18,7 @@
                         <input v-model="input_search_user" ref="inputSearchUser" type="search" placeholder="Buscar tema"
                                class="form-control">
                         <div v-if="input_search_user != ''" class="input-group-append">
-                            <button title="limpiar busqueda" @click.prevent="(input_search_user='') ($refs.inputSearchUser.focus())" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                            <button title="limpiar busqueda" @click.prevent="input_search_user='' ; $refs.inputSearchUser.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
                     <div class="input-group">
@@ -46,7 +46,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(v,k) in dataUsers">
+                    <tr v-for="(v,k) in filteredDataUsers">
                         <th>{{k+1}}</th>
                         <td>{{v.name}}</td>
                         <td>{{v.project.name}}</td>
@@ -75,7 +75,12 @@
         {id:1, name:'Alex Christian',project:{id:2,name:'interbank'},status:'A'},
         {id:2, name:'Dennis Davalos',project:{id:3,name:'corporativo'},status:'A'},
       ],
-    })
+    }),
+    computed:{
+      filteredDataUsers(){
+        return this.dataUsers.filter((item)=>{return item.name.toLowerCase().indexOf(this.input_search_user.toLowerCase()) > -1})
+      }
+    }
   }
 </script>
 

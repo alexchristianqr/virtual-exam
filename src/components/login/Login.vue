@@ -40,7 +40,7 @@
                     </template>
                     <template v-else>
                         <button type="submit" class="btn btn-secondary btn-block" disabled>
-                            <i class="fa fa-circle-o-notch fa-spin"></i>
+                            <span>entrando...</span>
                         </button>
                     </template>
                 </form>

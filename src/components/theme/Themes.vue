@@ -27,7 +27,7 @@
                         </div>
                         <input v-model="input_search_theme" ref="inputSearchTheme" type="search" placeholder="Buscar tema" class="form-control">
                         <div v-if="input_search_theme != ''" class="input-group-append">
-                            <button title="limpiar busqueda" @click.prevent="(input_search_theme='') ($refs.inputSearchTheme.focus())" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                            <button title="limpiar busqueda" @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     </tr>
                     </tbody>
                     <tbody v-if="!loadingTable && dataTheme.length > 0">
-                    <tr v-for="(v,k) in fiteredDataTheme">
+                    <tr v-for="(v,k) in filteredDataTheme">
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
                         <td>{{v.theme_updated_at}}</td>
@@ -163,7 +163,7 @@
             this.load();
         },
       computed:{
-        fiteredDataTheme(){
+        filteredDataTheme(){
           return this.dataTheme.filter((item)=>{return item.theme_name.toLowerCase().indexOf(this.input_search_theme.toLowerCase()) > -1})
         }
       },
