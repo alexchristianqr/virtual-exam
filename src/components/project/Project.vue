@@ -2,23 +2,24 @@
     <div>
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">
-                <span class="card-title">Project</span>
+                <span class="card-title">Proyecto</span>
             </div>
             <div class="card-body">
                 <form>
                     <div class="form-group">
-                        <label>Project</label>
-                        <select v-model="selectedProject" class="form-control mb-1">
-                            <option value="0" selected>- seleccionar -</option>
-                            <option v-for="(v,k) in data" v-bind:value="v.id">{{v.name}}</option>
+                        <label>Seleccionar Proyecto</label>
+                        <select title="" v-model="params.project_id" class="form-control mb-1">
+                            <option v-for="(v) in dataProject" :value="v.id">{{v.name}}</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <span v-if="selectedProject == '0' ">
-                            <a href class="btn btn-primary btn-block disabled"><span>Next</span></a>
+                        <span v-if="params.project_id == '1' ">
+                            <a href class="btn btn-secondary btn-block disabled"><span>Siguiente</span></a>
                         </span>
                         <span v-else>
-                            <router-link :class=" selectedProject != '0' ? 'btn btn-primary btn-block' : 'btn btn-primary btn-block disabled' " :to="'list-exams'"><span>Next</span></router-link>
+                            <button type="button"
+                                    :class=" params.project_id != '1' ? 'btn btn-secondary btn-block' : 'btn btn-secondary btn-block disabled' "
+                                    @click="updateProject()">Siguiente</button>
                         </span>
                     </div>
                 </form>
@@ -28,26 +29,30 @@
 </template>
 
 <script>
-    import SERVICE from '../../api/ApiService';
+  import ProjectService from '../../services/ProjectService'
 
-    export default {
-        name: "Project",
-        data: () => ({
-            data: [],
-            selectedProject:"0",
-        }),
-        created() {
-            this.loadProjects();
-        },
-        methods: {
-            loadProjects() {
-                SERVICE.dispatch("loadProjects", {self: this});
-            },
-            change(){
-                alert(this.selectedProject);
-            }
-        }
+  export default {
+    name: 'Project',
+    data: () => ({
+      dataProject: [],
+      params: {
+        project_id: '1'
+      },
+      newProject:{}
+    }),
+    created () {
+      this.getProjects()
+    },
+    methods: {
+      getProjects () {
+        ProjectService.dispatch('getProjects', {self: this})
+      },
+      updateProject () {
+        this.newProject = this.dataProject[this.params.project_id - 1]
+        ProjectService.dispatch('updateProject', {self: this})
+      }
     }
+  }
 </script>
 
 <style scoped>

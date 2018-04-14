@@ -1,6 +1,6 @@
 <template>
     <div>
-        <template v-if="$route.path !== '/login'">
+        <template v-if="$route.path !== '/login' && $route.path !== '/project'"><!-- Si mo es Login -->
             <nav-header v-if="$route.path !== '/know'" :role="role"/>
             <template v-if="role.name !== 'guest'">
                 <div class="content-wrapper bg-light">
@@ -17,7 +17,7 @@
                 </div>
             </template>
         </template>
-        <template v-else>
+        <template v-else><!-- Si es Login -->
             <router-view/>
         </template>
         <footer :class="getClass()" style="background-color: transparent !important;">
@@ -27,7 +27,6 @@
                 </div>
             </div>
         </footer>
-
         <!-- Scroll to Top Button-->
         <!--<a class="scroll-to-top rounded">-->
         <!--<i class="fa fa-angle-up"></i>-->
@@ -39,6 +38,7 @@
   import NavHeader from './components/layouts/NavHeader'
   import Storage   from 'vue-local-storage'
   import Sbadmin   from './assets/js/sb-admin'
+  import Util       from './util'
 
   export default {
     name: 'App',
@@ -51,6 +51,9 @@
       this.validateRoleAuthorized()
       this.validateShowPageKnow()
     },
+    mounted(){
+     this.removeCookies();
+    },
     watch: {
       $route () {
         this.loadSbadmin()
@@ -59,6 +62,10 @@
       }
     },
     methods: {
+      removeCookies(){
+        Util.removeCookie('cookie_data_auth','/')
+        Util.removeCookie('cookie_data_auth','/login')
+      },
       getClass () {
         return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer'
       },

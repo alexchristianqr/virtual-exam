@@ -9,86 +9,52 @@ Vue.use(Vuex)
 
 const AUTH_SERVICE = new Vuex.Store({
   actions: {
-    login ({commit}, {self}) {
-      // Axios.post(Env.endpoint_api_laravel + '/login', self.params)
-      //   .then(r => {
-      //     if (r.status === 200) {
-      //       // if (r.data.status === false) {
-      //       //   self.errors = 'Credenciales Invalidas...!!'
-      //       // } else {
-      //   Storage.set('data_auth', r.data.data)
-      //       //   this.dispatch('validateIfExist', {self: {self: self, auth_user: r.data.data}})
-      //       // }
-      Storage.set('data_auth', {
-        name: 'Alex Christian',
-        username: 'aquisper',
-        email: 'aquisper@sapia.com.pe',
-        isAdmin: true,
-        id: 2,
-        project: {id: null, name: null,}
-      })
-      // Storage.set('data_auth', {
-      //   name: 'Luz Velarde',
-      //   username: 'lvelarde',
-      //   email: 'lvelarde@sapia.com.pe',
-      //   isAdmin: false,
-      //   id: 5,
-      //   project: {id: null, name: null,}
-      // })
-      self.$router.push('/project')
-
-      //     }
-      //   })
-      //   .catch(e => Util.fnError(e))
-    },
     doLogin ({commit}, {self}) {
-      Storage.set('data_auth', undefined)
-      self.validate = null
-      self.errors = ''
-      if (self.params.username ===
-        '') return self.errors = 'El campo username no puede estar vacio!'
-      if (self.params.password ===
-        '') return self.errors = 'El campo password no puede estar vacio!'
-
-      Axios.post(Env.endpoint_auth + '/api/authenticate/examenes', self.params).then(r => {
+      // Storage.set('data_auth', {role: {id:5,name: 'guest'}})
+      Axios.post(Env.API + '/login', self.params).then((r) => {
         if (r.status === 200) {
-          if (r.data.status === false) {
-            self.errors = 'Credenciales Invalidas...!!'
-          } else {
-            Storage.set('data_auth', r.data.data)
-            this.dispatch('validateIfExist',
-              {self: {self: self, auth_user: r.data.data}})
-          }
+          self.dataNotify = {}
+          Util.setCookie('cookie_data_auth',r.data,1)
+          // console.log(Util.getCookie('cookie_data_auth'))
+          // Storage.set('data_auth', r.data)
+          this.dispatch('validateIfExist',{self:self})
         }
-      }).catch(e => Util.fnError(e))
+      }).catch((e) => {
+        self.dataNotify = e.response
+        self.dataNotify.classAlert = 'alert alert-dark alert-dismissible fade show mb-0 border-0 '
+        self.dataNotify.style = 'border-radius:0'
+        self.params.username = ''
+        self.params.password = ''
+        self.$refs.inputUsername.focus()
+      }).finally(() => {
+        self.loading = false
+      })
     },
     doLogout ({commit}, {self}) {
-      Storage.set('data_auth', undefined)
-      doAuth(self)
+      Storage.remove('data_auth')
+      self.$router.replace('/login')
     },
     validateIfExist ({commit}, {self}) {
-      Axios.get(Env.endpoint_api_laravel + '/user/validateIfExist',
-        self.auth_user).then(r => {
-        if (r.status === 200) {
-          //validar hacia donde navegar o listar proyectos o listar examenes
-          Storage.set('data_auth', r.data[0])
-          if (r.data[0].proyect_id.id === 1) self.self.$router.replace(
-            '/project')
-          else self.self.$router.replace('/exams')
+      Axios.post(Env.API + '/if-exist-user',self.params).then((r) => {
+        switch (r.status){
+          case 201:
+            Storage.set("data_auth",r.data)
+            self.$router.push("/project")
+            break
+          default://200
+            // Storage.set('data_auth', r.data)
+            //  (Storage.get('data_auth').project.id === 1) ? self.$router.replace('/project') : self.$router.replace('/themes')
+             if(Util.getCookie('cookie_data_auth').project.id === 1) {
+               self.$router.replace('/project')
+             } else{
+               Storage.set("data_auth",Util.getCookie('cookie_data_auth'))
+               self.$router.replace('/themes')
+             }
+            break
         }
-
-        if (r.status === 201) {
-          Storage.set('data_auth', r.data[0])
-          self.self.$router.replace('/project')
-        }
-      }).catch(e => Util.fnError(e))
+      }).catch(e => console.error(e))
     },
   },
 })
-
-function doAuth (self) {
-  if (Storage.get('data_auth') != undefined) self.$router.replace('/project')
-  else self.$router.replace('/login')
-}
 
 export default AUTH_SERVICE

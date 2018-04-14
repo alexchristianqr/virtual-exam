@@ -12,8 +12,8 @@ Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 new Vue({
   el: '#app',
   router,
-  beforeCreate(){
-    Sbadmin.init();
+  beforeCreate () {
+    Sbadmin.init()
     console.log('Sbadmin reload!')
   },
   components: {App},

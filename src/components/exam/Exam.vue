@@ -163,8 +163,7 @@
       loadExam () {
         SERVICE.dispatch('loadExam', {self: this})
         this.timer()
-      }
-      ,
+      },
       returnLetter (key, toUpper = false) {
         let letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
         if (toUpper) {
@@ -211,16 +210,13 @@
               })
             }
           }
-
           //algoritmo logico para avanzar
           if (this.next + 1 < this.data.length) {
-            this.next = this.next + 1
+            this.next = (this.next + 1)
           } else {
             return false
           }
-
         } else {
-
           $(document).ready(() => {
             let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]')
             $.each(inputToArray, (kkkk, vvvv) => {
@@ -238,37 +234,31 @@
               }
             })
           })
-
           //algoritmo logico para retroceder
           if (this.next >= 1) {
-            this.next = this.next - 1
+            this.next = (this.next - 1)
           } else {
             this.next = 0
           }
-
         }
-
         return this.data[this.next]
-
       },
       timer () {
         this.remaining = this.p_duration
-        const getRemainTime = deadline => {
-          let m = moment(this.remaining, 'HH:mm:ss').minute()
-          let s = moment(this.remaining, 'HH:mm:ss').second()
-          this.isMinute = m
-          this.isSecond = s
-          let now = moment(new Date()),
-            remainTime = (((moment(deadline).add(this.p_duration2, 'second') - now) + 1000) / 1000),
+        const getRemainTime = (newDate) => {
+          this.isMinute = moment(this.remaining, 'HH:mm:ss').minute()
+          this.isSecond = moment(this.remaining, 'HH:mm:ss').second()
+          let now = moment(newDate),
+            remainTime = (((now.add(this.p_duration2, 'second') - now) + 1000) / 1000),
             remainSeconds = ('0' + Math.floor(remainTime % 60)).slice(-2),
             remainMinutes = ('0' + Math.floor(remainTime / 60 % 60)).slice(-2),
             remainHours = ('0' + Math.floor(remainTime / 3600 % 24)).slice(-2),
             remainDays = Math.floor(remainTime / (3600 * 24))
           return {remainTime, remainSeconds, remainMinutes, remainHours, remainDays}
         }
-        const countDown = (deadline) => {
+        const countDown = (newDate) => {
           this.timerUpdate = setInterval(() => {
-            let t = getRemainTime(deadline)
+            let t = getRemainTime(newDate)
             this.remaining = t.remainHours + ':' + t.remainMinutes + ':' + t.remainSeconds
             let $alert = $('#showAlertFinally')
             if ($alert.hasClass('alert-danger')) {
@@ -290,23 +280,44 @@
       doChecked () {
         $(document).ready(() => {
           let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]')
-          $.each(inputToArray, (kkkk, vvvv) => {
-            if ($(vvvv).is(':checked')) {
+          $.each(inputToArray, (k, v) => {
+            if ($(v).is(':checked')) {
               //Si la longitud del array es igual al next
               if (this.tempChecked.length == this.next) {
                 //cargar con valores validos
-                this.tempChecked.push({question_id: this.data[this.next].id, checked_id: kkkk})
+                this.tempChecked.push({question_id: this.data[this.next].id, checked_id: k})
               } else {
                 //cargar con valores invalidos(vacio)
-                this.tempChecked[this.next] = {question_id: this.data[this.next].id, checked_id: kkkk}
+                this.tempChecked[this.next] = {question_id: this.data[this.next].id, checked_id: k}
                 //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
-                $.each(this.tempChecked, (k, v) => {
-                  if (v == undefined) this.tempChecked[k] = {}
+                $.each(this.tempChecked, (kk, vv) => {
+                  if (vv == undefined) this.tempChecked[kk] = {}
                 })
               }
             }
           })
         })
+      },
+      saveExam() {
+        this.params = [];
+        this.params = this.tempChecked;
+        SERVICE.dispatch("saveExam", {self: this});
+      },
+      save() {
+        window.clearInterval(this.timerUpdate);
+        this.showLoading = true;
+        this.saveExam();
+      },
+      openModal() {
+        $('#infoModal_2').modal({backdrop: 'static', keyboard: false, show: true});
+      },
+      closeModal() {
+        $('#infoModal_2').modal('hide');
+        $('#infoModal_3').modal('hide');
+        this.$router.replace("/exams");
+      },
+      getImgUrl(pet) {
+        return require('@/assets/img/' + pet);
       },
     }
   }

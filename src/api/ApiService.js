@@ -1,6 +1,3 @@
-/**
- * Created by aquispe on 10/02/2018.
- **/
 import Vue       from 'vue'
 import * as Vuex from 'vuex'
 import Storage   from 'vue-local-storage'
@@ -17,58 +14,11 @@ const SERVICE = new Vuex.Store({
   },
   actions: {
     //Auth
-    doLogin ({commit}, {self}) {
-      Storage.set('data_auth', {role: {name: 'guest'}})
-      Axios.post(Env.API + '/login', self.params).then((r) => {
-        if (r.status === 200) {
-          self.dataNotify = {}
-          Storage.set('data_auth', r.data)
-          self.$router.replace("/themes");
-        }
-      }).catch((e) => {
-        self.dataNotify = e.response
-        self.dataNotify.classAlert = 'alert alert-dark alert-dismissible fade show mb-0 border-0 '
-        self.dataNotify.style = 'border-radius:0'
-        self.params.username = ''
-        self.params.password = ''
-        self.$refs.inputUsername.focus()
-      }).finally(() => {
-        self.loading = false
-      })
-    },
-    doLogout ({commit}, {self}) {
-      Storage.remove('data_auth')
-      self.$router.replace('/login')
-    },
-    doValidation (self) {
-      if (self.params.email !== '' && self.params.password !== '') {
-        if (self.params.email === 'aquisper@sapia.com.pe' &&
-          self.params.password === '72482060' &&
-          Storage.get('auth').authenticate === false) {
-          Storage.set('auth', {authenticate: true, id: 2})
-          self.validate = null
-          this.doAuth(self)
-        } else {
-          Storage.set('auth', {authenticate: false})
-          self.validate = true
-          self.errors.login = 'El campo email o contraseña no es correcto!'
-          self.params.password = ''
-          this.doAuth(self)
-        }
-      }
-    },
-    doAuth (self) {
-      if (Storage.get('auth').authenticate) {
-        self.$router.replace('/project')
-      } else {
-        self.$router.replace('/login')
-      }
-    },
     //Project
     loadProjects ({commit}, {self}) {
-      Axios.get(Env.API + '/proyects').then((r) => {
+      Axios.get(Env.API + '/all-project').then((r) => {
         if (r.status === 200) {
-          self.data = r.data
+          self.dataProject = r.data
         }
       }).catch((e) => {
         Util.fnError(e)

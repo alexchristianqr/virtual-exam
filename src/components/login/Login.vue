@@ -65,7 +65,7 @@
 </template>
 
 <script>
-  import SERVICE from '../../api/ApiService'
+  import AuthService from '../../services/AuthService'
   import Logo    from '../layouts/Logo'
   import Notify  from '../layouts/Notify'
 
@@ -89,7 +89,7 @@
     methods: {
       doLogin() {
         this.loading = true;
-        SERVICE.dispatch('doLogin', {self: this})
+        AuthService.dispatch('doLogin', {self: this})
       },
       eventClose(){
         this.dataNotify = {}

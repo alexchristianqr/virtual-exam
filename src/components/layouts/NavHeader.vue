@@ -40,7 +40,7 @@
     </nav>
 </template>
 <script>
-  import SERVICE from '../../api/ApiService'
+  import AuthService from '../../services/AuthService'
   import Storage from 'vue-local-storage'
   import Sidebar from '../layouts/Sidebar'
 
@@ -55,7 +55,7 @@
     }),
     methods: {
       logout() {
-        SERVICE.dispatch('doLogout', {self: this})
+        AuthService.dispatch('doLogout', {self: this})
       },
     },
   }

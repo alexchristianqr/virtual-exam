@@ -1,20 +1,20 @@
-import Vue               from 'vue'
-import Router            from 'vue-router'
-import Storage           from 'vue-local-storage'
-import Login             from './components/login/Login'
-import Themes            from './components/theme/Themes'
-import CreateUpdateTheme from './components/theme/CreateUpdateTheme'
-import Exam              from './components/exam/Exam'
-import Questions         from './components/question/Questions'
-import CreateUpdateQuestion
-                         from './components/question/CreateUpdateQuestion'
-import OptionsAnswers    from './components/option_answer/OptionsAnswers'
-import CreateUpdateOptionAnswer
-                         from './components/option_answer/CreateUpdateOptionAnswer'
-import Users             from './components/user/Users'
-import UserHistory       from './components/user/UserHistory'
-import ExamSolution      from './components/exam/ExamSolution'
-import PageKnow          from './components/errors/Nnow'
+import Vue                      from 'vue'
+import Router                   from 'vue-router'
+import Storage                  from 'vue-local-storage'
+import Login                    from './components/login/Login'
+import Project                  from './components/project/Project'
+import Themes                   from './components/theme/Themes'
+import CreateUpdateTheme        from './components/theme/CreateUpdateTheme'
+import Exam                     from './components/exam/Exam'
+import Questions                from './components/question/Questions'
+import CreateUpdateQuestion     from './components/question/CreateUpdateQuestion'
+import OptionsAnswers           from './components/option_answer/OptionsAnswers'
+import CreateUpdateOptionAnswer from './components/option_answer/CreateUpdateOptionAnswer'
+import Users                    from './components/user/Users'
+import UserHistory              from './components/user/UserHistory'
+import ExamSolution             from './components/exam/ExamSolution'
+import PageKnow                 from './components/errors/Nnow'
+import Util                     from './util'
 
 Vue.use(Router)
 
@@ -26,6 +26,12 @@ const router = new Router({
     {path: '/login', name: 'login', component: Login, meta: {title: 'Login'}},
     //Views Authorized
     {
+      path: '/project',
+      name: 'project',
+      component: Project,
+      meta: {title: 'Proyecto', roleId: [1, 2, 3, 4, 5]},
+    },
+    {
       path: '/themes',
       name: 'themes',
       component: Themes,
@@ -35,7 +41,7 @@ const router = new Router({
       path: '/exam',
       name: 'exam',
       component: Exam,
-      meta: {requiresAuth: true, title: 'Examen', roleId: [1, 2, 3]},
+      meta: {requiresAuth: true, title: 'Examen', roleId: [1, 2, 5]},
     },
     {
       path: '/create-theme',
@@ -98,7 +104,7 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Usuario', roleId: [1, 2, 3]},
     },
     //View Errors
-    {path: '/know', name: 'know', component: PageKnow,meta:{back:'Login'}},
+    {path: '/know', name: 'know', component: PageKnow},
   ],
 })
 
@@ -107,29 +113,28 @@ router.beforeEach((to, from, next) => {
   setTtitle(to)
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const roleId = to.meta.roleId
-  //validamos si la ruta en la que estamos es Login
+  //validamos si la ruta en la que estamos es Project y necesita antes haber pasado la authenticacion
+  if (to.path === '/project') {
+    if (Util.getCookie('cookie_data_auth') == '') {
+      allRemoveCookies()
+      next('/login')
+    } else {
+      next()
+    }
+  }
+  //validamos si la ruta en la que estamos es Login y debe obligatoriamente hacer authenticacion
   if (to.path === '/login') {
+    allRemoveCookies()
     Storage.remove('data_auth')
   }
+  // if (to.path === '/project') Storage.remove('data_auth')
   //validamos en todas las rutas
   if (requiresAuth) {
+    allRemoveCookies()
     if (Storage.get('data_auth') == undefined) {
       next('/login')
     } else {
-      if (typeof roleId == 'object') {
-        let accessRole = roleId.indexOf(Storage.get('data_auth').role.id) > -1
-        if (accessRole) {
-          next()
-        } else {
-          next('/know')
-        }
-      } else {
-        if (Storage.get('data_auth').role.id == roleId) {
-          next()
-        } else {
-          next('/know')
-        }
-      }
+      validateAccessByRole(roleId, next)
     }
   } else {
     next()
@@ -138,6 +143,25 @@ router.beforeEach((to, from, next) => {
 
 const setTtitle = (to) => {
   document.title = 'Examen | ' + to.meta.title
+}
+const validateAccessByRole = (roleId, next) => {
+  if (typeof roleId == 'object') {
+    if (roleId.indexOf(Storage.get('data_auth').role.id) > -1) {
+      next()
+    } else {
+      next('/know')
+    }
+  } else {
+    if (Storage.get('data_auth').role.id == roleId) {
+      next()
+    } else {
+      next('/know')
+    }
+  }
+}
+const allRemoveCookies = () => {
+  Util.removeCookie('cookie_data_auth','/')
+  Util.removeCookie('cookie_data_auth','/login')
 }
 
 export default router
