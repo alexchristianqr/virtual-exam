@@ -3,7 +3,7 @@
         <logo/>
         <div class="card card-login mx-auto mt-5">
             <div class="card-header bg-light">
-                <span class="card-title">Sign In</span>
+                <span class="card-title">Inicio de Sesion</span>
             </div>
             <div v-show="Object.keys(dataNotify).length > 0" class="card-header p-0 mb-0">
                 <notify v-show="Object.keys(dataNotify).length > 0" :dataNotify="dataNotify" @eventClose="eventClose"/>
@@ -11,10 +11,10 @@
             <div class="card-body">
                 <form @submit.prevent="doLogin()">
                     <div class="form-group">
-                        <label>Username</label>
+                        <label>Nombre Usuario</label>
                         <div class="input-group mb-1">
                             <input v-model="params.username" ref="inputUsername" name="username" class="form-control" type="text"
-                                   placeholder="Enter username" title="Registrar" required>
+                                   placeholder="username" title="Registrar" required>
                             <div class="input-group-append">
                                 <span class="input-group-text bg-white">@sapia.com.pe</span>
                             </div>
@@ -23,20 +23,13 @@
                         <span v-if="errors.login" class="help-block"><small><strong>{{errors.login}}</strong></small></span>
                     </div>
                     <div class="form-group">
-                        <label>Password</label>
+                        <label>Contraseña</label>
                         <input v-model="params.password" ref="inputPassword" name="password" class="form-control mb-1" type="password"
-                               placeholder="Password" required>
+                               placeholder="password" required>
                         <span v-if="errors.password !== '' " class="help-block"><small><strong>{{errors.password}}</strong></small></span>
                     </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input name="rememberme" class="form-check-input" type="checkbox">Remember Password
-                            </label>
-                        </div>
-                    </div>
                     <template v-if="!loading">
-                        <button type="submit" class="btn btn-secondary btn-block">Log In</button>
+                        <button type="submit" class="btn btn-secondary btn-block">Entrar</button>
                     </template>
                     <template v-else>
                         <button type="submit" class="btn btn-secondary btn-block" disabled>
@@ -44,21 +37,6 @@
                         </button>
                     </template>
                 </form>
-                <div>
-                    <br>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="text-left text-nowrap">
-                                <a class="small text-muted" href="#">Register an Account</a>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-right text-nowrap">
-                                <a class="small text-muted" href="#">Forgot Password?</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

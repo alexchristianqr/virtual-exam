@@ -1,35 +1,36 @@
 <template>
     <div>
         <div class="card mb-5">
-            <div class="card-header pb-0 mb-0 bg-light text-dark">
+            <div v-if="showCardHeader" class="card-header bg-white pt-1 pb-1">
+                <div class="row mb-0">
+                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                        <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
+                                @click.prevent="showCardHeader=false">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body mb-0 pb-0">
                 <div class="row">
-                    <div v-if="!loadingTable && data.length <= 0" class="col-1">
+                    <div v-if="!loadingTable && dataExam.length <= 0" class="col-1">
                         <router-link class="btn btn-light btn-lg" :to="'/themes'"><i class="fa fa-arrow-left fa-fw"></i>
                         </router-link>
                     </div>
-                    <div :class=" (!loadingTable && data.length <= 0) ? 'col-5' : 'col-4'">
-                        <div class="alert alert-secondary" role="alert">
+                    <div :class=" (!loadingTable && dataExam.length <= 0) ? 'col-5' : 'col-4'">
+                        <div class="alert alert-secondary bg-light" role="alert">
                             <b class="text-muted">Time:</b>&nbsp;<span>{{remaining}}</span>
                         </div>
                     </div>
-                    <div :class=" (!loadingTable && data.length <= 0) ? 'col-6' : 'col-8'">
+                    <div :class=" (!loadingTable && dataExam.length <= 0) ? 'col-6' : 'col-8'">
                         <div id="showAlertFinally"
-                             v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != p_duration"
+                             v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1"
                              class="alert alert-danger" role="alert">
                             <span><b>Advertencia:&nbsp;&nbsp;</b>Su examen terminará en <b>{{remaining}}</b></span>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <div class="alert alert-info alert-dismissible fade show" role="alert">
-                            <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <div class="card-body">
                 <table v-if="loadingTable" class="table">
                     <tr>
                         <td colspan="auto" class="text-dark text-center">
@@ -40,33 +41,42 @@
                         </td>
                     </tr>
                 </table>
-                <table v-if="!loadingTable && data.length > 0" class="table table-vue">
+                <table v-if="!loadingTable && dataExam.length > 0" class="table table-sm table-vue">
                     <thead>
                     <tr>
-                        <th scope="row" colspan="5"><span>{{parseInt(Object.keys(data)[next])+1}}.-</span><span
-                                class="pl-2">{{data[next].question_name}}</span>
+                        <th scope="row" colspan="5" class="border-top-0 pt-0"><span>{{parseInt(Object.keys(dataExam)[next])+1}}.-</span><span
+                                class="pl-2">{{dataExam[next].question_name}}</span>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(v,k) in data[next].options_answers">
-                        <td width="110%" class="pl-5">
+                    <tr v-if="dataExam[next].question_image !== '' ">
+                        <td class="m-0 p-0">
+                            <div class="img-thumbnail text-center mt-1 mb-1">
+                                <img :src="util.getImgUrl(dataExam[next].question_image)" alt="" width="200px"/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr v-for="(v,k) in dataExam[next].options_answers">
+                        <td width="110%" :class="parseInt(k) == 0 ? 'pl-1 border-top-0' : 'pl-1'">
                             <b>{{util.returnLetter(k)}})&nbsp;</b>
                             <div class="form-check form-check-inline">
-                                <input title="" :data-id="data[next].id"
+                                <input title="" :data-id="dataExam[next].id"
                                        class="form-check-input"
                                        type="radio"
-                                       :name="'opt'+data[next].id" :id="util.returnLetter(k)+data[next].id" :value="v.id"
+                                       :name="'opt'+dataExam[next].id" :id="util.returnLetter(k)+dataExam[next].id"
+                                       :value="v.id"
                                        @click="doChecked()"/>
-                                <label class="form-check-label" :for="util.returnLetter(k)+data[next].id">{{v.name}}</label>
+                                <label class="form-check-label"
+                                       :for="util.returnLetter(k)+dataExam[next].id">{{v.name}}</label>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td width="100%" class="text-center">
+                        <td width="100%" class="text-center pt-3">
                             <div class="row">
                                 <div class="col-6 text-right">
-                                    <button :hidden="parseInt(Object.keys(data)[next]) === 0 "
+                                    <button :hidden="parseInt(Object.keys(dataExam)[next]) === 0 "
                                             class="btn btn-secondary"
                                             @click="change('-')">
                                         <i class="fa fa-arrow-left fa-fw"></i>
@@ -74,18 +84,22 @@
                                     </button>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <button v-if="data.length != next+1" class="btn btn-secondary" @click="change('+')">
+                                    <button v-if="dataExam.length != next+1" class="btn btn-secondary"
+                                            @click="change('+')">
                                         <i class="fa fa-arrow-right fa-fw"></i>
                                         <span>Siguiente</span>
                                     </button>
-                                    <button v-else="" class="btn btn-secondary">Saved Exam</button>
+                                    <a v-else class="btn btn-secondary" href data-toggle="modal"
+                                       data-target="#modalQueryExam" @click.prevent="pauseTimer = true">
+                                        <span><i class="fa fa-check fa-fw"></i>Guardar Examen</span>
+                                    </a>
                                 </div>
                             </div>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-                <table v-else-if="!loadingTable && data.length <= 0" class="table">
+                <table v-else-if="!loadingTable && dataExam.length <= 0" class="table">
                     <tr>
                         <td colspan="auto" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
@@ -97,52 +111,97 @@
                 </table>
             </div>
         </div>
-        <!-- Modal -->
-        <div class="modal fade in" id="exampleModalCenter" data-backdrop="static" data-keyboard="false" tabindex="-1"
+
+        <!-- Modal Consultar si Terminar Examen -->
+
+        <div class="modal fade in" id="modalQueryExam" data-backdrop="static" data-keyboard="false" tabindex="-1"
+             role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <span class="text-secondary">¿Está seguro de terminar su examen?</span>
+                        </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer w-100">
+                        <button v-if="!showLoading && message === '' " class="btn btn-outline-secondary w-30"
+                                type="button"
+                                data-dismiss="modal" @click.prevent="pauseTimer=false;showLoading=false">
+                            <i class="fa fa-close fa-fw"></i><span>Cancelar</span>
+                        </button>
+                        <button v-if="!showLoading && message !== '' " class="btn btn-outline-secondary w-30"
+                                type="button" @click="closeModal()">
+                            <i class="fa fa-close fa-fw"></i><span>Cancelar</span>
+                        </button>
+                        <template v-if="!showLoading">
+                            <button :disabled="!showLoading && message !== '' " class="btn btn-outline-primary w-30"
+                                    type="button" @click.prevent="saveQueryExam()">
+                                <span v-if="showLoading"><i
+                                        class="fa fa-circle-o-notch fa-spin fa-fw"></i>Enviando</span>
+                                <span v-else><i class="fa fa-check fa-fw"></i>Aceptar</span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Finalizar Examen -->
+        <div class="modal fade in" id="modalEndExam" data-backdrop="static" data-keyboard="false" tabindex="-1"
              role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content bg-danger text-white">
                     <div class="modal-body">
                         <div class="mt-auto mb-auto">
-                            <b>Dear user, </b><br>
-                            <span>the duration of the exam has ended, then click on accept to return to the exam list, locate the exam and see the score obtained.</span>
+                            <h4>Estimdo usuario,</h4><br>
+                            <span>El tiempo del examen ah caducado!</span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar
-                        </router-link>
+                        <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar</router-link>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
   import ExamService from '../../services/ExamService'
-  import $       from 'jquery'
-  import Moment  from 'moment'
-  import Util    from '../../util'
+  import $           from 'jquery'
+  import Moment      from 'moment'
+  import Util        from '../../util'
 
   export default {
     name: 'Exam',
     data: () => ({
-      util:Util,
-      moment:Moment,
+      util: Util,
+      moment: Moment,
       loadingTable: true,
-      data: [{}],
+      showLoading: false,
+      showCardHeader: true,
+      dataExam: [],
+      params: {
+        answer_by_question: [],
+        user_survey_theme_id: null
+      },
+      subparams:{},
+
+      pauseTimer: false,
+      selectedValue: '1',
+      message: '',
       theme_id: 1,
       next: 0,
       back: 0,
-      p_duration: '00:10:00',
-      p_duration2: 600,
-      remaining: this.p_duration,
       isMinute: 0,
       isSecond: 0,
-      selectedValue: '1',
-      params: {
-        rptas: [],
-      },
+      duration_1: '00:10:00',
+      duration_2: 600,
+      remaining: this.duration_1,
       timerUpdate: null,
       tempRptas: [],
       tempTime: {},
@@ -151,18 +210,18 @@
     }),
     beforeCreate () {
       window.clearInterval(this.timerUpdate)
-      console.log('event before-create: cleaned interval!')
     },
     created () {
-      this.data = [{}]
-      this.p_duration = Util.toHHMMSS(this.$route.params.dataTheme.theme_duration)
-      this.p_duration2 = this.$route.params.dataTheme.theme_duration
-      this.theme_id = this.$route.params.dataTheme.theme_id
-      this.loadExam()
+      this.load()
     },
     methods: {
-      loadExam () {
-        ExamService.dispatch('loadExam', {self: this})
+      load () {
+        this.dataExam = [{}]
+        this.duration_1 = Util.toHHMMSS(this.$route.params.dataTheme.theme_duration)
+        this.duration_2 = this.$route.params.dataTheme.theme_duration
+        this.theme_id = this.$route.params.dataTheme.theme_id
+        this.params.user_survey_theme_id = this.$route.params.dataTheme.user_survey_theme_id
+        ExamService.dispatch('getExam', {self: this})
         this.timer()
       },
       change (signo) {
@@ -190,7 +249,7 @@
                 let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]')
                 $.each(inputToArray, (k, v) => {
                   //aplicar checked al iniciar y al dar siguiente
-                  if (this.data.length == this.next) {
+                  if (this.dataExam.length == this.next) {
                     if ($(v).is(':checked')) {
                       $(v).prop('checked', true)
                     }
@@ -204,7 +263,7 @@
             }
           }
           //algoritmo logico para avanzar
-          if (this.next + 1 < this.data.length) {
+          if (this.next + 1 < this.dataExam.length) {
             this.next = (this.next + 1)
           } else {
             return false
@@ -212,15 +271,15 @@
         } else {
           $(document).ready(() => {
             let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]')
-            $.each(inputToArray, (kkkk, vvvv) => {
+            $.each(inputToArray, (k, v) => {
               //aplicar checked al volver atras
               //si el contenedor esta definido y solo tiene valores validos
               if (this.tempChecked[this.next] != undefined && this.tempChecked[this.next] != {}) {
                 //encontrar la posicion del input checked
-                if (kkkk == this.tempChecked[this.next].checked_id) {
-                  $(vvvv).prop('checked', true)
+                if (k == this.tempChecked[this.next].checked_id) {
+                  $(v).prop('checked', true)
                 } else {
-                  $(vvvv).prop('checked', false)
+                  $(v).prop('checked', false)
                 }
               } else {
                 return false
@@ -234,15 +293,15 @@
             this.next = 0
           }
         }
-        return this.data[this.next]
+        return this.dataExam[this.next]
       },
       timer () {
-        this.remaining = this.p_duration
+        this.remaining = this.duration_1
         const getRemainTime = (newDate) => {
           this.isMinute = Moment(this.remaining, 'HH:mm:ss').minute()
           this.isSecond = Moment(this.remaining, 'HH:mm:ss').second()
           let now = Moment(new Date()),
-            remainTime = (((Moment(newDate).add(this.p_duration2, 'second') - now) + 1000) / 1000),
+            remainTime = (((Moment(newDate).add(this.duration_2, 'second') - now) + 1000) / 1000),
             remainSeconds = ('0' + Math.floor(remainTime % 60)).slice(-2),
             remainMinutes = ('0' + Math.floor(remainTime / 60 % 60)).slice(-2),
             remainHours = ('0' + Math.floor(remainTime / 3600 % 24)).slice(-2),
@@ -252,7 +311,9 @@
         const countDown = (newDate) => {
           this.timerUpdate = setInterval(() => {
             let t = getRemainTime(newDate)
-            this.remaining = t.remainHours + ':' + t.remainMinutes + ':' + t.remainSeconds
+            if (!this.pauseTimer) {
+              this.remaining = t.remainHours + ':' + t.remainMinutes + ':' + t.remainSeconds
+            }
             let $alert = $('#showAlertFinally')
             if ($alert.hasClass('alert-danger')) {
               $alert.removeClass('alert-danger')
@@ -262,9 +323,7 @@
               $alert.addClass('alert-danger')
             }
             if (t.remainTime <= 1) {
-              clearInterval(this.timerUpdate)
-              $('#exampleModalCenter').modal('show')
-              // this.$router.replace("/themes");
+              this.saveEndExamAutomatic()
             }
           }, 1000)
         }
@@ -278,10 +337,10 @@
               //Si la longitud del array es igual al next
               if (this.tempChecked.length == this.next) {
                 //cargar con valores validos
-                this.tempChecked.push({question_id: this.data[this.next].id, checked_id: k})
+                this.tempChecked.push({question_id: this.dataExam[this.next].id, checked_id: k})
               } else {
                 //cargar con valores invalidos(vacio)
-                this.tempChecked[this.next] = {question_id: this.data[this.next].id, checked_id: k}
+                this.tempChecked[this.next] = {question_id: this.dataExam[this.next].id, checked_id: k}
                 //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
                 $.each(this.tempChecked, (kk, vv) => {
                   if (vv == undefined) this.tempChecked[kk] = {}
@@ -291,26 +350,27 @@
           })
         })
       },
-      saveExam() {
-        this.params = [];
-        this.params = this.tempChecked;
-        ExamService.dispatch("saveExam", {self: this});
+      saveEndExam () {
+        this.params.answer_by_question = this.tempChecked
+        ExamService.dispatch('updateExam', {self: this})
       },
-      save() {
-        window.clearInterval(this.timerUpdate);
-        this.showLoading = true;
-        this.saveExam();
+      saveEndExamAutomatic () {
+        window.clearInterval(this.timerUpdate)
+        this.params.answer_by_question = this.tempChecked
+        ExamService.dispatch('updateExamAutomatic', {self: this})
+        $('#modalEndExam').modal('show')
       },
-      openModal() {
-        $('#infoModal_2').modal({backdrop: 'static', keyboard: false, show: true});
+      saveQueryExam () {
+        window.clearInterval(this.timerUpdate)
+        this.showLoading = true
+        this.saveEndExam()
       },
-      closeModal() {
-        $('#infoModal_2').modal('hide');
-        $('#infoModal_3').modal('hide');
-        this.$router.replace("/exams");
+      openModal () {
+        $('#modalQueryExam').modal({backdrop: 'static', keyboard: false, show: true})
       },
-      getImgUrl(pet) {
-        return require('@/assets/img/' + pet);
+      closeModal () {
+        $('#modalQueryExam').modal('hide')
+        this.$router.replace('/themes')
       },
     }
   }

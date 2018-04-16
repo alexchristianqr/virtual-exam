@@ -34,6 +34,7 @@
                                     type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
+                    <button title="actualizar datos" class="btn btn-outline-secondary" type="button" @click="change()"><i class="fa fa-refresh fa-fw"></i></button>
                 </div>
             </div>
             <div class="card-body">
@@ -75,8 +76,8 @@
                                class="btn btn-warning btn-sm"
                                href
                                data-toggle="modal"
-                               data-target="#infoModal"
-                               @click.prevent="p_dataTheme = v">
+                               data-target="#modalStartExam"
+                               @click.prevent="subparams.dataTheme = v">
                                 <i class="fa fa-file-text-o fa-fw"></i>
                                 <span>PENDING</span>
                             </a>
@@ -84,12 +85,10 @@
                                 <i class="fa fa-file-text-o fa-fw"></i>
                                 <span>DONE</span>
                             </button>
-                            <div v-if="v.user_survey_theme_status == 'E' ">
-                                <button type="button" class="btn btn-danger">
-                                    <i class="fa fa-file-text-o fa-fw"></i>
-                                    <span>EXPIRED</span>
-                                </button>
-                            </div>
+                            <button v-if="v.user_survey_theme_status == 'E'" type="button" class="btn btn-danger">
+                                <i class="fa fa-file-text-o fa-fw"></i>
+                                <span>EXPIRED</span>
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -107,7 +106,7 @@
             </div>
         </div>
         <!-- Info Modal-->
-        <div class="modal fade in" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade in" id="modalStartExam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -120,7 +119,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <span>El examen tine una duración de <b>{{util.toHHMMSS(p_dataTheme.theme_duration)}}</b> minutos, sin opcion de cancelar.</span>
+                        <span>El examen tine una duración de <b>{{util.toHHMMSS(subparams.dataTheme.theme_duration)}}</b> minutos, sin opcion de cancelar.</span>
                         <br>
                         <br>
                         <small class="text-secondary"><b>Nota:</b> El tiempo del examen es exacto asi que no hay
@@ -133,7 +132,7 @@
                             <span>Cancelar</span>
                         </button>
                         <router-link data-dismiss="modal" class="btn btn-outline-primary w-30"
-                                     :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
+                                     :to="{name:'exam',params:{dataTheme:subparams.dataTheme}}">
                             <i class="fa fa-check fa-fw"></i>
                             <span>Listo</span>
                         </router-link>
@@ -148,22 +147,24 @@
   import SurveyService from '../../services/SurveyService'
   import ThemeService  from '../../services/ThemeService'
   import Util          from '../../util'
+  import Storage       from 'vue-local-storage'
 
   export default {
     name: 'Themes',
     data: () => ({
       util: Util,
       loadingTable: true,
-      computedThemes: [],
       dataTheme: [],
       dataSurvey: [],
-      id_theme: null,
-      p_dataTheme: {},
       params: {
-        user_id: '1',
+        user_id: '',
         user_survey_theme_id: '',
       },
-      input_search_theme: ''
+      subparams: {
+        dataTheme: {}
+      },
+
+      input_search_theme: '',
     }),
     created () {
       this.load()
@@ -175,13 +176,14 @@
     },
     methods: {
       load () {
+        this.params.user_id = Storage.get('data_auth').id
         ThemeService.dispatch('allTheme', {self: this})
         SurveyService.dispatch('allByUserSurvey', {self: this})
       },
       change () {
         this.loadingTable = true
         this.dataTheme = []
-        this.load()
+        ThemeService.dispatch('allTheme', {self: this})
       }
     },
   }

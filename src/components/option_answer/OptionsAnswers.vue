@@ -47,7 +47,7 @@
                             <option value="I">Inactivo</option>
                         </select>
                     </div>
-                    <button class="btn btn-success" @click="refresh()"><i class="fa fa-refresh"></i></button>
+                    <button title="actualizar datos" class="btn btn-outline-secondary" @click="refresh()"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
             <div class="card-body">

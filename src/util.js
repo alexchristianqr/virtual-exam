@@ -56,4 +56,7 @@ export default {
       return letter[key]
     }
   },
+  getImgUrl(name_file) {
+    return require('@/assets/img/' + name_file);
+  },
 }

@@ -43,7 +43,7 @@
                             <option value="D">Dificil</option>
                         </select>
                     </div>
-                    <button class="btn btn-success" @click="change()"><i class="fa fa-refresh"></i></button>
+                    <button title="actualizar datos" class="btn btn-outline-secondary" @click="change()"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
             <div class="card-body">
@@ -119,7 +119,6 @@
 </template>
 
 <script>
-  import SERVICE         from '../../api/ApiService'
   import ThemeService    from '../../services/ThemeService'
   import QuestionService from '../../services/QuestionService'
 
