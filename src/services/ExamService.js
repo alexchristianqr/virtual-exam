@@ -7,7 +7,7 @@ import Util      from '../util'
 
 Vue.use(Vuex, Storage)
 
-const EXAM_SERVICE = new Vuex.Store({
+export default new Vuex.Store({
   state: {
     intent: null,
   },
@@ -101,5 +101,3 @@ const EXAM_SERVICE = new Vuex.Store({
     },
   },
 })
-
-export default EXAM_SERVICE

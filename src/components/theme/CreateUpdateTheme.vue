@@ -58,7 +58,8 @@
 </template>
 
 <script>
-  import SERVICE from '../../api/ApiService'
+  import ThemeService from '../../services/ThemeService'
+  import SurveyService from '../../services/SurveyService'
 
   export default {
     name: 'CreateUpdateTheme',
@@ -78,10 +79,10 @@
     },
     methods: {
       createTheme() {
-        SERVICE.dispatch('createTheme', {self: this})
+        ThemeService.dispatch('createTheme', {self: this})
       },
       allSurvey() {
-        SERVICE.dispatch('allByUserSurvey', {self: this})
+        SurveyService.dispatch('allByUserSurvey', {self: this})
       },
     },
   }

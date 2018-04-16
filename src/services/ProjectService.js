@@ -8,7 +8,7 @@ import Util      from '../util'
 
 Vue.use(Vuex)
 
-const PROJECT_SERVICE = new Vuex.Store({
+export default new Vuex.Store({
   actions: {
     getProjects({commit}, {self}) {
       Axios.get(Env.API + '/all-project').then(r => {
@@ -37,5 +37,3 @@ const PROJECT_SERVICE = new Vuex.Store({
     },
   },
 })
-
-export default PROJECT_SERVICE

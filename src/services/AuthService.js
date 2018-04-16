@@ -7,7 +7,7 @@ import Util from '../util'
 
 Vue.use(Vuex)
 
-const AUTH_SERVICE = new Vuex.Store({
+export default new Vuex.Store({
   actions: {
     doLogin ({commit}, {self}) {
       // Storage.set('data_auth', {role: {id:5,name: 'guest'}})
@@ -56,5 +56,3 @@ const AUTH_SERVICE = new Vuex.Store({
     },
   },
 })
-
-export default AUTH_SERVICE

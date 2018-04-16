@@ -48,5 +48,12 @@ export default {
   removeCookie(name,path) {
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path='+path;
   },
-
+  returnLetter (key, toUpper = false) {
+    let letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    if (toUpper) {
+      return (letter[key]).toString().toUpperCase()
+    } else {
+      return letter[key]
+    }
+  },
 }

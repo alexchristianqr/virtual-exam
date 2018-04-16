@@ -51,14 +51,14 @@
                     <tbody>
                     <tr v-for="(v,k) in data[next].options_answers">
                         <td width="110%" class="pl-5">
-                            <b>{{returnLetter(k)}})&nbsp;</b>
+                            <b>{{util.returnLetter(k)}})&nbsp;</b>
                             <div class="form-check form-check-inline">
                                 <input title="" :data-id="data[next].id"
                                        class="form-check-input"
                                        type="radio"
-                                       :name="'opt'+data[next].id" :id="returnLetter(k)+data[next].id" :value="v.id"
+                                       :name="'opt'+data[next].id" :id="util.returnLetter(k)+data[next].id" :value="v.id"
                                        @click="doChecked()"/>
-                                <label class="form-check-label" :for="returnLetter(k)+data[next].id">{{v.name}}</label>
+                                <label class="form-check-label" :for="util.returnLetter(k)+data[next].id">{{v.name}}</label>
                             </div>
                         </td>
                     </tr>
@@ -109,8 +109,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal"
-                                     :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar
+                        <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar
                         </router-link>
                     </div>
                 </div>
@@ -120,14 +119,16 @@
 </template>
 
 <script>
-  import SERVICE from '../../api/ApiService'
+  import ExamService from '../../services/ExamService'
   import $       from 'jquery'
-  import moment  from 'moment'
+  import Moment  from 'moment'
   import Util    from '../../util'
 
   export default {
     name: 'Exam',
     data: () => ({
+      util:Util,
+      moment:Moment,
       loadingTable: true,
       data: [{}],
       theme_id: 1,
@@ -161,16 +162,8 @@
     },
     methods: {
       loadExam () {
-        SERVICE.dispatch('loadExam', {self: this})
+        ExamService.dispatch('loadExam', {self: this})
         this.timer()
-      },
-      returnLetter (key, toUpper = false) {
-        let letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l']
-        if (toUpper) {
-          return (letter[key]).toString().toUpperCase()
-        } else {
-          return letter[key]
-        }
       },
       change (signo) {
         if (signo === '+') {
@@ -246,10 +239,10 @@
       timer () {
         this.remaining = this.p_duration
         const getRemainTime = (newDate) => {
-          this.isMinute = moment(this.remaining, 'HH:mm:ss').minute()
-          this.isSecond = moment(this.remaining, 'HH:mm:ss').second()
-          let now = moment(newDate),
-            remainTime = (((now.add(this.p_duration2, 'second') - now) + 1000) / 1000),
+          this.isMinute = Moment(this.remaining, 'HH:mm:ss').minute()
+          this.isSecond = Moment(this.remaining, 'HH:mm:ss').second()
+          let now = Moment(new Date()),
+            remainTime = (((Moment(newDate).add(this.p_duration2, 'second') - now) + 1000) / 1000),
             remainSeconds = ('0' + Math.floor(remainTime % 60)).slice(-2),
             remainMinutes = ('0' + Math.floor(remainTime / 60 % 60)).slice(-2),
             remainHours = ('0' + Math.floor(remainTime / 3600 % 24)).slice(-2),
@@ -301,7 +294,7 @@
       saveExam() {
         this.params = [];
         this.params = this.tempChecked;
-        SERVICE.dispatch("saveExam", {self: this});
+        ExamService.dispatch("saveExam", {self: this});
       },
       save() {
         window.clearInterval(this.timerUpdate);

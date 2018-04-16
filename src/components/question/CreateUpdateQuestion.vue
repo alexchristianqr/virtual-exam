@@ -90,7 +90,8 @@
 </template>
 
 <script>
-    import SERVICE from '../../api/ApiService';
+    import OptionAnswerService from '../../services/OptionAnswerService';
+    import QuestionService from '../../services/QuestionService';
 
     export default {
         name: "CreateUpdateQuestion",
@@ -112,15 +113,15 @@
         }),
         created() {
             this.allTheme();
-            SERVICE.dispatch("allOptionAnswer", {self: this});
+          OptionAnswerService.dispatch("allOptionAnswer", {self: this});
             if(this.$route.params.dataQuestion != undefined && Object.keys(this.$route.params.dataQuestion).length) this.editQuestion();
         },
         methods: {
             createOrUpdateQuestion() {
                 if(this.isPost){
-                    SERVICE.dispatch("createQuestion", {self: this})
+                  QuestionService.dispatch("createQuestion", {self: this})
                 } else {//isPut
-                    SERVICE.dispatch("updateQuestion", {self: this})
+                  QuestionService.dispatch("updateQuestion", {self: this})
                 }
             },
             editQuestion(){

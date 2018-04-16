@@ -7,7 +7,8 @@
                         <span class="card-title">Opciones de Respuesta</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-option-answer'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
+                        <router-link :to="'/create-option-answer'" class="btn btn-outline-secondary"><i
+                                class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                     </div>
                 </div>
                 <hr>
@@ -82,9 +83,12 @@
                             </td>
                             <td class="text-right">
                                 <div class="btn-group dropdown btn-group-sm" role="group">
-                                    <router-link class="btn btn-warning btn-sm" :to="{name:'edit-option-answer',params:{dataOptionAnswer:v}}"><i class="fa fa-edit fa-fw"></i></router-link>
+                                    <router-link class="btn btn-warning btn-sm"
+                                                 :to="{name:'edit-option-answer',params:{dataOptionAnswer:v}}"><i
+                                            class="fa fa-edit fa-fw"></i></router-link>
                                     <div class="btn-group open" role="group">
-                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="true">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
@@ -117,54 +121,55 @@
 </template>
 
 <script>
-    import SERVICE from '../../api/ApiService';
+  import ThemeService        from '../../services/ThemeService'
+  import OptionAnswerService from '../../services/OptionAnswerService'
+  import QuestionService     from '../../services/QuestionService'
 
-    export default {
-        name: "OptionsAnswers",
-        data:()=>({
-            loadingTable: true,
-            dataTheme: [],
-            dataQuestion: [],
-            dataOptionAnswer:[],
-            params: {
-                theme_id:"",
-                question_id:"",
-                status:"",
-            },
-        }),
-        created() {
-            this.load();
-        },
-        methods: {
-            load() {
-                SERVICE.dispatch("allTheme", {self: this});
-                SERVICE.dispatch("allOptionAnswer", {self: this});
-            },
-            dataLevels(key) {
-                let array = [];
-                array["F"] = "Facil";
-                array["R"] = "Regular";
-                array["D"] = "Dificil";
-                console.log(array);
-                return array[key];
-            },
-            change(){
-                this.loadingTable = true;
-                SERVICE.dispatch("allOptionAnswer", {self: this});
-            },
-            changeTheme(){
-                this.params.question_id = "";
-                this.loadingTable = true;
-                SERVICE.dispatch("allOptionAnswer", {self: this});
-                SERVICE.dispatch("allQuestion", {self: this});
-            },
-            refresh(){
-                this.loadingTable = true;
-                SERVICE.dispatch("allOptionAnswer", {self: this});
-                SERVICE.dispatch("allQuestion", {self: this});
-            }
-        }
+  export default {
+    name: 'OptionsAnswers',
+    data: () => ({
+      loadingTable: true,
+      dataTheme: [],
+      dataQuestion: [],
+      dataOptionAnswer: [],
+      params: {
+        theme_id: '',
+        question_id: '',
+        status: '',
+      },
+    }),
+    created () {
+      this.load()
+    },
+    methods: {
+      load () {
+        ThemeService.dispatch('allTheme', {self: this})
+        OptionAnswerService.dispatch('allOptionAnswer', {self: this})
+      },
+      dataLevels (key) {
+        let array = []
+        array['F'] = 'Facil'
+        array['R'] = 'Regular'
+        array['D'] = 'Dificil'
+        return array[key]
+      },
+      change () {
+        this.loadingTable = true
+        OptionAnswerService.dispatch('allOptionAnswer', {self: this})
+      },
+      changeTheme () {
+        this.params.question_id = ''
+        this.loadingTable = true
+        OptionAnswerService.dispatch('allOptionAnswer', {self: this})
+        QuestionService.dispatch('allQuestion', {self: this})
+      },
+      refresh () {
+        this.loadingTable = true
+        OptionAnswerService.dispatch('allOptionAnswer', {self: this})
+        QuestionService.dispatch('allQuestion', {self: this})
+      }
     }
+  }
 </script>
 
 <style scoped>

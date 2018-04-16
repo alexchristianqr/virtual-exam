@@ -78,7 +78,9 @@
 </template>
 
 <script>
-  import SERVICE from '../../api/ApiService'
+  import OptionAnswerService from '../../services/OptionAnswerService'
+  import ThemeService from '../../services/ThemeService'
+  import QuestionService from '../../services/QuestionService'
 
   export default {
     name: 'CreateUpdateOptionAnswer',
@@ -102,15 +104,15 @@
     },
     methods: {
       load(){
-        SERVICE.dispatch("allTheme", {self: this});
-        SERVICE.dispatch('allQuestion', {self: this})
+        ThemeService.dispatch("allTheme", {self: this});
+        QuestionService.dispatch('allQuestion', {self: this})
         if (this.$route.params.dataOptionAnswer != undefined && Object.keys(this.$route.params.dataOptionAnswer).length) this.editOptionAnswer()
       },
       createOrUpdateOptionAnswer() {
         if (this.isPost) {
-          SERVICE.dispatch('createOptionAnswer', {self: this})
+          OptionAnswerService.dispatch('createOptionAnswer', {self: this})
         } else {//isPut
-          SERVICE.dispatch('updateOptionAnswer', {self: this})
+          OptionAnswerService.dispatch('updateOptionAnswer', {self: this})
         }
       },
       editOptionAnswer() {

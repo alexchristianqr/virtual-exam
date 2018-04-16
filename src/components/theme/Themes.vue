@@ -7,7 +7,8 @@
                         <span class="card-title">Temas</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
+                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i
+                                class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                     </div>
                 </div>
                 <hr>
@@ -25,9 +26,12 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
-                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search" placeholder="Buscar tema" class="form-control">
+                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search"
+                               placeholder="Buscar tema" class="form-control">
                         <div v-if="input_search_theme != ''" class="input-group-append">
-                            <button title="limpiar busqueda" @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                            <button title="limpiar busqueda"
+                                    @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()"
+                                    type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
                 </div>
@@ -119,14 +123,17 @@
                         <span>El examen tine una duración de <b>{{util.toHHMMSS(p_dataTheme.theme_duration)}}</b> minutos, sin opcion de cancelar.</span>
                         <br>
                         <br>
-                        <small class="text-secondary"><b>Nota:</b> El tiempo del examen es exacto asi que no hay opciones de retroceso.</small>
+                        <small class="text-secondary"><b>Nota:</b> El tiempo del examen es exacto asi que no hay
+                            opciones de retroceso.
+                        </small>
                     </div>
                     <div class="modal-footer w-100">
                         <button class="btn btn-outline-secondary w-30" type="button" data-dismiss="modal">
                             <i class="fa fa-close fa-fw"></i>
                             <span>Cancelar</span>
                         </button>
-                        <router-link data-dismiss="modal" class="btn btn-outline-primary w-30" :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
+                        <router-link data-dismiss="modal" class="btn btn-outline-primary w-30"
+                                     :to="{name:'exam',params:{dataTheme:p_dataTheme}}">
                             <i class="fa fa-check fa-fw"></i>
                             <span>Listo</span>
                         </router-link>
@@ -138,47 +145,46 @@
 </template>
 
 <script>
-    import moment  from 'moment';
-    import SERVICE from '../../api/ApiService';
-    import Util    from '../../util';
+  import SurveyService from '../../services/SurveyService'
+  import ThemeService  from '../../services/ThemeService'
+  import Util          from '../../util'
 
-    export default {
-        name: "Themes",
-        data: () => ({
-            util: Util,
-            loadingTable: true,
-            computedThemes:[],
-            dataTheme: [],
-            dataSurvey: [],
-            moment: moment,
-            id_theme: null,
-            p_dataTheme: {},
-            params: {
-                user_id: "1",
-                user_survey_theme_id: "",
-            },
-          input_search_theme:''
-        }),
-        created() {
-            this.load();
-        },
-      computed:{
-        filteredDataTheme(){
-          return this.dataTheme.filter((item)=>{return item.theme_name.toLowerCase().indexOf(this.input_search_theme.toLowerCase()) > -1})
-        }
+  export default {
+    name: 'Themes',
+    data: () => ({
+      util: Util,
+      loadingTable: true,
+      computedThemes: [],
+      dataTheme: [],
+      dataSurvey: [],
+      id_theme: null,
+      p_dataTheme: {},
+      params: {
+        user_id: '1',
+        user_survey_theme_id: '',
       },
-        methods: {
-            load() {
-                SERVICE.dispatch("allTheme", {self: this});
-                SERVICE.dispatch("allByUserSurvey", {self: this});
-            },
-            change() {
-                this.loadingTable = true;
-                this.dataTheme = [];
-                this.load();
-            }
-        },
-    }
+      input_search_theme: ''
+    }),
+    created () {
+      this.load()
+    },
+    computed: {
+      filteredDataTheme () {
+        return this.dataTheme.filter((item) => {return item.theme_name.toLowerCase().indexOf(this.input_search_theme.toLowerCase()) > -1})
+      }
+    },
+    methods: {
+      load () {
+        ThemeService.dispatch('allTheme', {self: this})
+        SurveyService.dispatch('allByUserSurvey', {self: this})
+      },
+      change () {
+        this.loadingTable = true
+        this.dataTheme = []
+        this.load()
+      }
+    },
+  }
 </script>
 
 <style scoped>
