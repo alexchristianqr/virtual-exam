@@ -46,10 +46,7 @@ export default new Vuex.Store({
     },
     updateExamAutomatic ({commit}, {self}) {
       Axios.put(Env.API + '/update-exam', self.params).then((r) => {
-        if (r.status === 200) {
-          // $('#modalQueryExam').modal('hide')
-          // $('#modalEndExam').modal('hide')
-        }
+        if (r.status === 200) {console.log(r.statusText)}
       }).catch((e) => {
         console.error(e)
       })

@@ -61,14 +61,15 @@
                         <td width="110%" :class="parseInt(k) == 0 ? 'pl-1 border-top-0' : 'pl-1'">
                             <b>{{util.returnLetter(k)}})&nbsp;</b>
                             <div class="form-check form-check-inline">
-                                <input title="" :data-id="dataExam[next].id"
-                                       class="form-check-input"
-                                       type="radio"
-                                       :name="'opt'+dataExam[next].id" :id="util.returnLetter(k)+dataExam[next].id"
-                                       :value="v.id"
-                                       @click="doChecked()"/>
-                                <label class="form-check-label"
-                                       :for="util.returnLetter(k)+dataExam[next].id">{{v.name}}</label>
+                                <label class="form-check-label" :for="util.returnLetter(k)+dataExam[next].id">
+                                    <input :data-id="dataExam[next].id"
+                                           class="form-check-input"
+                                           type="radio"
+                                           :name="'opt'+dataExam[next].id" :id="util.returnLetter(k)+dataExam[next].id"
+                                           :value="v.id"
+                                           @click="doChecked()"/>
+                                    <span>{{v.name}}</span>
+                                </label>
                             </div>
                         </td>
                     </tr>
@@ -113,7 +114,6 @@
         </div>
 
         <!-- Modal Consultar si Terminar Examen -->
-
         <div class="modal fade in" id="modalQueryExam" data-backdrop="static" data-keyboard="false" tabindex="-1"
              role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -161,12 +161,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar</router-link>
+                        <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal"
+                                     :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar
+                        </router-link>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -175,6 +176,7 @@
   import $           from 'jquery'
   import Moment      from 'moment'
   import Util        from '../../util'
+  import Storage     from 'vue-local-storage'
 
   export default {
     name: 'Exam',
@@ -189,7 +191,7 @@
         answer_by_question: [],
         user_survey_theme_id: null
       },
-      subparams:{},
+      subparams: {},
 
       pauseTimer: false,
       selectedValue: '1',
@@ -337,10 +339,25 @@
               //Si la longitud del array es igual al next
               if (this.tempChecked.length == this.next) {
                 //cargar con valores validos
-                this.tempChecked.push({question_id: this.dataExam[this.next].id, checked_id: k})
+                this.tempChecked.push({
+                  user_id: (Storage.get('data_auth').id).toString(),
+                  theme_id: (this.theme_id).toString(),
+                  question_id: (this.dataExam[this.next].id).toString(),
+                  option_answer_id: $(k).val(),
+                  checked_id: (k).toString()
+                })
+                console.log($(k).val())
+                // console.log('uno')
               } else {
                 //cargar con valores invalidos(vacio)
-                this.tempChecked[this.next] = {question_id: this.dataExam[this.next].id, checked_id: k}
+                //cargar con valores que se volveran a tratar en el siguiente ciclo
+                this.tempChecked.push({
+                  user_id: (Storage.get('data_auth').id).toString(),
+                  theme_id: (this.theme_id).toString(),
+                  question_id: (this.dataExam[this.next].id).toString(),
+                  option_answer_id: 0,
+                  checked_id: 0
+                })
                 //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
                 $.each(this.tempChecked, (kk, vv) => {
                   if (vv == undefined) this.tempChecked[kk] = {}

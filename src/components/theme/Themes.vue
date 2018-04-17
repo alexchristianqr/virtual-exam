@@ -105,7 +105,8 @@
                 </table>
             </div>
         </div>
-        <!-- Info Modal-->
+
+        <!-- Modal Iniciar Examen -->
         <div class="modal fade in" id="modalStartExam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">

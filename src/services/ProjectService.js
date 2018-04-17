@@ -24,12 +24,10 @@ export default new Vuex.Store({
       Axios.put(Env.API + '/update-project/' + Util.getCookie('cookie_data_auth').id, self.params).then(r => {
         if (r.status === 200) {
           const objAuth = Util.getCookie('cookie_data_auth')
-          // const objAuth = Storage.get('data_auth')
           objAuth.project.id = self.newProject.id
           objAuth.project.name = self.newProject.name
           Storage.set('data_auth', objAuth)
           self.$router.replace('/themes')
-          // window.location = '/themes'
         }
       }).catch(e => {
         console.error(e.response)

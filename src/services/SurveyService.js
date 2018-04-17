@@ -1,5 +1,4 @@
 import Vue       from 'vue'
-import Storage   from 'vue-local-storage'
 import * as Vuex from 'vuex'
 import Axios     from 'axios'
 import Env       from '../env'
