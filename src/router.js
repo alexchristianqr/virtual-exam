@@ -104,7 +104,7 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Usuario', roleId: [1, 2, 3]},
     },
     //View Errors
-    {path: '/know', name: 'know', component: PageKnow},
+    {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},
   ],
 })
 
@@ -142,7 +142,7 @@ router.beforeEach((to, from, next) => {
 })
 
 const setTtitle = (to) => {
-  document.title = 'Examen | ' + to.meta.title
+  document.title = 'Examen Virtual | ' + to.meta.title
 }
 const validateAccessByRole = (roleId, next) => {
   if (typeof roleId == 'object') {
@@ -160,8 +160,8 @@ const validateAccessByRole = (roleId, next) => {
   }
 }
 const allRemoveCookies = () => {
-  Util.removeCookie('cookie_data_auth','/')
-  Util.removeCookie('cookie_data_auth','/login')
+  Util.removeCookie('cookie_data_auth', '/')
+  Util.removeCookie('cookie_data_auth', '/login')
 }
 
 export default router

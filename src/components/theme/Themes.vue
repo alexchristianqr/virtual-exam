@@ -7,8 +7,7 @@
                         <span class="card-title">Temas</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i
-                                class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
+                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                     </div>
                 </div>
                 <hr>
@@ -26,12 +25,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
-                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search"
-                               placeholder="Buscar tema" class="form-control">
+                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search" placeholder="Buscar" class="form-control">
                         <div v-if="input_search_theme != ''" class="input-group-append">
-                            <button title="limpiar busqueda"
-                                    @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()"
-                                    type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                            <button title="Limpiar Busqueda" @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
                     <button title="actualizar datos" class="btn btn-outline-secondary" type="button" @click="change()"><i class="fa fa-refresh fa-fw"></i></button>

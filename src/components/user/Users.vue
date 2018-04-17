@@ -15,10 +15,9 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
-                        <input v-model="input_search_user" ref="inputSearchUser" type="search" placeholder="Buscar tema"
-                               class="form-control">
+                        <input v-model="input_search_user" ref="inputSearchUser" type="search" placeholder="Buscar" class="form-control">
                         <div v-if="input_search_user != ''" class="input-group-append">
-                            <button title="limpiar busqueda" @click.prevent="input_search_user='' ; $refs.inputSearchUser.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                            <button title="Limpiar Busqueda" @click.prevent="input_search_user='' ; $refs.inputSearchUser.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
                     <div class="input-group">
