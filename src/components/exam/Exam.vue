@@ -364,7 +364,6 @@
             }
           })
         })
-        console.log(this.tempChecked)
       },
       saveEndExam () {
         this.params.answer_by_question = this.tempChecked

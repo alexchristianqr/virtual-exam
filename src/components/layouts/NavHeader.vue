@@ -16,7 +16,7 @@
                        aria-expanded="false">
                         <span class="h6 m-auto">{{storage.get('data_auth').name}} <small>( {{storage.get('data_auth').email}} )</small></span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-left w-100 mt-3" aria-labelledby="alertsDropdown">
+                    <div class="dropdown-menu dropdown-menu-right w-50 mt-3" aria-labelledby="alertsDropdown">
                         <a href class="dropdown-item text-secondary">
                             <i class="fa fa-comment fa-fw"></i>
                             Sugerencia

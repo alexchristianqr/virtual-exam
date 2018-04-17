@@ -57,7 +57,7 @@
       dataNotify:{},
       params: {
         username: 'aquisper',
-        password: 'secret',
+        password: 'sapia.2018',
       },
       errors: {
         email: '',
@@ -67,7 +67,8 @@
     methods: {
       doLogin() {
         this.loading = true;
-        AuthService.dispatch('doLogin', {self: this})
+        // AuthService.dispatch('doLogin', {self: this})
+        AuthService.dispatch('doLoginAD', {self: this})
       },
       eventClose(){
         this.dataNotify = {}

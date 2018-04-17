@@ -69,21 +69,37 @@
                         </td>
                         <td class="text-right">
                             <a v-if="v.user_survey_theme_status == 'P' "
-                               class="btn btn-warning btn-sm"
+                               class="btn btn-warning btn-sm btn-block"
                                href
                                data-toggle="modal"
                                data-target="#modalStartExam"
                                @click.prevent="subparams.dataTheme = v">
                                 <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>PENDING</span>
+                                <span>PENDIENTE</span>
                             </a>
-                            <button v-if="v.user_survey_theme_status == 'D' " type="button" class="btn btn-success">
-                                <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>DONE</span>
-                            </button>
+                            <template v-if="v.user_survey_theme_status == 'D' || v.user_survey_theme_status == 'DD'">
+                                <template v-if="v.user_survey_theme_status == 'D'">
+                                    <button type="button" class="btn btn-success btn-sm btn-block">
+                                        <i class="fa fa-file-text-o fa-fw"></i>
+                                        <span>REALIZADO</span>
+                                    </button>
+                                </template>
+                                <template v-else>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            <i class="fa fa-file-text-o fa-fw"></i>
+                                            <span>REALIZADO</span>
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm">
+                                            <i class="fa fa-eye fa-fw"></i>
+                                            <span>SOLUCION</span>
+                                        </button>
+                                    </div>
+                                </template>
+                            </template>
                             <button v-if="v.user_survey_theme_status == 'E'" type="button" class="btn btn-danger">
                                 <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>EXPIRED</span>
+                                <span>EXPIRADO</span>
                             </button>
                         </td>
                     </tr>
