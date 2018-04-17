@@ -53,7 +53,7 @@ export default {
     if (toUpper) {
       return (letter[key]).toString().toUpperCase()
     } else {
-      return (letter[key]).toString().toLocaleLowerCase()
+      return letter[key]
     }
   },
   getImgUrl(name_file) {

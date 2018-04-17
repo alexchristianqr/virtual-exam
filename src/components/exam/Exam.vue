@@ -78,21 +78,21 @@
                             <div class="row">
                                 <div class="col-6 text-right">
                                     <button :hidden="parseInt(Object.keys(dataExam)[next]) === 0 "
-                                            class="btn btn-secondary"
+                                            class="btn btn-outline-secondary"
                                             @click="change('-')">
                                         <i class="fa fa-arrow-left fa-fw"></i>
-                                        <span>Anterior</span>
+                                        <span></span>
                                     </button>
                                 </div>
                                 <div class="col-6 text-left">
-                                    <button v-if="dataExam.length != next+1" class="btn btn-secondary"
+                                    <button v-if="dataExam.length != next+1" class="btn btn-outline-secondary"
                                             @click="change('+')">
                                         <i class="fa fa-arrow-right fa-fw"></i>
-                                        <span>Siguiente</span>
+                                        <span></span>
                                     </button>
-                                    <a v-else class="btn btn-secondary" href data-toggle="modal"
+                                    <a v-else class="btn btn-outline-secondary" href data-toggle="modal"
                                        data-target="#modalQueryExam" @click.prevent="pauseTimer = true">
-                                        <span><i class="fa fa-check fa-fw"></i>Guardar Examen</span>
+                                        <span>Terminar Examen</span>
                                     </a>
                                 </div>
                             </div>
@@ -340,24 +340,22 @@
               if (this.tempChecked.length == this.next) {
                 //cargar con valores validos
                 this.tempChecked.push({
-                  user_id: (Storage.get('data_auth').id).toString(),
-                  theme_id: (this.theme_id).toString(),
-                  question_id: (this.dataExam[this.next].id).toString(),
-                  option_answer_id: $(k).val(),
-                  checked_id: (k).toString()
+                  user_id: (Storage.get('data_auth').id),
+                  theme_id: (this.theme_id),
+                  question_id: (this.dataExam[this.next].id),
+                  option_answer_id: $(v).val(),
+                  checked_id: k
                 })
-                console.log($(k).val())
-                // console.log('uno')
+                // console.log($(k).val())
               } else {
-                //cargar con valores invalidos(vacio)
                 //cargar con valores que se volveran a tratar en el siguiente ciclo
-                this.tempChecked.push({
-                  user_id: (Storage.get('data_auth').id).toString(),
-                  theme_id: (this.theme_id).toString(),
-                  question_id: (this.dataExam[this.next].id).toString(),
-                  option_answer_id: 0,
-                  checked_id: 0
-                })
+                this.tempChecked[this.next] = {
+                  user_id: (Storage.get('data_auth').id),
+                  theme_id: (this.theme_id),
+                  question_id: (this.dataExam[this.next].id),
+                  option_answer_id: $(v).val(),
+                  checked_id: k
+                };
                 //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
                 $.each(this.tempChecked, (kk, vv) => {
                   if (vv == undefined) this.tempChecked[kk] = {}
@@ -366,6 +364,7 @@
             }
           })
         })
+        console.log(this.tempChecked)
       },
       saveEndExam () {
         this.params.answer_by_question = this.tempChecked
