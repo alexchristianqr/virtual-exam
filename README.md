@@ -1,4 +1,4 @@
-# Encuesta Virtual
+# Examen Virtual
 
 Aplicación web, cuya finalidad cumple temas de capacitación en linea, creación de preguntas, respuestas, estadística de desarrollo y más.
 
