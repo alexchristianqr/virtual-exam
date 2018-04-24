@@ -61,20 +61,23 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" title="Modulo Usuarios" v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR])">
-                <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#d" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-users"></i>
-                    <span class="nav-link-text">Usuarios</span>
-                </a>
-                <ul class="sidenav-second-level collapse" id="d">
-                    <li>
-                        <router-link :to="'/users'" class="nav-link">
-                            <i class="fa fa-fw fa-list-alt"></i>
-                            <span class="nav-link-text">Listar</span>
-                        </router-link>
-                    </li>
-                </ul>
-            </li>
+            <template v-if="util.validateRole([role.SUPER,role.ADMINISTRADOR])">
+                <li class="nav-item" title="Modulo Usuarios">
+                    <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#d"
+                       data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-users"></i>
+                        <span class="nav-link-text">Usuarios</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="d">
+                        <li>
+                            <router-link :to="'/users'" class="nav-link">
+                                <i class="fa fa-fw fa-list-alt"></i>
+                                <span class="nav-link-text">Listar</span>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
+            </template>
         </ul>
         <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">
@@ -87,14 +90,14 @@
 </template>
 
 <script>
-  import Util          from '../../util'
+  import Util from '../../util'
   import Role from '../../role'
 
   export default {
     name: 'Sidebar',
     data: () => ({
       role: Role,
-      util:Util,
+      util: Util,
     })
   }
 </script>

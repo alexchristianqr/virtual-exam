@@ -63,9 +63,9 @@ export default {
   },
   validateRole (role) {
     if(typeof role == 'object'){
-      return (role.indexOf(Storage.get('data_auth').role.id) > -1) ? true : false
+      return (role.indexOf(Storage.get('data_auth').role.id) > -1)
     }else{
-      return (Storage.get('data_auth').role.id == role) ? true : false
+     return  (Storage.get('data_auth').role.id == role) ? true : false
     }
   }
 }

@@ -18,11 +18,11 @@
                                 class="text-capitalize">{{storage.get('data_auth').role.name}}</span> )</small></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right w-75 mt-3" aria-labelledby="alertsDropdown">
-                        <a href class="dropdown-item text-secondary"  v-show="util.validateRole(role_auth.TODOS)">
+                        <a href class="dropdown-item text-secondary" v-show="util.validateRole(role_auth.TODOS)">
                             <i class="fa fa-comment fa-fw"></i>
                             Sugerencia
                         </a>
-                        <a href class="dropdown-item text-secondary"  v-show="util.validateRole(role_auth.SUPER)">
+                        <a href class="dropdown-item text-secondary" v-show="util.validateRole(role_auth.SUPER)">
                             <i class="fa fa-cogs fa-fw"></i>
                             Configuración General
                         </a>
@@ -34,7 +34,7 @@
                     </div>
                 </li>
             </ul>
-            <sidebar v-if="role.id != role_auth.INVITADO "/>
+            <sidebar v-if="role.id != role_auth.INVITADO"/>
         </div>
     </nav>
 </template>

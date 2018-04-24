@@ -4,7 +4,7 @@ import * as Vuex from 'vuex'
 import Axios     from 'axios'
 import Env       from '../env'
 import Util      from '../util'
-
+import JsonDataAuth from '../api/file_data_auth.json'
 
 Vue.use(Vuex)
 
@@ -27,6 +27,8 @@ export default new Vuex.Store({
           objAuth.project.id = self.newProject.id
           objAuth.project.name = self.newProject.name
           Storage.set('data_auth', objAuth)
+          Util.setCookie('cookie_settings_app',objAuth, 1)
+          Object.assign(JsonDataAuth.json, Storage.get('data_auth'))
           self.$router.replace('/themes')
         }
       }).catch(e => {

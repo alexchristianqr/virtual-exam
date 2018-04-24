@@ -39,13 +39,14 @@
   import Storage   from 'vue-local-storage'
   import Sbadmin   from './assets/js/sb-admin'
   import Util      from './util'
-  import Role      from './role'
+  import Roles      from './role'
+  import JsonDataAuth  from './api/file_data_auth.json'
 
   export default {
     name: 'App',
     components: {NavHeader},
     data: () => ({
-      role_auth: Role,
+      role_auth: Roles,
       storage: Storage,
       role: {},
     }),
@@ -58,6 +59,9 @@
     },
     watch: {
       $route () {
+        if(this.$route.path !== '/login' && this.$route.path !== '/project'){
+            this.loadFileDataAuthJson()
+        }
         this.loadSbadmin()
         this.validateRoleAuthorized()
         this.validateShowPageKnow()
@@ -74,6 +78,10 @@
       loadSbadmin () {
         Sbadmin.init()
         console.log('Sbadmin reload!')
+      },
+      loadFileDataAuthJson () {
+        Storage.set('data_auth',JsonDataAuth.json)
+        console.log('file data auth reload!')
       },
       validateRoleAuthorized () {
         this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
