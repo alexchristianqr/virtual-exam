@@ -29,9 +29,6 @@ export default new Vuex.Store({
       })
     },
     doLoginAD ({commit}, {self}) {
-      // if (Util.getCookie('cookie_settings_app') == '') {
-      //   alert('Debe refrescar la página!')
-      // }else {
         Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).then((r) => {
           if (r.status === 200) {
             const new_data_auth = {
@@ -58,7 +55,6 @@ export default new Vuex.Store({
         }).finally(() => {
           self.loading = false
         })
-      // }
     },
     validateIfExist ({commit}, {self}) {
       Axios.post(Env.API + '/if-exist-user', self.new_data_auth).then((r) => {
@@ -93,5 +89,10 @@ export default new Vuex.Store({
       Storage.remove('data_auth')
       self.$router.replace('/login')
     },
+    getConfig({commit}, {self}) {
+      Axios.post(Env.API + '/config').then((r) => {
+
+      })
+    }
   },
 })

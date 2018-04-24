@@ -12,8 +12,9 @@ export default new Vuex.Store({
       Axios.get(Env.API + '/all-role').then((r) => {
         if (r.status === 200) {
           let dataRoles = r.data
+          //Recorremos el arreglo de roles desde la base de datos y creamos las constantes en el archivo role.js
           dataRoles.forEach((v, k) => {
-            if (k != dataRoles.length - 1) {
+            if (k != dataRoles.length) {
               Role[v.name] = v.id
               Role['TODOS'][k] = v.id
             } else {

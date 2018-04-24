@@ -113,13 +113,11 @@ const router = new Router({
     {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},
   ],
 })
+
 const setTtitle = (to) => {
   document.title = 'Examen Virtual | ' + to.meta.title
 }
 const validateAccessByRole = (to, roleId, next) => {
-  //actualizamos el storage con data por default
-  Storage.set('data_auth', JsonDataAuth.json)
-
   //validamos si es una arreglo
   if (typeof roleId == 'object') {
     if (roleId.indexOf(Storage.get('data_auth').role.id) > -1) {
@@ -136,17 +134,20 @@ const validateAccessByRole = (to, roleId, next) => {
   }
 }
 const allRemoveCookies = (to) => {
+  Util.removeCookie('cookie_data_auth', '/')
+  Util.removeCookie('cookie_data_auth', '/login')
   if (to.path == '/login' || to.path == '/project') {
     Util.removeCookie('cookie_settings_app', '/')
     Util.removeCookie('cookie_settings_app', '/login')
   }
-  Util.removeCookie('cookie_data_auth', '/')
-  Util.removeCookie('cookie_data_auth', '/login')
 }
 const reloadFileJSON = () => {
-  if (Object.keys(JsonDataAuth.json).length <= 0) {
+  if (Object.keys(JsonDataAuth.json).length) {
+    Storage.set('data_auth', JsonDataAuth.json)
+    console.log('file data auth reload by not cookie!')
+  } else {
     Object.assign(JsonDataAuth.json, Util.getCookie('cookie_settings_app'))
-    console.log('file data auth reload by cookie!')
+    console.log('file data auth reload by yes cookie!')
   }
 }
 
