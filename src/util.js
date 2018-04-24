@@ -1,3 +1,5 @@
+import Storage from 'vue-local-storage'
+
 export default {
   toHHMMSS (sec) {
     let sec_num = parseInt(sec, 10), // don't forget the second param
@@ -45,8 +47,8 @@ export default {
     }
     return ''
   },
-  removeCookie(name,path) {
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path='+path;
+  removeCookie (name, path) {
+    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT; path=' + path
   },
   returnLetter (key, toUpper = false) {
     let letter = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
@@ -56,7 +58,14 @@ export default {
       return letter[key]
     }
   },
-  getImgUrl(name_file) {
-    return require('@/assets/img/' + name_file);
+  getImgUrl (name_file) {
+    return require('@/assets/img/' + name_file)
   },
+  validateRole (role) {
+    if(typeof role == 'object'){
+      return (role.indexOf(Storage.get('data_auth').role.id) > -1) ? true : false
+    }else{
+      return (Storage.get('data_auth').role.id == role) ? true : false
+    }
+  }
 }

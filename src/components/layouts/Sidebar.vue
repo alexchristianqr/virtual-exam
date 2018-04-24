@@ -7,13 +7,13 @@
                     <span class="nav-link-text">Tema</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="a">
-                    <li>
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR,role.LECTOR])">
                         <router-link :to="'/themes'" class="nav-link">
                             <i class="fa fa-fw fa-list-alt"></i>
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
-                    <li>
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
                         <router-link :to="'/create-theme'" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
@@ -27,13 +27,13 @@
                     <span class="nav-link-text">Pregunta</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="b">
-                    <li>
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR,role.LECTOR])">
                         <router-link :to="'/questions'" class="nav-link">
                             <i class="fa fa-fw fa-list-alt"></i>
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
-                    <li>
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
                         <router-link :to="'/create-question'" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
@@ -47,13 +47,13 @@
                     <span class="nav-link-text">Opcion Respuesta</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="c">
-                    <li>
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR,role.LECTOR])">
                         <router-link :to="'/options-answers'" class="nav-link">
                             <i class="fa fa-fw fa-list-alt"></i>
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
-                    <li>
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
                         <router-link :to="'/create-option-answer'" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
@@ -61,7 +61,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" title="Modulo Usuarios">
+            <li class="nav-item" title="Modulo Usuarios" v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR])">
                 <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#d" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-users"></i>
                     <span class="nav-link-text">Usuarios</span>
@@ -87,17 +87,24 @@
 </template>
 
 <script>
+  import Util          from '../../util'
+  import Role from '../../role'
 
-    export default {
-        name: "Sidebar",
-    }
+  export default {
+    name: 'Sidebar',
+    data: () => ({
+      role: Role,
+      util:Util,
+    })
+  }
 </script>
 
 <style scoped>
-#exampleAccordion{
-    overflow: overlay;
-}
-#mainNav .navbar-collapse .navbar-sidenav .nav-link-collapse:after{
-    padding-right: 8px;
-}
+    #exampleAccordion {
+        overflow: overlay;
+    }
+
+    #mainNav .navbar-collapse .navbar-sidenav .nav-link-collapse:after {
+        padding-right: 8px;
+    }
 </style>

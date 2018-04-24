@@ -91,7 +91,8 @@
 
 <script>
     import OptionAnswerService from '../../services/OptionAnswerService';
-    import QuestionService from '../../services/QuestionService';
+    import QuestionService     from '../../services/QuestionService';
+    import ThemeService        from '../../services/ThemeService'
 
     export default {
         name: "CreateUpdateQuestion",
@@ -135,10 +136,10 @@
                 this.params.status = this.dataQuestion.status;
             },
             allTheme() {
-                SERVICE.dispatch("allTheme", {self: this})
+                ThemeService.dispatch("allTheme", {self: this})
             },
             changeLoadOptionAnswers(){
-                SERVICE.dispatch("allOptionAnswer", {self: this})
+                OptionAnswerService.dispatch("allOptionAnswer", {self: this})
             },
         }
     }

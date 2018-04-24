@@ -2,7 +2,7 @@
     <div>
         <template v-if="$route.path !== '/login' && $route.path !== '/project'"><!-- Si mo es Login -->
             <nav-header v-if="$route.path !== '/know'" :role="role"/>
-            <template v-if="role.name !== 'guest'">
+            <template v-if="role.id != role_auth.INVITADO">
                 <div class="content-wrapper bg-light">
                     <div class="container-fluid mb-5">
                         <router-view/>
@@ -38,21 +38,23 @@
   import NavHeader from './components/layouts/NavHeader'
   import Storage   from 'vue-local-storage'
   import Sbadmin   from './assets/js/sb-admin'
-  import Util       from './util'
+  import Util      from './util'
+  import Role      from './role'
 
   export default {
     name: 'App',
     components: {NavHeader},
     data: () => ({
+      role_auth: Role,
       storage: Storage,
-      role: {name: 'guest'},
+      role: {},
     }),
     beforeMount () {
       this.validateRoleAuthorized()
       this.validateShowPageKnow()
     },
-    mounted(){
-     this.removeCookies();
+    mounted () {
+      this.removeCookies()
     },
     watch: {
       $route () {
@@ -62,9 +64,9 @@
       }
     },
     methods: {
-      removeCookies(){
-        Util.removeCookie('cookie_data_auth','/')
-        Util.removeCookie('cookie_data_auth','/login')
+      removeCookies () {
+        Util.removeCookie('cookie_data_auth', '/')
+        Util.removeCookie('cookie_data_auth', '/login')
       },
       getClass () {
         return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer'

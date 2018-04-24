@@ -15,95 +15,96 @@ import UserHistory              from './components/user/UserHistory'
 import ExamSolution             from './components/exam/ExamSolution'
 import PageKnow                 from './components/errors/Nnow'
 import Util                     from './util'
+import Role                     from './role'
 
 Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
   routes: [
-    //Views Unhautorized
+    /**Views Unhautorized**/
     {path: '*', redirect: '/login'},
     {path: '/login', name: 'login', component: Login, meta: {title: 'Login'}},
-    //Views Authorized
+    /**Views Authorized**/
     {
       path: '/project',
       name: 'project',
       component: Project,
-      meta: {title: 'Proyecto', roleId: [1, 2, 3, 4, 5]},
+      meta: {title: 'Proyecto', roleId: Role.TODOS},
     },
     {
       path: '/themes',
       name: 'themes',
       component: Themes,
-      meta: {requiresAuth: true, title: 'Tema', roleId: [1, 2, 3, 4, 5]},
+      meta: {requiresAuth: true, title: 'Tema', roleId: Role.TODOS},
     },
     {
       path: '/exam',
       name: 'exam',
       component: Exam,
-      meta: {requiresAuth: true, title: 'Examen', roleId: [1, 2, 5]},
-    },
-    {
-      path: '/create-theme',
-      name: 'create-theme',
-      component: CreateUpdateTheme,
-      meta: {requiresAuth: true, title: 'Crear Tema', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/questions',
-      name: 'questions',
-      component: Questions,
-      meta: {requiresAuth: true, title: 'Pregunta', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/create-question',
-      name: 'create-question',
-      component: CreateUpdateQuestion,
-      meta: {requiresAuth: true, title: 'Crear Pregunta', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/edit-question',
-      name: 'edit-question',
-      component: CreateUpdateQuestion,
-      meta: {requiresAuth: true, title: 'Editar Pregunta', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/options-answers',
-      name: 'options-answers',
-      component: OptionsAnswers,
-      meta: {requiresAuth: true, title: 'Opcion', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/create-option-answer',
-      name: 'create-option-answer',
-      component: CreateUpdateOptionAnswer,
-      meta: {requiresAuth: true, title: 'Crear Opcion', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/edit-option-answer',
-      name: 'edit-option-answer',
-      component: CreateUpdateOptionAnswer,
-      meta: {requiresAuth: true, title: 'Editar opcion', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/users',
-      name: 'users',
-      component: Users,
-      meta: {requiresAuth: true, title: 'Usuario', roleId: [1, 2, 3]},
-    },
-    {
-      path: '/user-history/:user_id',
-      name: 'user-history',
-      component: UserHistory,
-      meta: {requiresAuth: true, title: 'Usuario', roleId: [1, 2, 3]},
+      meta: {requiresAuth: true, title: 'Examen', roleId: Role.TODOS},
     },
     {
       path: '/exam-solution/:exam_id',
       name: 'exam-solution',
       component: ExamSolution,
-      meta: {requiresAuth: true, title: 'Usuario', roleId: [1, 2, 3]},
+      meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.INVITADO]},
     },
-    //View Errors
+    {
+      path: '/create-theme',
+      name: 'create-theme',
+      component: CreateUpdateTheme,
+      meta: {requiresAuth: true, title: 'Crear Tema', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.ESCRITOR]},
+    },
+    {
+      path: '/questions',
+      name: 'questions',
+      component: Questions,
+      meta: {requiresAuth: true, title: 'Pregunta', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.ESCRITOR,Role.LECTOR]},
+    },
+    {
+      path: '/create-question',
+      name: 'create-question',
+      component: CreateUpdateQuestion,
+      meta: {requiresAuth: true, title: 'Crear Pregunta', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.ESCRITOR]},
+    },
+    {
+      path: '/edit-question',
+      name: 'edit-question',
+      component: CreateUpdateQuestion,
+      meta: {requiresAuth: true, title: 'Editar Pregunta', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.ESCRITOR]},
+    },
+    {
+      path: '/options-answers',
+      name: 'options-answers',
+      component: OptionsAnswers,
+      meta: {requiresAuth: true, title: 'Opcion', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.ESCRITOR,Role.LECTOR]},
+    },
+    {
+      path: '/create-option-answer',
+      name: 'create-option-answer',
+      component: CreateUpdateOptionAnswer,
+      meta: {requiresAuth: true, title: 'Crear Opcion', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.ESCRITOR]},
+    },
+    {
+      path: '/edit-option-answer',
+      name: 'edit-option-answer',
+      component: CreateUpdateOptionAnswer,
+      meta: {requiresAuth: true, title: 'Editar opcion', roleId: [Role.SUPER,Role.ADMINISTRADOR,Role.ESCRITOR]},
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: Users,
+      meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER,Role.ADMINISTRADOR]},
+    },
+    {
+      path: '/user-history/:user_id',
+      name: 'user-history',
+      component: UserHistory,
+      meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER,Role.ADMINISTRADOR]},
+    },
+    /**View Errors**/
     {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},
   ],
 })

@@ -7,7 +7,9 @@
                         <span class="card-title">Temas</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
+                        <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
+                            <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -161,10 +163,12 @@
   import ThemeService  from '../../services/ThemeService'
   import Util          from '../../util'
   import Storage       from 'vue-local-storage'
+  import Role           from '../../role'
 
   export default {
     name: 'Themes',
     data: () => ({
+      role:Role,
       util: Util,
       loadingTable: true,
       dataTheme: [],

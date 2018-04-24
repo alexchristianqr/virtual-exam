@@ -1,6 +1,5 @@
 import $ from 'jquery'
 import 'bootstrap'
-import 'tooltip'
 
 export default {
   init () {
@@ -10,11 +9,6 @@ export default {
     $(document).ready(($) => {
       'use strict' // Start of use strict
       let scrollToTop = null
-      // 60px, 70px, 0px
-      // Configure tooltips for collapsed side navigation
-      $('.navbar-sidenav [data-toggle="tooltip"]').tooltip({
-        template: '<div class="tooltip navbar-sidenav-tooltip" role="tooltip" style="pointer-events: none;"><div class="arrow"></div><div class="tooltip-inner"></div></div>'
-      })
       // Toggle the side navigation
       $('#sidenavToggler').click((e) => {
         e.preventDefault()
@@ -42,13 +36,8 @@ export default {
           $('.scroll-to-top').fadeOut()
         }
       })
-      // Configure tooltips globally
-      $('[data-toggle="tooltip"]').tooltip()
       // Smooth scrolling using jQuery easing
       $(document).on('click', 'a.scroll-to-top', (e) => {
-        // let $anchor = $(this)
-        // $('html, body').animate({scrollTop: $(this).offset().top}, 1000, 'easeInOutExpo')
-        // e.preventDefault()
         window.clearInterval(1);
         scrollToTop = window.setInterval(() => {
           let pos = window.pageYOffset;
@@ -60,7 +49,6 @@ export default {
         }, 16);
         e.preventDefault();
       })
-
     }) // End of use strict
   }
 }
