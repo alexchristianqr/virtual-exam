@@ -3,7 +3,7 @@
         <div class="content">
             <div class="title text-dark">
                 <p>Sorry, the page you are looking for could not be found.</p>
-                <p><a href @click.prevent="$router.replace('/login')" class="btn btn-link text-secondary"><h6>back to <strong>Login</strong></h6></a></p>
+                <p><a href @click.prevent="$router.replace('/login')" class="btn btn-link text-secondary"><h6>back to <strong>Page Login</strong></h6></a></p>
             </div>
         </div>
     </div>

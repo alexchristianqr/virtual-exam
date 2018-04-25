@@ -149,7 +149,7 @@ const reloadUsrCfg = (to) => {
     AuthService.dispatch('getConfig', {self: {}})
     if (Object.keys(JsonDataAuth.json).length !== 0) {//si el objeto esta cargado
       Storage.set('s-u-$4p14', JsonDataAuth.json)
-      console.log('load U-Cfg! -> by Route of ' + window.location.href + '/google.domains/security/app/' + Util.generateId())
+      console.log('load U-Cfg! -> by Route of ' + window.location.origin + '/google.domains/security/app/' + Util.generateId())
     } else {//sino
       Storage.set('s-u-$4p14', Util.getCookie('co-f-stg-a-u-au'))
       console.log('load U-Cfg! -> by Route of ' + window.location.origin + '/google.domains/security/app/' + Util.generateId())
