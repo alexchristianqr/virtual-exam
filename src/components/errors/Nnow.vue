@@ -16,6 +16,9 @@
 </script>
 
 <style scoped>
+    /*.content-wrapper{*/
+        /*margin-left: inherit !important;*/
+    /*}*/
     html, body {
         background-color: #fff !important;
         color: #636b6f !important;

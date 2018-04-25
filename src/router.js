@@ -192,7 +192,7 @@ router.beforeEach((to, from, next) => {
     } else {
       validateAccessByRole(to, roleId, next)
       //validar si traspasa  el modulo de seleccionar proyecto
-      if(Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == null){
+      if(Storage.get('s-u-$4p14').project.id == 1 || Storage.get('s-u-$4p14').project.id == null){
         next('/login')
       }else{
         next()

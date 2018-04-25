@@ -3,8 +3,8 @@
         <template v-if="$route.path !== '/login' && $route.path !== '/project'"><!-- Si mo es Login -->
             <nav-header v-if="$route.path !== '/know'" :role="role"/>
             <template v-if="role.id != role_auth.INVITADO">
-                <div class="content-wrapper bg-light">
-                    <div class="container-fluid mb-5">
+                <div class="content-wrapper bg-light" :style="$route.path == '/know' ? 'margin-left:inherit !important;padding-top:inherit' : ''">
+                    <div :class="$route.path == '/know' ? 'container-fluid' : 'container-fluid mb-5'">
                         <router-view/>
                     </div>
                 </div>

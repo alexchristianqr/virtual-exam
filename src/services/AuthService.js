@@ -90,25 +90,18 @@ export default new Vuex.Store({
       })
     },
     doLogout ({commit}, {self}) {
-      // JsonDataAuth.json = {}
-      // JsonDataAuth.global_username = ''
+      JsonDataAuth.json = {}
       Storage.remove('s-u-$4p14')
       self.$router.replace('/login')
     },
     getConfig ({commit}, {self}) {
-      // Storage.set('s-u-$4p14',Util.getCookie('co-stg-a-u-au'))
-      // if(Util.getCookie('cookie_settings_app').username === Storage.get('s-u-$4p14').username){
-      Axios.post(Env.API + '/usr-cfg-app', {username:  Util.getCookie('co-f-stg-a-u-au').username}).then((r) => {
-        // Storage.remove('s-u-$4p14')
+      Axios.post(Env.API + '/u-object-rest-apis-application', {username:  Util.getCookie('co-f-stg-a-u-au').username}).then((r) => {
         if (r.status === 200) {
-          // Storage.set('s-u-$4p14', r.data)
           Object.assign(JsonDataAuth.json, r.data)
-          // console.log(JsonDataAuth.json)
         }
+      }).catch((e)=>{
+        console.error(e)
       })
-      // }else{
-      //   window.location.replace('/login')
-      // }
     }
   },
 })
