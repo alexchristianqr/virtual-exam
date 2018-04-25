@@ -168,6 +168,7 @@ router.beforeEach((to, from, next) => {
 
   //validamos si la ruta en la que estamos es Project y necesita antes haber pasado la authenticacion
   if (to.path === '/project') {
+    // console.log(Util.getCookie('co-stg-a-u-au'))
     if (Util.getCookie('co-stg-a-u-au') == '') {
       allRemoveCookies(to)
       next('/login')
@@ -175,18 +176,27 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }
+
   //validamos si la ruta en la que estamos es Login y debe obligatoriamente hacer authenticacion
   if (to.path === '/login') {
     allRemoveCookies(to)
     Storage.remove('s-u-$4p14')
   }
+
   //validamos en todas las rutas
   if (requiresAuth) {
     allRemoveCookies(to)
+    //validar que este siempre en login
     if (Storage.get('s-u-$4p14') == undefined) {
       next('/login')
     } else {
       validateAccessByRole(to, roleId, next)
+      //validar si traspasa  el modulo de seleccionar proyecto
+      if(Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == null){
+        next('/login')
+      }else{
+        next()
+      }
     }
   } else {
     next()
