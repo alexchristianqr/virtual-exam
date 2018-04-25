@@ -14,9 +14,13 @@ new Vue({
   router,
   beforeCreate () {
     Sbadmin.init()
-    console.log('Sbadmin reload!')
+    console.log('Sbadmin load!')
   },
   components: {App},
   template: '<App/>'
 })
 
+/** Mapeo de Seguridad Storage **/
+//cookie_storage_app_user_authenticated = co-stg-a-u-au
+//cookie_file_storage_app_user_authenticated = co-f-stg-a-usr-au
+//storage_user_sapia = stg-u-$4p14

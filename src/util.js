@@ -62,10 +62,21 @@ export default {
     return require('@/assets/img/' + name_file)
   },
   validateRole (role) {
-    if(typeof role == 'object'){
-      return (role.indexOf(Storage.get('data_auth').role.id) > -1)
-    }else{
-     return  (Storage.get('data_auth').role.id == role) ? true : false
+    if (typeof role == 'object') {
+      return (role.indexOf(Storage.get('s-u-$4p14').role.id) > -1)
+    } else {
+      return (Storage.get('s-u-$4p14').role.id == role) ? true : false
     }
+  },
+  // generateId :: Integer -> String
+  generateId (len) {
+    // dec2hex :: Integer -> String
+    const dec2hex = (dec) => {
+      return ('0' + dec.toString(16)).substr(-2)
+    }
+    //
+    let arr = new Uint8Array((len || 40) / 2)
+    window.crypto.getRandomValues(arr)
+    return Array.from(arr, dec2hex).join('')
   }
 }

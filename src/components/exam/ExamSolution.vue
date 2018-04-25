@@ -193,7 +193,7 @@
         updateStatusExam () {
           this.msg_validate = undefined
           this.params.exam_id = this.p_theme_id
-          this.params.user_id = this.storage.get('data_auth').id
+          this.params.user_id = this.storage.get('s-u-$4p14').id
           this.params.exam_state_id = 3
           ExamService.dispatch('updateStatusExam', {self: this})
         },

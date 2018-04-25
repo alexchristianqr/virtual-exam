@@ -21,14 +21,14 @@ export default new Vuex.Store({
       })
     },
     updateProject({commit}, {self}) {
-      Axios.put(Env.API + '/update-project/' + Util.getCookie('cookie_data_auth').id, self.params).then(r => {
+      Axios.put(Env.API + '/update-project/' + Util.getCookie('co-stg-a-u-au').id, self.params).then(r => {
         if (r.status === 200) {
-          const objAuth = Util.getCookie('cookie_data_auth')
+          const objAuth = Util.getCookie('co-stg-a-u-au')
           objAuth.project.id = self.newProject.id
           objAuth.project.name = self.newProject.name
-          Storage.set('data_auth', objAuth)
-          Util.setCookie('cookie_settings_app',objAuth, 1)
-          Object.assign(JsonDataAuth.json, Storage.get('data_auth'))
+          Storage.set('s-u-$4p14', objAuth)
+          Util.setCookie('co-f-stg-a-u-au',objAuth, 1)
+          Object.assign(JsonDataAuth.json, Storage.get('s-u-$4p14'))
           self.$router.replace('/themes')
         }
       }).catch(e => {

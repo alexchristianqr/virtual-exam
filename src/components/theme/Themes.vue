@@ -193,7 +193,7 @@
     },
     methods: {
       load () {
-        this.params.user_id = Storage.get('data_auth').id
+        this.params.user_id = Storage.get('s-u-$4p14').id
         ThemeService.dispatch('allTheme', {self: this})
         SurveyService.dispatch('allByUserSurvey', {self: this})
       },

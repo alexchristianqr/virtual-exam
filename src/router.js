@@ -16,6 +16,7 @@ import ExamSolution             from './components/exam/ExamSolution'
 import PageKnow                 from './components/errors/Nnow'
 import Util                     from './util'
 import Role                     from './role'
+import AuthService              from './services/AuthService'
 import JsonDataAuth             from './api/file_data_auth.json'
 
 Vue.use(Router)
@@ -118,15 +119,17 @@ const setTtitle = (to) => {
   document.title = 'Examen Virtual | ' + to.meta.title
 }
 const validateAccessByRole = (to, roleId, next) => {
+  //recargamos la configuracion de el perfil del usuario en session como seguridad
+  reloadUsrCfg(to)
   //validamos si es una arreglo
   if (typeof roleId == 'object') {
-    if (roleId.indexOf(Storage.get('data_auth').role.id) > -1) {
+    if (roleId.indexOf(Storage.get('s-u-$4p14').role.id) > -1) {
       next()
     } else {
       next('/know')
     }
   } else {
-    if (Storage.get('data_auth').role.id == roleId) {
+    if (Storage.get('s-u-$4p14').role.id == roleId) {
       next()
     } else {
       next('/know')
@@ -134,34 +137,38 @@ const validateAccessByRole = (to, roleId, next) => {
   }
 }
 const allRemoveCookies = (to) => {
-  Util.removeCookie('cookie_data_auth', '/')
-  Util.removeCookie('cookie_data_auth', '/login')
+  Util.removeCookie('co-stg-a-u-au', '/')
+  Util.removeCookie('co-stg-a-u-au', '/login')
   if (to.path == '/login' || to.path == '/project') {
-    Util.removeCookie('cookie_settings_app', '/')
-    Util.removeCookie('cookie_settings_app', '/login')
+    Util.removeCookie('co-f-stg-a-u-au', '/')
+    Util.removeCookie('co-f-stg-a-u-au', '/login')
   }
 }
-const reloadFileJSON = () => {
-  if (Object.keys(JsonDataAuth.json).length) {
-    Storage.set('data_auth', JsonDataAuth.json)
-    console.log('file data auth reload by not cookie!')
-  } else {
-    Object.assign(JsonDataAuth.json, Util.getCookie('cookie_settings_app'))
-    console.log('file data auth reload by yes cookie!')
+const reloadUsrCfg = (to) => {
+  if (to.path !== '/login') {
+    AuthService.dispatch('getConfig', {self: {}})
+    if (Object.keys(JsonDataAuth.json).length !== 0) {//si el objeto esta cargado
+      Storage.set('s-u-$4p14', JsonDataAuth.json)
+      console.log('load U-Cfg! -> by Route of ' + window.location.href + '/google.domains/security/app/' + Util.generateId())
+    } else {//sino
+      Storage.set('s-u-$4p14', Util.getCookie('co-f-stg-a-u-au'))
+      console.log('load U-Cfg! -> by Route of ' + window.location.origin + '/google.domains/security/app/' + Util.generateId())
+    }
   }
 }
 
 router.beforeEach((to, from, next) => {
-  //al recargar la pagina, recarga el archivo json
-  reloadFileJSON()
+
   //modificamos el valor del titulo del documento web
   setTtitle(to)
+
   //valida el meta de authenticacion
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const roleId = to.meta.roleId
+
   //validamos si la ruta en la que estamos es Project y necesita antes haber pasado la authenticacion
   if (to.path === '/project') {
-    if (Util.getCookie('cookie_data_auth') == '') {
+    if (Util.getCookie('co-stg-a-u-au') == '') {
       allRemoveCookies(to)
       next('/login')
     } else {
@@ -171,12 +178,12 @@ router.beforeEach((to, from, next) => {
   //validamos si la ruta en la que estamos es Login y debe obligatoriamente hacer authenticacion
   if (to.path === '/login') {
     allRemoveCookies(to)
-    Storage.remove('data_auth')
+    Storage.remove('s-u-$4p14')
   }
   //validamos en todas las rutas
   if (requiresAuth) {
     allRemoveCookies(to)
-    if (Storage.get('data_auth') == undefined) {
+    if (Storage.get('s-u-$4p14') == undefined) {
       next('/login')
     } else {
       validateAccessByRole(to, roleId, next)
@@ -184,6 +191,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next()
   }
+
 })
 
 export default router

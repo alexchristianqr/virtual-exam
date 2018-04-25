@@ -340,7 +340,7 @@
               if (this.tempChecked.length == this.next) {
                 //cargar con valores validos
                 this.tempChecked.push({
-                  user_id: (Storage.get('data_auth').id),
+                  user_id: (Storage.get('s-u-$4p14').id),
                   theme_id: (this.theme_id),
                   question_id: (this.dataExam[this.next].id),
                   option_answer_id: $(v).val(),
@@ -350,7 +350,7 @@
               } else {
                 //cargar con valores que se volveran a tratar en el siguiente ciclo
                 this.tempChecked[this.next] = {
-                  user_id: (Storage.get('data_auth').id),
+                  user_id: (Storage.get('s-u-$4p14').id),
                   theme_id: (this.theme_id),
                   question_id: (this.dataExam[this.next].id),
                   option_answer_id: $(v).val(),

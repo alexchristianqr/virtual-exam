@@ -2,7 +2,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark text-white" id="mainNav">
             <span class="navbar-brand">
-                <span class="h5 m-auto">Examen Virtual ( {{storage.get('data_auth').project.name.toUpperCase()}} )</span>
+                <span class="h5 m-auto">Examen Virtual ( {{storage.get('s-u-$4p14').project.name.toUpperCase()}} )</span>
             </span>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
@@ -14,8 +14,8 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle mr-lg-2" id="" href data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false">
-                        <span class="h6 m-auto">{{storage.get('data_auth').name}} <small>( {{storage.get('data_auth').email}} | <span
-                                class="text-capitalize">{{storage.get('data_auth').role.name}}</span> )</small></span>
+                        <span class="h6 m-auto">{{storage.get('s-u-$4p14').name}} <small>( {{storage.get('s-u-$4p14').email}} | <span
+                                class="text-capitalize">{{storage.get('s-u-$4p14').role.name}}</span> )</small></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right w-75 mt-3" aria-labelledby="alertsDropdown">
                         <a href class="dropdown-item text-secondary" v-show="util.validateRole(role_auth.TODOS)">

@@ -46,7 +46,6 @@
   import AuthService from '../../services/AuthService'
   import Logo        from '../layouts/Logo'
   import Notify      from '../layouts/Notify'
-  import RoleService from '../../services/RoleService'
 
   export default {
     name: 'Login',
@@ -65,9 +64,6 @@
         password: '',
       },
     }),
-    beforeCreate(){
-        RoleService.dispatch('allRole',{self:this})
-    },
     methods: {
       doLogin() {
         this.loading = true;

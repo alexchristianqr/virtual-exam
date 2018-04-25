@@ -27,20 +27,16 @@
                 </div>
             </div>
         </footer>
-        <!-- Scroll to Top Button-->
-        <!--<a class="scroll-to-top rounded">-->
-        <!--<i class="fa fa-angle-up"></i>-->
-        <!--</a>-->
     </div>
 </template>
 
 <script>
-  import NavHeader from './components/layouts/NavHeader'
-  import Storage   from 'vue-local-storage'
-  import Sbadmin   from './assets/js/sb-admin'
-  import Util      from './util'
-  import Roles      from './role'
-  import JsonDataAuth  from './api/file_data_auth.json'
+  import NavHeader    from './components/layouts/NavHeader'
+  import Storage      from 'vue-local-storage'
+  import Sbadmin      from './assets/js/sb-admin'
+  import Util         from './util'
+  import Roles        from './role'
+  import JsonDataAuth from './api/file_data_auth.json'
 
   export default {
     name: 'App',
@@ -59,8 +55,8 @@
     },
     watch: {
       $route () {
-        if(this.$route.path !== '/login' && this.$route.path !== '/project'){
-            this.loadFileDataAuthJson()
+        if (this.$route.path !== '/login' && this.$route.path !== '/project') {
+          this.loadFileDataAuthJson()
         }
         this.loadSbadmin()
         this.validateRoleAuthorized()
@@ -69,8 +65,8 @@
     },
     methods: {
       removeCookies () {
-        Util.removeCookie('cookie_data_auth', '/')
-        Util.removeCookie('cookie_data_auth', '/login')
+        Util.removeCookie('co-stg-a-u-au', '/')
+        Util.removeCookie('co-stg-a-u-au', '/login')
       },
       getClass () {
         return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer'
@@ -80,11 +76,13 @@
         console.log('Sbadmin reload!')
       },
       loadFileDataAuthJson () {
-        Storage.set('data_auth',JsonDataAuth.json)
-        console.log('file data auth reload!')
+        if (Object.keys(JsonDataAuth.json).length !== 0) {//si el objeto esta cargado
+          Storage.set('s-u-$4p14', JsonDataAuth.json)
+          console.log('load U-Cfg! -> by App of ' + window.location.origin + '/google.domains/security/app/' + Util.generateId())
+        }
       },
       validateRoleAuthorized () {
-        this.role = (Storage.get('data_auth') != null) ? Storage.get('data_auth').role : {}
+        this.role = (Storage.get('s-u-$4p14') != null) ? Storage.get('s-u-$4p14').role : {}
       },
       validateShowPageKnow () {
         if (this.$route.path == '/know') {
