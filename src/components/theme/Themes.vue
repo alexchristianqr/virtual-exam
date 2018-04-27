@@ -8,7 +8,8 @@
                     </div>
                     <div class="col-6 text-right">
                         <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                            <router-link :to="'/create-theme'" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
+                            <router-link :to="{name:'create-theme'}" class="btn btn-outline-secondary"><i
+                                    class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                         </div>
                     </div>
                 </div>
@@ -19,20 +20,24 @@
                             <span class="input-group-text"><i class="fa fa-filter"></i></span>
                         </div>
                         <select title v-model="params.user_survey_theme_id" class="form-control" @change="change()">
-                            <option value="" selected>Seleccionar Categoria</option>
-                            <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
+                            <option value="">Seleccionar Categoria</option>
+                            <option v-for="(v,k) in dataSurvey" :value="v.user_survey_id" :selected="true">{{v.name}}</option>
                         </select>
                     </div>
                     <div v-show="params.user_survey_theme_id != ''" class="input-group w-35">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
-                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search" placeholder="Buscar" class="form-control">
+                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search" placeholder="Buscar"
+                               class="form-control">
                         <div v-if="input_search_theme != ''" class="input-group-append">
-                            <button title="Limpiar Busqueda" @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                            <button title="Limpiar Busqueda"
+                                    @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()"
+                                    type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
-                    <button title="actualizar datos" class="btn btn-outline-secondary" type="button" @click="change()"><i class="fa fa-refresh fa-fw"></i></button>
+                    <button title="actualizar datos" class="btn btn-outline-secondary" type="button" @click="change()">
+                        <i class="fa fa-refresh fa-fw"></i></button>
                 </div>
             </div>
             <div class="card-body">
@@ -42,15 +47,16 @@
                         <th><b>#</b></th>
                         <th>Nombre Tema</th>
                         <th>Actualizado</th>
+                        <th>Fecha Inicial - Fecha Final</th>
                         <th>Duración</th>
                         <th>Nota</th>
-                        <th width="5%" class="text-center">Estado</th>
+                        <th width="5%" class="text-center" v-show="util.validateRole(role.SUPER)">Estado</th>
                         <th width="10%" class="text-right">Acción</th>
                     </tr>
                     </thead>
-                    <tbody v-if="loadingTable" class="table">
+                    <tbody v-if="loadingTable" class="table table-sm">
                     <tr>
-                        <td colspan="7" class="text-dark text-center">
+                        <td colspan="8" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
                                 <i class="fa fa-circle-o-notch fa-spin fa-2x mb-2"></i>
                                 <p>Obteniendo Informacion!</p>
@@ -63,9 +69,10 @@
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
                         <td>{{v.theme_updated_at}}</td>
+                        <td>{{moment(v.theme_updated_at).format('DD/MM/YYYY')}}&nbsp;&nbsp;-&nbsp;&nbsp;{{moment(v.theme_updated_at).format('DD/MM/YYYY')}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.user_survey_theme_score}}</td>
-                        <td class="text-center">
+                        <td class="text-center" v-show="util.validateRole(role.SUPER)">
                             <i v-if="v.theme_status === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.theme_status === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
@@ -108,7 +115,7 @@
                     </tbody>
                     <tbody v-else-if="!loadingTable && dataTheme.length < 1">
                     <tr>
-                        <td colspan="7" class="text-dark text-center">
+                        <td colspan="8" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
                                 <i class="fa fa-exclamation-triangle fa-2x mb-2"></i>
                                 <p>Usted no cuenta con información disponible!</p>
@@ -163,13 +170,15 @@
   import ThemeService  from '../../services/ThemeService'
   import Util          from '../../util'
   import Storage       from 'vue-local-storage'
-  import Role           from '../../role'
+  import Role          from '../../role'
+  import Moment        from 'moment'
 
   export default {
     name: 'Themes',
     data: () => ({
-      role:Role,
+      role: Role,
       util: Util,
+      moment:Moment,
       loadingTable: true,
       dataTheme: [],
       dataSurvey: [],
@@ -180,7 +189,6 @@
       subparams: {
         dataTheme: {}
       },
-
       input_search_theme: '',
     }),
     created () {

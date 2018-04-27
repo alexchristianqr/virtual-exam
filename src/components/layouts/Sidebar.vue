@@ -2,19 +2,39 @@
     <div>
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             <li class="nav-item" title="Modulo Temas">
+                <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#az" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fa-pencil-square-o"></i>
+                    <span class="nav-link-text">Categoria</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="az">
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR,role.LECTOR])">
+                        <router-link :to="{name:'categories'}" class="nav-link">
+                            <i class="fa fa-fw fa-list-alt"></i>
+                            <span class="nav-link-text">Listar</span>
+                        </router-link>
+                    </li>
+                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
+                        <router-link :to="{name:'create-category'}" class="nav-link">
+                            <i class="fa fa-fw fa-plus"></i>
+                            <span class="nav-link-text">Crear</span>
+                        </router-link>
+                    </li>
+                </ul>
+            </li>
+            <li class="nav-item" title="Modulo Temas">
                 <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#a" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-sitemap"></i>
                     <span class="nav-link-text">Tema</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="a">
                     <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR,role.LECTOR])">
-                        <router-link :to="'/themes'" class="nav-link">
+                        <router-link :to="{name:'themes'}" class="nav-link">
                             <i class="fa fa-fw fa-list-alt"></i>
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
                     <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                        <router-link :to="'/create-theme'" class="nav-link">
+                        <router-link :to="{name:'create-theme'}" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
                         </router-link>
@@ -28,13 +48,13 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="b">
                     <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR,role.LECTOR])">
-                        <router-link :to="'/questions'" class="nav-link">
+                        <router-link :to="{name:'questions'}" class="nav-link">
                             <i class="fa fa-fw fa-list-alt"></i>
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
                     <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                        <router-link :to="'/create-question'" class="nav-link">
+                        <router-link :to="{name:'create-question'}" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
                         </router-link>
@@ -48,13 +68,13 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="c">
                     <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR,role.LECTOR])">
-                        <router-link :to="'/options-answers'" class="nav-link">
+                        <router-link :to="{name:'options-answers'}" class="nav-link">
                             <i class="fa fa-fw fa-list-alt"></i>
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
                     <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                        <router-link :to="'/create-option-answer'" class="nav-link">
+                        <router-link :to="{name:'create-option-answer'}" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
                         </router-link>
@@ -66,11 +86,11 @@
                     <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#d"
                        data-parent="#exampleAccordion">
                         <i class="fa fa-fw fa-users"></i>
-                        <span class="nav-link-text">Usuarios</span>
+                        <span class="nav-link-text">Usuario</span>
                     </a>
                     <ul class="sidenav-second-level collapse" id="d">
                         <li>
-                            <router-link :to="'/users'" class="nav-link">
+                            <router-link :to="{name:'users'}" class="nav-link">
                                 <i class="fa fa-fw fa-list-alt"></i>
                                 <span class="nav-link-text">Listar</span>
                             </router-link>

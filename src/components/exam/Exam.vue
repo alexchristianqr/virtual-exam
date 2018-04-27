@@ -15,8 +15,7 @@
             <div class="card-body mb-0 pb-0">
                 <div class="row">
                     <div v-if="!loadingTable && dataExam.length <= 0" class="col-1">
-                        <router-link class="btn btn-light btn-lg" :to="'/themes'"><i class="fa fa-arrow-left fa-fw"></i>
-                        </router-link>
+                        <router-link class="btn btn-light btn-lg" :to="{name:'themes'}"><i class="fa fa-arrow-left fa-fw"></i></router-link>
                     </div>
                     <div :class=" (!loadingTable && dataExam.length <= 0) ? 'col-5' : 'col-4'">
                         <div class="alert alert-secondary bg-light" role="alert">

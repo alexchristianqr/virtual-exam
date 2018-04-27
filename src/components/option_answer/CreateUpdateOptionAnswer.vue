@@ -11,7 +11,7 @@
                             </span>
                         </div>
                         <div class="col-9 text-right">
-                            <router-link class="btn btn-link text-secondary" :to="'/options-answers'">
+                            <router-link class="btn btn-link text-secondary" :to="{name:'options-answers'}">
                                 <i class="fa fa-angle-left fa-fw"></i>
                                 <span>Volver</span>
                             </router-link>

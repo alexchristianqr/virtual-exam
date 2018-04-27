@@ -7,7 +7,7 @@
                         <span class="card-title">Opciones de Respuesta</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-option-answer'" class="btn btn-outline-secondary"><i
+                        <router-link :to="{name:'create-option-answer'}" class="btn btn-outline-secondary"><i
                                 class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                     </div>
                 </div>

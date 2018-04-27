@@ -13,11 +13,14 @@ import CreateUpdateOptionAnswer from './components/option_answer/CreateUpdateOpt
 import Users                    from './components/user/Users'
 import UserHistory              from './components/user/UserHistory'
 import ExamSolution             from './components/exam/ExamSolution'
-import PageKnow                 from './components/errors/Nnow'
-import Util                     from './util'
-import Role                     from './role'
-import AuthService              from './services/AuthService'
-import JsonDataAuth             from './api/file_data_auth.json'
+import Categories               from './components/category/Categories'
+import CreateUpdateCategory               from './components/category/CreateUpdateCategory'
+
+import PageKnow     from './components/errors/Nnow'
+import Util         from './util'
+import Role         from './role'
+import AuthService  from './services/AuthService'
+import JsonDataAuth from './api/file_data_auth.json'
 
 Vue.use(Router)
 
@@ -53,7 +56,7 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.INVITADO]},
     },
     {
-      path: '/create-theme',
+      path: '/create/theme',
       name: 'create-theme',
       component: CreateUpdateTheme,
       meta: {requiresAuth: true, title: 'Crear Tema', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
@@ -69,13 +72,13 @@ const router = new Router({
       },
     },
     {
-      path: '/create-question',
+      path: '/create/question',
       name: 'create-question',
       component: CreateUpdateQuestion,
       meta: {requiresAuth: true, title: 'Crear Pregunta', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     {
-      path: '/edit-question',
+      path: '/edit/question',
       name: 'edit-question',
       component: CreateUpdateQuestion,
       meta: {requiresAuth: true, title: 'Editar Pregunta', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
@@ -87,13 +90,13 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Opcion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR, Role.LECTOR]},
     },
     {
-      path: '/create-option-answer',
+      path: '/create/option-answer',
       name: 'create-option-answer',
       component: CreateUpdateOptionAnswer,
       meta: {requiresAuth: true, title: 'Crear Opcion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     {
-      path: '/edit-option-answer',
+      path: '/edit/option-answer',
       name: 'edit-option-answer',
       component: CreateUpdateOptionAnswer,
       meta: {requiresAuth: true, title: 'Editar opcion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
@@ -105,10 +108,28 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
     },
     {
-      path: '/user-history/:user_id',
+      path: '/user/history/:user_id',
       name: 'user-history',
       component: UserHistory,
       meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+    },
+    {
+      path: '/categories',
+      name: 'categories',
+      component: Categories,
+      meta: {requiresAuth: true, title: 'Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+    },
+    {
+      path: '/create/category',
+      name: 'create-category',
+      component: CreateUpdateCategory,
+      meta: {requiresAuth: true, title: 'Crear Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+    },
+    {
+      path: '/edit/category',
+      name: 'edit-category',
+      component: CreateUpdateCategory,
+      meta: {requiresAuth: true, title: 'Editar Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
     },
     /**View Errors**/
     {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},
@@ -191,9 +212,9 @@ router.beforeEach((to, from, next) => {
       next('/login')
     } else {
       //validar si traspasa  el modulo de seleccionar proyecto
-      if(Storage.get('s-u-$4p14').project.id == 1 || Storage.get('s-u-$4p14').project.id == null){
+      if (Storage.get('s-u-$4p14').project.id == 1 || Storage.get('s-u-$4p14').project.id == null) {
         next('/login')
-      }else{
+      } else {
         validateAccessByRole(to, roleId, next)
         next()
       }

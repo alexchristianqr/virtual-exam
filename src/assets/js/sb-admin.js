@@ -49,6 +49,7 @@ export default {
         }, 16);
         e.preventDefault();
       })
+      $('[data-toggle="popover"]').popover()
     }) // End of use strict
   }
 }

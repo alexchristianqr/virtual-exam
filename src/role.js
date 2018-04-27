@@ -4,5 +4,6 @@ export default {
   ESCRITOR: 3,
   LECTOR: 4,
   INVITADO: 5,
+  GESTION: [1, 2, 3, 4],
   TODOS: [1, 2, 3, 4, 5],
 }

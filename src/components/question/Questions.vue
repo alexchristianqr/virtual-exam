@@ -7,7 +7,7 @@
                         <span class="card-title">Preguntas</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="'/create-question'" class="btn btn-outline-secondary"><i
+                        <router-link :to="{name:'create-question'}" class="btn btn-outline-secondary"><i
                                 class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
                     </div>
                 </div>
