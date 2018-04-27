@@ -188,6 +188,8 @@
       showCardHeader: true,
       dataExam: [],
       params: {
+        user_id:'',
+        theme_id:'',
         answer_by_question: [],
         user_survey_theme_id: null
       },
@@ -335,42 +337,63 @@
         $(document).ready(() => {
           let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]')
           $.each(inputToArray, (k, v) => {
+
             if ($(v).is(':checked')) {
               //Si la longitud del array es igual al next
               if (this.tempChecked.length == this.next) {
                 //cargar con valores validos
                 this.tempChecked.push({
-                  user_id: (Storage.get('s-u-$4p14').id),
-                  theme_id: (this.theme_id),
-                  question_id: (this.dataExam[this.next].id),
+                  question_id: this.dataExam[this.next].id,
                   option_answer_id: $(v).val(),
                   checked_id: k
                 })
                 // console.log($(k).val())
+
+                $.each(this.tempChecked, (kk, vv) => {
+
+                  if (vv == undefined) this.tempChecked[kk] = {question_id: this.dataExam[this.next].id, option_answer_id: null}
+
+                })
+
               } else {
                 //cargar con valores que se volveran a tratar en el siguiente ciclo
                 this.tempChecked[this.next] = {
-                  user_id: (Storage.get('s-u-$4p14').id),
-                  theme_id: (this.theme_id),
-                  question_id: (this.dataExam[this.next].id),
+                  question_id: this.dataExam[this.next].id,
                   option_answer_id: $(v).val(),
                   checked_id: k
-                };
+                }
                 //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
                 $.each(this.tempChecked, (kk, vv) => {
-                  if (vv == undefined) this.tempChecked[kk] = {}
+
+                  if (vv == undefined) this.tempChecked[kk] = {question_id: this.dataExam[kk].id, option_answer_id: null}
+
+                })
+              }
+            } else {
+              if (this.tempChecked.length >= 1) {
+                $.each(this.dataExam, (kk, vv) => {
+                  if (this.tempChecked[kk] == undefined) {
+
+                    this.tempChecked[kk] = {question_id: vv.id, option_answer_id: null}
+
+                  }
                 })
               }
             }
           })
+          console.log(this.tempChecked)
         })
       },
       saveEndExam () {
+        this.params.user_id = Storage.get('s-u-$4p14').id;
+        this.params.theme_id = this.theme_id;
         this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExam', {self: this})
       },
       saveEndExamAutomatic () {
         window.clearInterval(this.timerUpdate)
+        this.params.user_id = Storage.get('s-u-$4p14').id;
+        this.params.theme_id = this.theme_id;
         this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExamAutomatic', {self: this})
         $('#modalEndExam').modal('show')

@@ -72,7 +72,7 @@
                             </td>
                         </tr>
                         </tbody>
-                        <tbody v-if="!loadingTable && dataOptionAnswer.length > 0">
+                        <tbody v-if="!loadingTable && dataOptionAnswer.length">
                         <tr v-for="(v,k) in dataOptionAnswer">
                             <th>{{k+1}}</th>
                             <td>{{v.name}}</td>
@@ -103,7 +103,7 @@
                             </td>
                         </tr>
                         </tbody>
-                        <tbody v-else-if="!loadingTable && dataOptionAnswer.length <= 0">
+                        <tbody v-else-if="!loadingTable && dataOptionAnswer.length < 1">
                         <tr>
                             <td colspan="6" class="text-dark text-center">
                                 <div style="padding: 3em 2em 0 2em">

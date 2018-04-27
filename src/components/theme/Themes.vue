@@ -58,13 +58,13 @@
                         </td>
                     </tr>
                     </tbody>
-                    <tbody v-if="!loadingTable && dataTheme.length > 0">
+                    <tbody v-if="!loadingTable && dataTheme.length">
                     <tr v-for="(v,k) in filteredDataTheme">
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
                         <td>{{v.theme_updated_at}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
-                        <td>{{v.theme_score}}</td>
+                        <td>{{v.user_survey_theme_score}}</td>
                         <td class="text-center">
                             <i v-if="v.theme_status === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.theme_status === 'I' " class="fa fa-circle text-danger"></i>
@@ -106,7 +106,7 @@
                         </td>
                     </tr>
                     </tbody>
-                    <tbody v-else-if="!loadingTable && dataTheme.length <= 0">
+                    <tbody v-else-if="!loadingTable && dataTheme.length < 1">
                     <tr>
                         <td colspan="7" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
