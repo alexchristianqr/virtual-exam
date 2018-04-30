@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <div class="card">
+    <div class="card">
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
@@ -115,7 +114,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script>

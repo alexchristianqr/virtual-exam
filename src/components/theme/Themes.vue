@@ -21,7 +21,7 @@
                         </div>
                         <select title v-model="params.user_survey_theme_id" class="form-control" @change="change()">
                             <option value="">Seleccionar Categoria</option>
-                            <option v-for="(v,k) in dataSurvey" :value="v.user_survey_id" :selected="true">{{v.name}}</option>
+                            <option v-for="(v,k) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
                         </select>
                     </div>
                     <div v-show="params.user_survey_theme_id != ''" class="input-group w-35">
@@ -69,7 +69,7 @@
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
                         <td>{{v.theme_updated_at}}</td>
-                        <td>{{moment(v.theme_updated_at).format('DD/MM/YYYY')}}&nbsp;&nbsp;-&nbsp;&nbsp;{{moment(v.theme_updated_at).format('DD/MM/YYYY')}}</td>
+                        <td>{{moment(v.date_start).format('DD/MM/YYYY')}}&nbsp;&nbsp;-&nbsp;&nbsp;{{moment(v.date_expired).format('DD/MM/YYYY')}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.user_survey_theme_score}}</td>
                         <td class="text-center" v-show="util.validateRole(role.SUPER)">

@@ -26,5 +26,14 @@ export default new Vuex.Store({
         Util.fnError(e, self, this)
       })
     },
+    createSurvey ({commit}, {self}) {
+      Axios.post(Env.API + '/create-survey', self.params).then((r) => {
+        if (r.status === 200) {
+          self.$router.replace({name:'categories'})
+        }
+      }).catch((e) => {
+        Util.fnError(e, self)
+      })
+    },
   }
 })

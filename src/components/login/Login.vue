@@ -58,8 +58,8 @@
       data: [],
       dataNotify: {},
       params: {
-        username: 'aquisper',
-        password: 'sapia.2018',
+        username: '',
+        password: '',
       },
       errors: {
         email: '',

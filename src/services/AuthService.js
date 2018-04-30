@@ -11,24 +11,6 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   actions: {
-    doLogin ({commit}, {self}) {
-      Axios.post(Env.API + '/login', self.params).then((r) => {
-        if (r.status === 200) {
-          self.dataNotify = {}
-          Util.setCookie('co-stg-a-u-au', r.data, 1)
-          this.dispatch('validateIfExist', {self: self})
-        }
-      }).catch((e) => {
-        self.dataNotify = e.response
-        self.dataNotify.classAlert = 'alert alert-dark alert-dismissible fade show mb-0 border-0 '
-        self.dataNotify.style = 'border-radius:0'
-        self.params.username = ''
-        self.params.password = ''
-        self.$refs.inputUsername.focus()
-      }).finally(() => {
-        self.loading = false
-      })
-    },
     doLoginAD ({commit}, {self}) {
       Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).then((r) => {
         if (r.status === 200) {
@@ -59,10 +41,7 @@ export default new Vuex.Store({
       })
     },
     validateIfExist ({commit}, {self}) {
-
-      // this.dispatch('getConfig', {self: {}})
       RoleService.dispatch('allRole', {self: {}})
-
       Axios.post(Env.API + '/if-exist-user', self.new_data_auth).then((r) => {
         switch (r.status) {
           case 201:
@@ -79,8 +58,6 @@ export default new Vuex.Store({
               Storage.set('s-u-$4p14', Util.getCookie('co-stg-a-u-au'))
               //crear cookie de configuracion de toda la app
               Util.setCookie('co-f-stg-a-u-au', Util.getCookie('co-stg-a-u-au'), 1)
-              //crear objeto en el archivo file_s-u-$4p14.json
-              // Object.assign(JsonDataAuth.json, Storage.get('s-u-$4p14'))
               self.self.$router.replace('/themes')
             }
             break
@@ -102,6 +79,15 @@ export default new Vuex.Store({
       }).catch((e)=>{
         console.error(e)
       })
-    }
+    },
+    getUsers ({commit}, {self}) {
+      Axios.get(Env.API + '/get-users').then((r) => {
+        if (r.status === 200) {
+          self.dataUsers= r.data
+        }
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
   },
 })

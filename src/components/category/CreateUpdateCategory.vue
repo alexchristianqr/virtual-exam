@@ -30,7 +30,8 @@
                     <div class="col-6">
                         <div class="form-group">
                             <label>
-                                <popover-info :data_popover="{content:'a) Categoria es el conjunto de Temas o Examenes, ejemplo: Itil, Medicina, Computación, Derecho.'}"/>
+                                <popover-info
+                                        :data_popover="{content:'a) Categoria es el conjunto de Temas o Examenes, ejemplo: Itil, Medicina, Computación, Derecho.'}"/>
                                 <span>Nombre Categoria</span>
                             </label>
                             <input title="tema" v-model="params.name" type="text" class="form-control" required>
@@ -38,19 +39,21 @@
                     </div>
                     <div class="col-6">
                         <label>
-                            <popover-info :data_popover="{content:'a) Selecciona a un USUARIO, para que la categoría pueda cargar en la sesion del usuario seleccionado. b) Selecciona TODOS, para que la categoría cargue en la sesion de todos los usuarios.'}"/>
+                            <popover-info
+                                    :data_popover="{content:'a) Selecciona a un USUARIO, para que la categoría pueda cargar en la sesion del usuario seleccionado. b) Selecciona TODOS, para que la categoría cargue en la sesion de todos los usuarios.'}"/>
                             <span>Usuario</span>
                         </label>
-                        <vue-multiselect v-model="params.user_survey_id"
+                        <vue-multiselect v-model="selectedUserId"
                                          selectedLabel="Seleccionado"
                                          deselectLabel="Remover"
                                          selectLabel="Seleccionar"
                                          placeholder="Buscar"
-                                         :options="[{value:'Todos',id:''},{value:'Alex Quispe',id:'1'},{value:'Deysi Quispe',id:'2'}]"
+                                         :options="dataUsers"
                                          label="value"
                                          track-by="id"
                                          class="w-100"/>
                     </div>
+                    <!--:options="[{value:'Todos',id:''},{value:'Alex Quispe',id:'1'},{value:'Deysi Quispe',id:'2'}]"-->
                 </div>
             </div>
         </form>
@@ -60,6 +63,8 @@
 <script>
   import VueMultiselect from 'vue-multiselect'
   import PopoverInfo    from '../layouts/PopoverInfo'
+  import AuthService    from '../../services/AuthService'
+  import SurveyService  from '../../services/SurveyService'
 
   export default {
     name: 'CreateUpdateCategory',
@@ -67,15 +72,37 @@
     data: () => ({
       isPost: true,
       dataSurvey: [],
+      dataUsers: [],
       dataError: {},
       showError: false,
+      selectedUserId: {id: 0, value: 'Todos'},
       params: {
         name: '',
-        user_survey_id: '1',
-        user_id: '1',
+        user_id: [],
       },
     }),
-    methods: {}
+    created () {
+      this.load()
+    },
+    methods: {
+      load () {
+        AuthService.dispatch('getUsers', {self: this})
+      },
+      createCategory () {
+        if (this.selectedUserId != null) {
+          if (this.selectedUserId.id == 0) {
+            this.dataUsers.forEach((v) => {
+              if (v.id !== 0) this.params.user_id.push(v.id)
+            })
+          } else {
+            this.params.user_id = this.selectedUserId.id
+          }
+          SurveyService.dispatch('createSurvey',{self:this})
+        } else {
+          alert('debe seleccionar usuario')
+        }
+      }
+    }
   }
 </script>
 
