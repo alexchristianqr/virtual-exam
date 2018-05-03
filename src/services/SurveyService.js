@@ -18,18 +18,19 @@ export default new Vuex.Store({
       })
     },
     allSurvey ({commit}, {self}) {
-      Axios.get(Env.API + '/all-survey').then((r) => {
+      Axios.get(Env.API + '/all-survey', {params: self.params}).then((r) => {
         if (r.status === 200) {
+          self.loadingTable = false
           self.dataSurvey = r.data
         }
       }).catch((e) => {
-        Util.fnError(e, self, this)
+        console.error(e)
       })
     },
     createSurvey ({commit}, {self}) {
       Axios.post(Env.API + '/create-survey', self.params).then((r) => {
         if (r.status === 200) {
-          self.$router.replace({name:'categories'})
+          self.$router.replace({name: 'categories'})
         }
       }).catch((e) => {
         Util.fnError(e, self)

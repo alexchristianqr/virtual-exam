@@ -53,7 +53,6 @@
                                          track-by="id"
                                          class="w-100"/>
                     </div>
-                    <!--:options="[{value:'Todos',id:''},{value:'Alex Quispe',id:'1'},{value:'Deysi Quispe',id:'2'}]"-->
                 </div>
             </div>
         </form>
@@ -97,7 +96,7 @@
           } else {
             this.params.user_id = this.selectedUserId.id
           }
-          SurveyService.dispatch('createSurvey',{self:this})
+          SurveyService.dispatch('createSurvey', {self: this})
         } else {
           alert('debe seleccionar usuario')
         }

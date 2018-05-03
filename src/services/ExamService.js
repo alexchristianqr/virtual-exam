@@ -14,7 +14,6 @@ export default new Vuex.Store({
   },
   actions: {
     getExam ({commit}, {self}) {
-      if (this.state.intent != null) window.clearInterval(this.state.intent)
       Axios.get(Env.API + '/load-exam', {params: {theme_id: self.theme_id}}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
@@ -22,7 +21,7 @@ export default new Vuex.Store({
         }
       }).catch((e) => {
         self.method = 'loadExam'
-        Util.fnError(e, self, this)
+        console.error(e)
       })
     },
     createExam ({commit}, {self}) {
@@ -31,7 +30,7 @@ export default new Vuex.Store({
           console.log(r)
         }
       }).catch((e) => {
-        Util.fnError(e, self)
+        console.error(e)
       })
     },
     updateExam ({commit}, {self}) {

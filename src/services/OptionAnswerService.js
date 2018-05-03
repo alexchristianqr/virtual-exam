@@ -13,18 +13,18 @@ export default new Vuex.Store({
         if (r.status === 200) {
           self.dataOptionAnswer = r.data
         }
-      }).catch((e) => {})
+      }).catch((e) => {
+        console.error(e)
+      })
     },
     allOptionAnswer ({commit}, {self}) {
-      if (this.state.intent != null) window.clearInterval(this.state.intent)
       Axios.get(Env.API + '/all-option-answer', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataOptionAnswer = r.data
         }
       }).catch((e) => {
-        self.method = 'allOptionAnswer'
-        Util.fnError(e, self, this)
+        console.error(e)
       })
     },
     createOptionAnswer ({commit}, {self}) {
@@ -33,7 +33,7 @@ export default new Vuex.Store({
           self.$router.replace('/options-answers')
         }
       }).catch((e) => {
-        Util.fnError(e, self)
+        console.error(e)
       })
     },
     updateOptionAnswer ({commit}, {self}) {
@@ -42,7 +42,7 @@ export default new Vuex.Store({
           self.$router.replace('/options-answers')
         }
       }).catch((e) => {
-        Util.fnError(e, self)
+        console.error(e)
       })
     },
   },

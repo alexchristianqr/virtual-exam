@@ -3,8 +3,7 @@
         <template v-if="$route.path !== '/login' && $route.path !== '/project'"><!-- Si mo es Login -->
             <nav-header v-if="$route.path !== '/know'" :role="role"/>
             <template v-if="role.id != role_auth.INVITADO">
-                <div class="content-wrapper bg-light"
-                     :style="$route.path == '/know' ? 'margin-left:inherit !important;padding-top:inherit' : ''">
+                <div class="content-wrapper bg-light" :style="$route.path == '/know' ? 'margin-left:inherit !important;padding-top:inherit' : ''">
                     <div :class="$route.path == '/know' ? 'container-fluid' : 'container-fluid mb-5'">
                         <router-view/>
                     </div>
@@ -38,7 +37,6 @@
   import Util         from './util'
   import Roles        from './role'
   import JsonDataAuth from './api/file_data_auth.json'
-  import $            from 'jquery'
 
   export default {
     name: 'App',
@@ -103,25 +101,4 @@
     @import "assets/scss/app";
     @import "../node_modules/vue-multiselect/dist/vue-multiselect.min.css";
     @import "../node_modules/font-awesome/css/font-awesome.min.css";
-
-    .multiselect__option--highlight {
-        background: #ddd;
-        outline: none;
-        color: #777;
-    }
-
-    .multiselect__option--highlight::after {
-        background: #777;
-        outline: none;
-        color: #ddd;
-    }
-
-    .multiselect__option--selected.multiselect__option--highlight {
-        background: #ff6a6a;
-        color: #fff;
-    }
-    .multiselect__tags{
-        min-height: 38px !important;
-        border:1px solid #ced4da !important;
-    }
 </style>

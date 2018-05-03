@@ -15,6 +15,8 @@ import UserHistory              from './components/user/UserHistory'
 import ExamSolution             from './components/exam/ExamSolution'
 import Categories               from './components/category/Categories'
 import CreateUpdateCategory               from './components/category/CreateUpdateCategory'
+import CreateUpdateExam               from './components/exam/CreateUpdateExam'
+import CreateUpdateAssignExam               from './components/exam/CreateUpdateAssignExam'
 
 import PageKnow     from './components/errors/Nnow'
 import Util         from './util'
@@ -130,6 +132,18 @@ const router = new Router({
       name: 'edit-category',
       component: CreateUpdateCategory,
       meta: {requiresAuth: true, title: 'Editar Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+    },
+    {
+      path: '/create/exam',
+      name: 'create-exam',
+      component: CreateUpdateExam,
+      meta: {requiresAuth: true, title: 'Crear Examen', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+    },
+    {
+      path: '/assign/exam',
+      name: 'assign-exam',
+      component: CreateUpdateAssignExam,
+      meta: {requiresAuth: true, title: 'Asignar Examen', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
     },
     /**View Errors**/
     {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},

@@ -105,3 +105,35 @@ textarea {
   -webkit-box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
   box-shadow: 0 0 0 0.2rem rgba(52, 58, 64, 0.25);
 }
+
+.multiselect__option--highlight {
+  background: #ddd !important;
+  outline: none !important;
+  color: #777 !important;
+}
+
+.multiselect__option--highlight::after {
+  background: #777 !important;
+  outline: none !important;
+  color: #fff !important;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+  /*background: #ff6a6a;*/
+  background: #ddd !important;
+  color: #777 !important;
+}
+
+.multiselect__tags {
+  min-height: 38px !important;
+  border: 1px solid #ced4da !important;
+}
+
+.popover {
+  max-width: 50% !important;
+  /*background-color: #f7f7f7 !important;*/
+  z-index: auto !important;
+}
+.bs-popover-bottom .arrow::after, .bs-popover-auto[x-placement^="bottom"] .arrow::after {
+  border-bottom-color: #f7f7f7 !important;
+}

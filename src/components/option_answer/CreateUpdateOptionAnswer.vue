@@ -39,7 +39,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label>Tema</label>
-                                <select title="ancuesta" class="form-control" v-model="params.theme_id" required @change="changeLoadOptionAnswers()">
+                                <select class="form-control" v-model="params.theme_id" required @change="changeLoadQuestions()">
                                     <option value="" disabled selected>Seleccionar Tema</option>
                                     <option v-for="(v) in dataTheme" :value="v.id">{{v.name}}</option>
                                 </select>
@@ -122,6 +122,9 @@
         this.params.question_id = this.dataOptionAnswer.question_id
         this.params.name = this.dataOptionAnswer.name
         this.params.status = this.dataOptionAnswer.status
+      },
+      changeLoadQuestions(){
+        QuestionService.dispatch('allQuestion', {self: this})
       },
     },
   }

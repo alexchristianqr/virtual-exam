@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-            <li class="nav-item" title="Modulo Temas">
+            <li class="nav-item" title="Modulo Categoria">
                 <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#az" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-pencil-square-o"></i>
                     <span class="nav-link-text">Categoria</span>
@@ -13,7 +13,7 @@
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
-                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
+                    <li hidden v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
                         <router-link :to="{name:'create-category'}" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
@@ -21,7 +21,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" title="Modulo Temas">
+            <li class="nav-item" title="Modulo Tema">
                 <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#a" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-sitemap"></i>
                     <span class="nav-link-text">Tema</span>
@@ -33,7 +33,7 @@
                             <span class="nav-link-text">Listar</span>
                         </router-link>
                     </li>
-                    <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
+                    <li hidden v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
                         <router-link :to="{name:'create-theme'}" class="nav-link">
                             <i class="fa fa-fw fa-plus"></i>
                             <span class="nav-link-text">Crear</span>
@@ -41,7 +41,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" title="Modulo Preguntas">
+            <li hidden class="nav-item" title="Modulo Pregunta">
                 <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#b" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-file-text-o"></i>
                     <span class="nav-link-text">Pregunta</span>
@@ -61,7 +61,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" title="Modulo Respuestas">
+            <li hidden class="nav-item" title="Modulo Respuesta">
                 <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#c" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-check-square"></i>
                     <span class="nav-link-text">Opcion Respuesta</span>
@@ -81,8 +81,29 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item" title="Modulo Examen">
+                <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#e"
+                   data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fa-check-square-o"></i>
+                    <span class="nav-link-text">Examen</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="e">
+                    <li>
+                        <router-link :to="{name:'create-exam'}" class="nav-link">
+                            <i class="fa fa-fw fa-file"></i>
+                            <span class="nav-link-text">Crear Examen</span>
+                        </router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{name:'assign-exam'}" class="nav-link">
+                            <i class="fa fa-fw fa-pencil"></i>
+                            <span class="nav-link-text">Asignar Examen</span>
+                        </router-link>
+                    </li>
+                </ul>
+            </li>
             <template v-if="util.validateRole([role.SUPER,role.ADMINISTRADOR])">
-                <li class="nav-item" title="Modulo Usuarios">
+                <li class="nav-item" title="Modulo Usuario">
                     <a class="nav-link nav-link-collapse" data-toggle="collapse" href="#d"
                        data-parent="#exampleAccordion">
                         <i class="fa fa-fw fa-users"></i>

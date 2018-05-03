@@ -6,8 +6,9 @@
                         <span class="card-title">Preguntas</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="{name:'create-question'}" class="btn btn-outline-secondary"><i
-                                class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span></router-link>
+                        <router-link :to="{name:'create-question'}" class="btn btn-outline-secondary">
+                            <i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span>
+                        </router-link>
                     </div>
                 </div>
                 <hr>
@@ -80,12 +81,11 @@
                             </td>
                             <td class="text-right">
                                 <div class="btn-group dropdown" role="group">
-                                    <router-link class="btn btn-warning btn-sm"
-                                                 :to="{name:'edit-question',params:{dataQuestion:v}}"><i
-                                            class="fa fa-edit fa-fw"></i></router-link>
+                                    <router-link class="btn btn-warning btn-sm" :to="{name:'edit-question',params:{dataQuestion:v}}">
+                                        <i class="fa fa-edit fa-fw"></i>
+                                    </router-link>
                                     <div class="btn-group open" role="group">
-                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle"
-                                                data-toggle="dropdown" aria-expanded="true">
+                                        <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
@@ -156,5 +156,10 @@
 </script>
 
 <style scoped>
-
+    td{
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        max-width: 0px;
+    }
 </style>
