@@ -28,7 +28,7 @@
                     <!--</li>-->
                 <!--</ul>-->
             </li>
-            <li class="nav-item" title="Modulo Examen" data-toggle="tooltip" data-placement="right">
+            <li class="nav-item" title="Modulo Tema" data-toggle="tooltip" data-placement="right">
                 <router-link :to="{name:'themes'}" class="nav-link">
                     <i class="fa fa-fw fa-sitemap"></i>
                     <!--<span class="badge badge-secondary">2</span>-->
