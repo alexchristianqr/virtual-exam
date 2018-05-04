@@ -15,7 +15,7 @@ import UserHistory              from './components/user/UserHistory'
 import ExamSolution             from './components/exam/ExamSolution'
 import Categories               from './components/category/Categories'
 import CreateUpdateCategory     from './components/category/CreateUpdateCategory'
-import CreateExam         from './components/exam/CreateExam'
+import CreateExam               from './components/exam/CreateExam'
 
 import PageKnow     from './components/errors/Nnow'
 import Util         from './util'
@@ -69,7 +69,7 @@ const router = new Router({
       meta: {
         requiresAuth: true,
         title: 'Pregunta',
-        roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR, Role.LECTOR]
+        roleId: Role.GESTION
       },
     },
     {
@@ -88,7 +88,7 @@ const router = new Router({
       path: '/options-answers',
       name: 'options-answers',
       component: OptionsAnswers,
-      meta: {requiresAuth: true, title: 'Opcion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR, Role.LECTOR]},
+      meta: {requiresAuth: true, title: 'Opcion', roleId: Role.GESTION},
     },
     {
       path: '/create/option-answer',
@@ -100,7 +100,7 @@ const router = new Router({
       path: '/edit/option-answer',
       name: 'edit-option-answer',
       component: CreateUpdateOptionAnswer,
-      meta: {requiresAuth: true, title: 'Editar opcion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
+      meta: {requiresAuth: true, title: 'Editar Opcion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     {
       path: '/users',
@@ -112,31 +112,31 @@ const router = new Router({
       path: '/user/history/:user_id',
       name: 'user-history',
       component: UserHistory,
-      meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+      meta: {requiresAuth: true, title: 'Historial Usuario', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
     },
     {
       path: '/categories',
       name: 'categories',
       component: Categories,
-      meta: {requiresAuth: true, title: 'Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+      meta: {requiresAuth: true, title: 'Categoria', roleId: Role.GESTION},
     },
     {
       path: '/create/category',
       name: 'create-category',
       component: CreateUpdateCategory,
-      meta: {requiresAuth: true, title: 'Crear Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+      meta: {requiresAuth: true, title: 'Crear Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     {
       path: '/edit/category',
       name: 'edit-category',
       component: CreateUpdateCategory,
-      meta: {requiresAuth: true, title: 'Editar Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+      meta: {requiresAuth: true, title: 'Editar Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     {
       path: '/create/exam',
       name: 'create-exam',
       component: CreateExam,
-      meta: {requiresAuth: true, title: 'Crear Examen', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
+      meta: {requiresAuth: true, title: 'Crear Examen', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     /**View Errors**/
     {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},
