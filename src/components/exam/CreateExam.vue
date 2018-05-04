@@ -1,19 +1,12 @@
 <template>
     <div class="card">
-        <form @submit.prevent="createOrUpdateExam()">
+        <form @submit.prevent="createExam()">
             <div class="card-header bg-light text-dark">
                 <div class="row">
-                    <div class="col-3 mt-auto mb-auto">
-                            <span class="card-title">
-                                <span v-if="isPost">Crear Examen</span>
-                                <span v-else>Actualizar Examen</span>
-                            </span>
+                    <div class="col-6 mt-auto mb-auto">
+                        <span class="card-title">Asignar Pregunta y Respuesta</span>
                     </div>
-                    <div class="col-9 text-right">
-                        <router-link class="btn btn-link text-secondary" :to="{name:'questions'}">
-                            <i class="fa fa-angle-left fa-fw"></i>
-                            <span>Volver</span>
-                        </router-link>
+                    <div class="col-6 text-right">
                         <button type="submit" class="btn btn-outline-primary w-20">
                             <i class="fa fa-check fa-fw"></i>
                             <span v-if="isPost">Crear</span>
@@ -37,26 +30,22 @@
                             <input type="file" class="form-control" @click="getImage()"/>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-12">
                         <div class="form-group">
                             <label>Tema</label>
-                            <!--<select title="ancuesta" class="form-control" v-model="params.theme_id" required-->
-                            <!--@change="changeLoadOptionAnswers()">-->
-                            <!--<option value="" disabled selected>Seleccionar Tema</option>-->
-                            <!--<option v-for="(v) in dataTheme" :value="v.id">{{v.name}}</option>-->
-                            <!--</select>-->
                             <vue-multiselect v-model="selectedTheme"
                                              selectedLabel="Seleccionado"
                                              deselectLabel="Remover"
                                              selectLabel="Seleccionar"
                                              placeholder="Buscar"
                                              :options="dataTheme"
+                                             :required="true"
                                              label="name"
                                              track-by="id"
-                                             class="w-100" @change="changeLoadOptionAnswers()"/>
+                                             class="w-100"/>
                         </div>
                     </div>
-                    <div :class="isPost ? 'col-6': 'col-3' ">
+                    <div class="col-6">
                         <div class="form-group">
                             <label>Nivel de Dificultad</label>
                             <select title v-model="params.level" class="form-control" required>
@@ -67,7 +56,7 @@
                             </select>
                         </div>
                     </div>
-                    <div v-if="!isPost" class="col-3">
+                    <div class="col-6">
                         <div class="form-group">
                             <label>Estado</label>
                             <select title v-model="params.status" class="form-control" required>
@@ -79,27 +68,17 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group">
-                            <label>Nombre Pregunta</label>
-                            <input title v-model="params.name" type="text" class="form-control" required>
+                            <label>Pregunta</label>
+                            <editor v-model="params.name" :init="configEditor"></editor>
                         </div>
                     </div>
-                    <!--<template v-if="params.theme_id != '' ">-->
-                    <!--<div class="col-12">-->
-                    <!--<div class="form-group">-->
-                    <!--<label>Respuesta Correcta</label>-->
-                    <!--<select title v-model="params.option_answer_id" class="form-control">-->
-                    <!--<option value="">- Select Answer -</option>-->
-                    <!--<option v-for="(v) in dataOptionAnswer" :value="v.id">{{v.name}}</option>-->
-                    <!--</select>-->
-                    <!--</div>-->
-                    <!--</div>-->
-                    <!--</template>-->
                     <div id="arrayRptas" class="col-12">
                         <div class="row">
                             <div class="col-6">
                                 <label>Opciones de Respuesta</label>
                             </div>
-                            <div class="col-6 text-right"><a href="#" @click.prevent="addInputRadio(1)">Agregar Item</a>
+                            <div class="col-6 text-right">
+                                <a href="#" @click.prevent="addInputRadio(1)">Agregar Item</a>
                             </div>
                         </div>
                         <template v-for="n in dataInputs">
@@ -113,8 +92,9 @@
                                     <input type="text" class="form-control" :placeholder="'respuesta '+n" required/>
                                     <template v-if="n > 4">
                                         <div class="input-group-append">
-                                            <button type="button" class="btn btn-danger" @click="removeInputRadio(1)"><i
-                                                    class="fa fa-close"></i></button>
+                                            <button type="button" class="btn btn-danger" @click="removeInputRadio(1)">
+                                                <i class="fa fa-close"></i>
+                                            </button>
                                         </div>
                                     </template>
                                 </div>
@@ -129,27 +109,88 @@
 
 <script>
   import OptionAnswerService from '../../services/OptionAnswerService'
-  import QuestionService     from '../../services/QuestionService'
   import ThemeService        from '../../services/ThemeService'
-  import $                   from 'jquery'
-  import VueMultiselect      from 'vue-multiselect/src/Multiselect'
   import ExamService         from '../../services/ExamService'
+  import AuthService         from '../../services/AuthService'
+  import VueMultiselect      from 'vue-multiselect/src/Multiselect'
+  import Editor              from '@tinymce/tinymce-vue'
+  import $                   from 'jquery'
 
   export default {
     name: 'CreateUpdateExam',
-    components: {VueMultiselect},
+    components: {VueMultiselect, Editor},
     data: () => ({
       isPost: true,
       dataTheme: [],
       dataQuestion: [],
       dataOptionAnswer: [],
+      dataUsers: [],
       dataError: {},
       dataInputs: 4,
       showError: false,
       question_id: '',
-      selectedTheme:'',
+      selectedTheme: '',
+      configEditor: {
+        /* replace textarea having class .tinymce with tinymce editor */
+        // selector: 'textarea#editor',
+        /* theme of the editor */
+        theme: 'modern',
+        skin: 'lightgray',
+        /* width and height of the editor */
+        width: '100%',
+        height: 150,
+        /* display statusbar */
+        statubar: true,
+        /* plugin */
+        plugins: [
+          'visualblocks paste',
+        ],
+        /* toolbar */
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor',
+        /* style */
+        style_formats: [
+          {
+            title: 'Headers', items: [
+              {title: 'Header 1', format: 'h1'},
+              {title: 'Header 2', format: 'h2'},
+              {title: 'Header 3', format: 'h3'},
+              {title: 'Header 4', format: 'h4'},
+              {title: 'Header 5', format: 'h5'},
+              {title: 'Header 6', format: 'h6'}
+            ]
+          },
+          {
+            title: 'Inline', items: [
+              {title: 'Bold', icon: 'bold', format: 'bold'},
+              {title: 'Italic', icon: 'italic', format: 'italic'},
+              {title: 'Underline', icon: 'underline', format: 'underline'},
+              {title: 'Strikethrough', icon: 'strikethrough', format: 'strikethrough'},
+              {title: 'Superscript', icon: 'superscript', format: 'superscript'},
+              {title: 'Subscript', icon: 'subscript', format: 'subscript'},
+              {title: 'Code', icon: 'code', format: 'code'}
+            ]
+          },
+          {
+            title: 'Blocks', items: [
+              {title: 'Paragraph', format: 'p'},
+              {title: 'Blockquote', format: 'blockquote'},
+              {title: 'Div', format: 'div'},
+              {title: 'Pre', format: 'pre'}
+            ]
+          },
+          {
+            title: 'Alignment', items: [
+              {title: 'Left', icon: 'alignleft', format: 'alignleft'},
+              {title: 'Center', icon: 'aligncenter', format: 'aligncenter'},
+              {title: 'Right', icon: 'alignright', format: 'alignright'},
+              {title: 'Justify', icon: 'alignjustify', format: 'alignjustify'}
+            ]
+          }
+        ]
+      },
+      selectedUserId: {id: 0, value: 'Todos'},
       params: {
-        image: '',
+        image: 'logo.svg',
         theme_id: '',
         name: '',
         option_answer_ids: [],
@@ -158,18 +199,36 @@
       },
     }),
     created () {
-      this.allTheme()
-      OptionAnswerService.dispatch('allOptionAnswer', {self: this})
-      if (this.$route.params.dataQuestion != undefined && Object.keys(this.$route.params.dataQuestion).length) this.editQuestion()
+      this.load()
     },
     methods: {
-      createOrUpdateExam () {
-        // if (this.isPost) {
-        //   QuestionService.dispatch('createQuestion', {self: this})
-        // } else {//isPut
-        //   QuestionService.dispatch('updateQuestion', {self: this})
-        // }
-        // this.params.option_answer_id = ''
+      //Primary
+      load () {
+        ThemeService.dispatch('allTheme', {self: this})
+        AuthService.dispatch('getUsers', {self: this})
+        OptionAnswerService.dispatch('allOptionAnswer', {self: this})
+        if (this.$route.params.dataQuestion != undefined && Object.keys(this.$route.params.dataQuestion).length) this.editQuestion()
+      },
+      createExam () {
+        if (this.selectedUserId != null && this.selectedTheme != null) {
+          this.checkedOptionAnswer()
+          this.params.theme_id = this.selectedTheme.id
+          ExamService.dispatch('createExam', {self: this})
+        } else {
+          alert('complete todos los campos!')
+        }
+      },
+      //Seconday
+      addInputRadio (item) {
+        this.dataInputs = this.dataInputs + item
+      },
+      removeInputRadio (item) {
+        this.dataInputs = (this.dataInputs - item)
+      },
+      getImage () {
+        this.params.image = 'logo.svg'
+      },
+      checkedOptionAnswer () {
         this.params.option_answer_ids = []
         let arrayRadios = $('#arrayRptas').find('input[type=radio]')
         let arrayInputs = $('#arrayRptas').find('input[type=text]')
@@ -180,38 +239,10 @@
             this.params.option_answer_ids.push({id: $(v).val(), value: $(arrayInputs[k]).val(), checked: false})
           }
         })
-        this.params.theme_id= this.selectedTheme.id;
-        ExamService.dispatch('createExam', {self: this})
       },
-      editQuestion () {
-        this.isPost = false//isPut
-        this.dataQuestion = this.$route.params.dataQuestion
-        this.question_id = this.dataQuestion.id
-        this.params.theme_id = this.dataQuestion.theme_id
-        this.params.name = this.dataQuestion.name
-        this.params.option_answer_id = this.dataQuestion.option_answer_id
-        this.params.level = this.dataQuestion.level
-        this.params.status = this.dataQuestion.status
-      },
-      allTheme () {
-        ThemeService.dispatch('allTheme', {self: this})
-      },
-      changeLoadOptionAnswers () {
-        OptionAnswerService.dispatch('allOptionAnswer', {self: this})
-      },
-      addInputRadio (item) {
-        this.dataInputs = this.dataInputs + item
-      },
-      removeInputRadio (item) {
-        this.dataInputs = (this.dataInputs - item)
-      },
-      getImage () {
-        this.params.image = 'logo.svg'
-      }
     }
   }
 </script>
 
 <style scoped>
-
 </style>

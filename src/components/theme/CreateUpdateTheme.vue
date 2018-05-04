@@ -30,8 +30,8 @@
                     <div class="col-12">
                         <div class="form-group">
                             <label>
-                                <popover-info :data_popover="{content:'a) Tema o Examen es el conjunto de preguntas y opciones de respuesta, ejemplo: Certificación de Microsoft, Capacitación de Sapia 2018.1, Capacitación de Sapia 2018.2.'}"/>
-                                <span>Nombre Tema</span>
+                                <popover-info :data_popover="{content:'a) Examen es el conjunto de preguntas y opciones de respuesta, ejemplo: Certificación de Microsoft, Capacitación de Sapia 2018.1, Capacitación de Sapia 2018.2.'}"/>
+                                <span>Nombre o Titulo del Examen</span>
                             </label>
                             <input title="tema" v-model="params.name" type="text" class="form-control" required>
                         </div>
@@ -42,13 +42,19 @@
                                 <popover-info :data_popover="{content:'a) Categorias cargadas '}"/>
                                 <span>Categoria</span>
                             </label>
-                            <select class="form-control" v-model="params.user_survey_id" required>
+                            <select class="form-control" v-model="params.survey_id" required>
                                 <option value="" disabled selected>Seleccionar Categoria</option>
-                                <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
+                                <option v-for="(v) in dataSurvey" :value="v.id">{{v.name}}</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label>Límite de Preguntas</label>
+                            <input v-model="params.limite" type="text" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="col-3">
                         <div class="form-group">
                             <label>Tiempo Duración<span class="small"> (HH:mm)</span></label>
                             <input v-model="params.duration" type="time" class="form-control" required>
@@ -85,41 +91,55 @@
 </template>
 
 <script>
-  import ThemeService  from '../../services/ThemeService'
-  import SurveyService from '../../services/SurveyService'
-  import PopoverInfo   from '../layouts/PopoverInfo'
-  import Moment        from 'moment'
+  import ThemeService   from '../../services/ThemeService'
+  import SurveyService  from '../../services/SurveyService'
+  import PopoverInfo    from '../layouts/PopoverInfo'
+  import Moment         from 'moment'
+  import VueMultiselect from 'vue-multiselect/src/Multiselect'
+  import AuthService    from '../../services/AuthService'
 
   export default {
     name: 'CreateUpdateTheme',
-    components: {PopoverInfo},
+    components: {VueMultiselect, PopoverInfo},
     data: () => ({
-      moment:Moment,
+      moment: Moment,
       isPost: true,
       dataSurvey: [],
+      dataUsers: [],
       dataError: {},
       showError: false,
       params: {
+        limite: '10',
         name: '',
-        user_survey_id: '',
+        survey_id: '',
         user_id: '1',
-        date_start:Moment().format('YYYY-MM-DD'),
-        date_expired:Moment().format('YYYY-MM-DD'),
-        duration:'00:10:00',
-        time_start:'00:00',
-        time_expired:'00:00',
+        date_start: Moment().format('YYYY-MM-DD'),
+        date_expired: Moment().format('YYYY-MM-DD'),
+        duration: '00:10',
+        time_start: '00:00',
+        time_expired: '00:00',
       },
     }),
     created () {
-      this.allSurvey()
+      this.load()
     },
     methods: {
-      createTheme () {
-        ThemeService.dispatch('createTheme', {self: this})
-      },
-      allSurvey () {
+      load () {
+        AuthService.dispatch('getUsers', {self: this})
         SurveyService.dispatch('allSurvey', {self: this})
       },
+      createTheme () {
+        this.params.duration = this.getSecondsOfTime(this.params.duration)
+        ThemeService.dispatch('createTheme', {self: this})
+      },
+      getSecondsOfTime (time) {
+        let array_time = time.split(':')
+        if (array_time.length == 2) {
+          let hh = Math.floor(array_time[0] * 60),
+            mm = Math.floor(array_time[1] * 60)
+          return hh + mm
+        }
+      }
     },
   }
 </script>

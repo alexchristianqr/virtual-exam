@@ -3,10 +3,9 @@
         <div class="card mb-5">
             <div v-if="showCardHeader" class="card-header bg-white pt-1 pb-1">
                 <div class="row mb-0">
-                    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
+                    <div class="alert bg-primary text-white alert-dismissible fade show mb-0" role="alert">
                         <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"
-                                @click.prevent="showCardHeader=false">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click.prevent="showCardHeader=false">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -14,21 +13,26 @@
             </div>
             <div class="card-body mb-0 pb-0">
                 <div class="row">
-                    <div v-if="!loadingTable && dataExam.length <= 0" class="col-1">
-                        <router-link class="btn btn-light btn-lg" :to="{name:'themes'}"><i class="fa fa-arrow-left fa-fw"></i></router-link>
-                    </div>
-                    <div :class=" (!loadingTable && dataExam.length <= 0) ? 'col-5' : 'col-4'">
-                        <div class="alert alert-secondary bg-light" role="alert">
-                            <b class="text-muted">Time:</b>&nbsp;<span>{{remaining}}</span>
+                    <template v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1">
+                        <div class="col-12">
+                            <div id="showAlertFinally"
+                                 v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1"
+                                 class="alert alert-danger text-center" role="alert">
+                                <div>
+                                    <span>El exámen va a terminar en</span>
+                                    <br>
+                                    <b class=h4>{{remaining}}</b>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div :class=" (!loadingTable && dataExam.length <= 0) ? 'col-6' : 'col-8'">
-                        <div id="showAlertFinally"
-                             v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1"
-                             class="alert alert-danger" role="alert">
-                            <span><b>Advertencia:&nbsp;&nbsp;</b>Su examen terminará en <b>{{remaining}}</b></span>
+                    </template>
+                    <template v-else>
+                        <div class="col-12">
+                            <div class="alert alert-secondary bg-light text-center" role="alert">
+                                <b class="h4">{{remaining}}</b>
+                            </div>
                         </div>
-                    </div>
+                    </template >
                 </div>
                 <table v-if="loadingTable" class="table">
                     <tr>
@@ -43,8 +47,16 @@
                 <table v-if="!loadingTable && dataExam.length > 0" class="table table-sm table-vue">
                     <thead>
                     <tr>
-                        <th scope="row" colspan="5" class="border-top-0 pt-0"><span>{{parseInt(Object.keys(dataExam)[next])+1}}.-</span><span
-                                class="pl-2">{{dataExam[next].question_name}}</span>
+                        <th colspan="5" class="border-top-0 pt-0">
+                            <div class="row">
+                                <!--<div class="col-1 my-auto">-->
+                                    <!--<span>{{parseInt(Object.keys(dataExam)[next])+1}}.-</span>-->
+                                <!--</div>-->
+                                <div class="col-12">
+                                    <!--<span class="pl-2" v-html="dataExam[next].question_name"></span>-->
+                                    <div v-html="dataExam[next].question_name"></div>
+                                </div>
+                            </div>
                         </th>
                     </tr>
                     </thead>
@@ -186,16 +198,7 @@
       showLoading: false,
       showCardHeader: true,
       dataExam: [],
-      params: {
-        user_id:'',
-        theme_id:'',
-        answer_by_question: [],
-        user_survey_theme_id: null
-      },
-      subparams: {},
-
       pauseTimer: false,
-      selectedValue: '1',
       message: '',
       theme_id: 1,
       next: 0,
@@ -206,10 +209,13 @@
       duration_2: 600,
       remaining: this.duration_1,
       timerUpdate: null,
-      tempRptas: [],
-      tempTime: {},
       tempChecked: [],
-      tempRptaChecked: [],
+      params: {
+        user_id: '',
+        theme_id: '',
+        answer_by_question: [],
+        user_survey_theme_id: null
+      },
     }),
     beforeCreate () {
       window.clearInterval(this.timerUpdate)
@@ -336,7 +342,6 @@
         $(document).ready(() => {
           let inputToArray = $('.table-vue').find('tbody').find('input[type=radio]')
           $.each(inputToArray, (k, v) => {
-
             if ($(v).is(':checked')) {
               //Si la longitud del array es igual al next
               if (this.tempChecked.length == this.next) {
@@ -346,14 +351,12 @@
                   option_answer_id: $(v).val(),
                   checked_id: k
                 })
-                // console.log($(k).val())
-
                 $.each(this.tempChecked, (kk, vv) => {
-
-                  if (vv == undefined) this.tempChecked[kk] = {question_id: this.dataExam[this.next].id, option_answer_id: null}
-
+                  if (vv == undefined) this.tempChecked[kk] = {
+                    question_id: this.dataExam[this.next].id,
+                    option_answer_id: null
+                  }
                 })
-
               } else {
                 //cargar con valores que se volveran a tratar en el siguiente ciclo
                 this.tempChecked[this.next] = {
@@ -363,36 +366,34 @@
                 }
                 //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
                 $.each(this.tempChecked, (kk, vv) => {
-
-                  if (vv == undefined) this.tempChecked[kk] = {question_id: this.dataExam[kk].id, option_answer_id: null}
-
+                  if (vv == undefined) this.tempChecked[kk] = {
+                    question_id: this.dataExam[kk].id,
+                    option_answer_id: null
+                  }
                 })
               }
             } else {
               if (this.tempChecked.length >= 1) {
                 $.each(this.dataExam, (kk, vv) => {
                   if (this.tempChecked[kk] == undefined) {
-
                     this.tempChecked[kk] = {question_id: vv.id, option_answer_id: null}
-
                   }
                 })
               }
             }
           })
-          console.log(this.tempChecked)
         })
       },
       saveEndExam () {
-        this.params.user_id = Storage.get('s-u-$4p14').id;
-        this.params.theme_id = this.theme_id;
+        this.params.user_id = Storage.get('s-u-$4p14').id
+        this.params.theme_id = this.theme_id
         this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExam', {self: this})
       },
       saveEndExamAutomatic () {
         window.clearInterval(this.timerUpdate)
-        this.params.user_id = Storage.get('s-u-$4p14').id;
-        this.params.theme_id = this.theme_id;
+        this.params.user_id = Storage.get('s-u-$4p14').id
+        this.params.theme_id = this.theme_id
         this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExamAutomatic', {self: this})
         $('#modalEndExam').modal('show')

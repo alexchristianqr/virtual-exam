@@ -3,7 +3,7 @@
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
-                        <span class="card-title">Preguntas</span>
+                        <span class="card-title">Lista de Preguntas</span>
                     </div>
                     <div class="col-6 text-right">
                         <router-link :to="{name:'create-question'}" class="btn btn-outline-secondary">

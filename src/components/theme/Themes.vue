@@ -4,11 +4,12 @@
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
-                        <span class="card-title">Temas</span>
+                        <span class="card-title">Lista de Temas</span>
                     </div>
                     <div class="col-6 text-right">
                         <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                            <router-link :to="{name:'create-theme'}" class="btn btn-outline-secondary"><i class="fa fa-plus fa-fw"></i>
+                            <router-link :to="{name:'create-theme'}" class="btn btn-outline-secondary">
+                                <i class="fa fa-plus fa-fw"></i>
                                 <span>Crear Nuevo</span>
                             </router-link>
                         </div>
@@ -48,9 +49,9 @@
                     <thead>
                     <tr>
                         <th><b>#</b></th>
-                        <th>Nombre Tema</th>
-                        <th>Actualizado</th>
+                        <th>Nombre o Titulo</th>
                         <th>Fecha Inicial - Fecha Final</th>
+                        <th>Actualizado</th>
                         <th>Duración</th>
                         <th>Nota</th>
                         <th width="5%" class="text-center" v-show="util.validateRole(role.SUPER)">Estado</th>
@@ -71,8 +72,8 @@
                     <tr v-for="(v,k) in filteredDataTheme">
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
-                        <td>{{v.theme_updated_at}}</td>
                         <td>{{moment(v.date_start).format('DD/MM/YYYY')}}&nbsp;&nbsp;-&nbsp;&nbsp;{{moment(v.date_expired).format('DD/MM/YYYY')}}</td>
+                        <td>{{v.theme_updated_at}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.user_survey_theme_score}}</td>
                         <td class="text-center" v-show="util.validateRole(role.SUPER)">

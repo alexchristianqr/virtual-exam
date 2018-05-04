@@ -3,16 +3,23 @@
         <div class="card-header bg-light text-dark">
             <div class="row">
                 <div class="col-6 mt-auto mb-auto">
-                    <span class="card-title">Categories</span>
+                    <span class="card-title">Lista de Categorias</span>
                 </div>
                 <div class="col-6 text-right">
                     <router-link :to="{name:'create-category'}" class="btn btn-outline-secondary">
-                        <i class="fa fa-plus fa-fw"></i><span>Crear Nuevo</span>
+                        <i class="fa fa-plus fa-fw"></i>
+                        <span>Crear Nuevo</span>
                     </router-link>
                 </div>
             </div>
             <hr>
             <div class="form-inline">
+                <div class="input-group w-35">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-search"></i></span>
+                    </div>
+                    <input type="search" placeholder="Search" class="form-control">
+                </div>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-filter"></i></span>
@@ -31,10 +38,10 @@
                     <thead>
                     <tr>
                         <th><b>#</b></th>
-                        <th>Nombre Pregunta</th>
+                        <th>Nombre o Titulo</th>
                         <th>Actualizado</th>
                         <th width="5%" class="text-center">Estado</th>
-                        <th width="10%" class="text-right">Acción</th>
+                        <th hidden width="10%" class="text-right">Acción</th>
                     </tr>
                     </thead>
                     <tbody v-if="loadingTable" class="table">
@@ -56,7 +63,7 @@
                             <i v-if="v.status === 'A' " class="fa fa-circle text-success"></i>
                             <i v-else="" class="fa fa-circle text-danger"></i>
                         </td>
-                        <td class="text-right">
+                        <td hidden class="text-right">
                             <div class="btn-group dropdown" role="group">
                                 <router-link class="btn btn-warning btn-sm" :to="{name:'edit-question',params:{dataSurvey:v}}">
                                     <i class="fa fa-edit fa-fw"></i>

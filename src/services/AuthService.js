@@ -11,6 +11,25 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   actions: {
+    doLogin({commit}, {self}){
+      Axios.post(Env.API + '/login', self.params).then((r) => {
+        if (r.status === 200) {
+          self.dataNotify = {}
+          Storage.set('s-u-$4p14', r.data)
+          Util.setCookie('co-stg-a-u-au', r.data, 1)
+          this.dispatch('validateIfExist', {self: {self, new_data_auth: r.data}})
+          self.loading = false
+        }
+      }).catch((e)=>{
+        self.dataNotify = e.response
+        self.dataNotify.classAlert = 'alert alert-dark alert-dismissible fade show mb-0 border-0 '
+        self.dataNotify.style = 'border-radius:0'
+        self.params.username = ''
+        self.params.password = ''
+        self.$refs.inputUsername.focus()
+        self.loading = false
+      })
+    },
     doLoginAD ({commit}, {self}) {
       Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).then((r) => {
         if (r.status === 200) {
@@ -28,6 +47,7 @@ export default new Vuex.Store({
           Storage.set('s-u-$4p14', new_data_auth)
           Util.setCookie('co-stg-a-u-au', new_data_auth, 1)
           this.dispatch('validateIfExist', {self: {self, new_data_auth: new_data_auth}})
+          self.loading = false
         }
       }).catch((e) => {
         self.dataNotify = e.response
@@ -36,7 +56,6 @@ export default new Vuex.Store({
         self.params.username = ''
         self.params.password = ''
         self.$refs.inputUsername.focus()
-      }).finally(() => {
         self.loading = false
       })
     },

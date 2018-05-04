@@ -8,6 +8,13 @@ export default {
   load () {
     $(document).ready(($) => {
       'use strict' // Start of use strict
+      // Configure tooltips for collapsed side navigation
+      $('[data-toggle="tooltip"]').tooltip({
+        template: '<div class="tooltip navbar-sidenav-tooltip" role="tooltip" style="pointer-events: none;padding: 0 3.4rem;">' +
+        '<div class="tooltip-inner"></div>' +
+        '</div>'
+      })
+
       let scrollToTop = null
       // Toggle the side navigation
       $('#sidenavToggler').click((e) => {

@@ -101,4 +101,8 @@
     @import "assets/scss/app";
     @import "../node_modules/vue-multiselect/dist/vue-multiselect.min.css";
     @import "../node_modules/font-awesome/css/font-awesome.min.css";
+    .mce-tinymce {
+        box-shadow: none !important;
+        -webkit-box-shadow:none !important;
+    }
 </style>

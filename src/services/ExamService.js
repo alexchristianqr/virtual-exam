@@ -27,7 +27,7 @@ export default new Vuex.Store({
     createExam ({commit}, {self}) {
       Axios.post(Env.API + '/create-exam', self.params).then((r) => {
         if (r.status === 200) {
-          console.log(r)
+          self.$router.replace({name:'themes'})
         }
       }).catch((e) => {
         console.error(e)
