@@ -72,7 +72,7 @@
                     <tr v-for="(v,k) in filteredDataTheme">
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
-                        <td>{{moment(v.date_start).format('DD/MM/YYYY')}}&nbsp;&nbsp;-&nbsp;&nbsp;{{moment(v.date_expired).format('DD/MM/YYYY')}}</td>
+                        <td>{{moment(v.theme_date_start).format('DD/MM/YYYY')}}&nbsp;&nbsp;-&nbsp;&nbsp;{{moment(v.theme_date_expired).format('DD/MM/YYYY')}}</td>
                         <td>{{v.theme_updated_at}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.user_survey_theme_score}}</td>
