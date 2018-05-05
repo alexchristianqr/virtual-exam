@@ -139,7 +139,7 @@
             mm = Math.floor(array_time[1] * 60)
           return hh + mm
         }
-      }
+      },
     },
   }
 </script>

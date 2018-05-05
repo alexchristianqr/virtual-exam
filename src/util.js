@@ -78,5 +78,15 @@ export default {
     let arr = new Uint8Array((len || 40) / 2)
     window.crypto.getRandomValues(arr)
     return Array.from(arr, dec2hex).join('')
+  },
+  encodeImageFileAsURL (cb) {
+    return function() {
+      let file = this.files[0], reader = new FileReader()
+      reader.onloadend = function () {
+        cb(reader.result)
+      }
+    console.log(file)
+      reader.readAsDataURL(file)
+    }
   }
 }

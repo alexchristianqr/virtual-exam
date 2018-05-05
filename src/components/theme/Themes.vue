@@ -214,7 +214,7 @@
         this.loadingTable = true
         this.dataTheme = []
         ThemeService.dispatch('allTheme', {self: this})
-      }
+      },
     },
   }
 </script>

@@ -22,12 +22,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <div class="form-group text-center">
-                            <img class="img-thumbnail w-20" src="./../../assets/img/logo.svg" alt="">
+                        <div id="imgLoaded" class="form-group text-center">
+                            <textarea id="eltext" class="form-control"></textarea><br>
+                            <img class="img-thumbnail w-20" src="" alt="">
                         </div>
                         <div class="form-group">
                             <label>Cargar Imagen</label>
-                            <input type="file" class="form-control" @click="getImage()"/>
+                            <input type="file" class="form-control" @change="getImage"/>
                         </div>
                     </div>
                     <div class="col-12">
@@ -112,6 +113,7 @@
   import ThemeService        from '../../services/ThemeService'
   import ExamService         from '../../services/ExamService'
   import AuthService         from '../../services/AuthService'
+  import Util                from '../../util'
   import VueMultiselect      from 'vue-multiselect/src/Multiselect'
   import Editor              from '@tinymce/tinymce-vue'
   import $                   from 'jquery'
@@ -120,6 +122,7 @@
     name: 'CreateUpdateExam',
     components: {VueMultiselect, Editor},
     data: () => ({
+      util: Util,
       isPost: true,
       dataTheme: [],
       dataQuestion: [],
@@ -210,13 +213,13 @@
         if (this.$route.params.dataQuestion != undefined && Object.keys(this.$route.params.dataQuestion).length) this.editQuestion()
       },
       createExam () {
-        if (this.selectedUserId != null && this.selectedTheme != null) {
-          this.checkedOptionAnswer()
-          this.params.theme_id = this.selectedTheme.id
-          ExamService.dispatch('createExam', {self: this})
-        } else {
-          alert('complete todos los campos!')
-        }
+        // if (this.selectedUserId != null && this.selectedTheme != null) {
+        //   this.checkedOptionAnswer()
+        //   this.params.theme_id = this.selectedTheme.id
+        //   ExamService.dispatch('createExam', {self: this})
+        // } else {
+        //   alert('complete todos los campos!')
+        // }
       },
       //Seconday
       addInputRadio (item) {
@@ -226,7 +229,31 @@
         this.dataInputs = (this.dataInputs - item)
       },
       getImage () {
-        this.params.image = 'logo.svg'
+        // console.log(Util.encodeImageFileAsURL(this.params.image))
+        // (base64Img) => {
+        //    console.log(base64Img)
+        //      $('#imgLoaded')
+        //      .find('textarea')
+        //      .val(base64Img)
+        //      .end()
+        //      .find('img')
+        //      .attr('src', base64Img);
+        //    }
+        let preview = document.querySelector('img'),
+          file = document.querySelector('input[type=file]').files[0],
+          reader = new FileReader()
+
+        reader.onloadend = function () {
+          preview.src = reader.result
+          console.log(reader.result)
+          textarea.value = reader.result
+        }
+
+        if (file) {
+          reader.readAsDataURL(file)
+        } else {
+          preview.src = ''
+        }
       },
       checkedOptionAnswer () {
         this.params.option_answer_ids = []
