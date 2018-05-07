@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <form @submit.prevent="createExam()">
+        <form @submit.prevent="createExam()" enctype="multipart/form-data">
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
@@ -9,8 +9,7 @@
                     <div class="col-6 text-right">
                         <button type="submit" class="btn btn-outline-primary w-20">
                             <i class="fa fa-check fa-fw"></i>
-                            <span v-if="isPost">Crear</span>
-                            <span v-else>Actualizar</span>
+                            <span>Crear</span>
                         </button>
                         <button type="reset" class="btn btn-outline-secondary w-20">
                             <i class="fa fa-close fa-fw"></i>
@@ -22,13 +21,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <div id="imgLoaded" class="form-group text-center">
-                            <textarea id="eltext" class="form-control"></textarea><br>
+                        <div id="imgLoaded" class="text-center">
                             <img class="img-thumbnail w-20" src="" alt="">
                         </div>
                         <div class="form-group">
                             <label>Cargar Imagen</label>
-                            <input type="file" class="form-control" @change="getImage"/>
+                            <input type="file" id="file" ref="file" class="form-control" @change="handleFileUpload()"/>
+                            <!--<input type="file" class="form-control" @change="getImage"/>-->
                         </div>
                     </div>
                     <div class="col-12">
@@ -159,8 +158,8 @@
               {title: 'Header 3', format: 'h3'},
               {title: 'Header 4', format: 'h4'},
               {title: 'Header 5', format: 'h5'},
-              {title: 'Header 6', format: 'h6'}
-            ]
+              {title: 'Header 6', format: 'h6'},
+            ],
           },
           {
             title: 'Inline', items: [
@@ -170,30 +169,30 @@
               {title: 'Strikethrough', icon: 'strikethrough', format: 'strikethrough'},
               {title: 'Superscript', icon: 'superscript', format: 'superscript'},
               {title: 'Subscript', icon: 'subscript', format: 'subscript'},
-              {title: 'Code', icon: 'code', format: 'code'}
-            ]
+              {title: 'Code', icon: 'code', format: 'code'},
+            ],
           },
           {
             title: 'Blocks', items: [
               {title: 'Paragraph', format: 'p'},
               {title: 'Blockquote', format: 'blockquote'},
               {title: 'Div', format: 'div'},
-              {title: 'Pre', format: 'pre'}
-            ]
+              {title: 'Pre', format: 'pre'},
+            ],
           },
           {
             title: 'Alignment', items: [
               {title: 'Left', icon: 'alignleft', format: 'alignleft'},
               {title: 'Center', icon: 'aligncenter', format: 'aligncenter'},
               {title: 'Right', icon: 'alignright', format: 'alignright'},
-              {title: 'Justify', icon: 'alignjustify', format: 'alignjustify'}
-            ]
-          }
-        ]
+              {title: 'Justify', icon: 'alignjustify', format: 'alignjustify'},
+            ],
+          },
+        ],
       },
       selectedUserId: {id: 0, value: 'Todos'},
       params: {
-        image: 'logo.svg',
+        image: '',
         theme_id: '',
         name: '',
         option_answer_ids: [],
@@ -201,61 +200,63 @@
         status: 'A',
       },
     }),
-    created () {
+    created() {
       this.load()
     },
     methods: {
       //Primary
-      load () {
+      load() {
         ThemeService.dispatch('allTheme', {self: this})
         AuthService.dispatch('getUsers', {self: this})
         OptionAnswerService.dispatch('allOptionAnswer', {self: this})
-        if (this.$route.params.dataQuestion != undefined && Object.keys(this.$route.params.dataQuestion).length) this.editQuestion()
+        if (this.$route.params.dataQuestion != undefined &&
+          Object.keys(this.$route.params.dataQuestion).length) this.editQuestion()
       },
-      createExam () {
-        // if (this.selectedUserId != null && this.selectedTheme != null) {
-        //   this.checkedOptionAnswer()
-        //   this.params.theme_id = this.selectedTheme.id
-        //   ExamService.dispatch('createExam', {self: this})
-        // } else {
-        //   alert('complete todos los campos!')
-        // }
+      createExam() {
+        if (this.selectedUserId != null && this.selectedTheme != null) {
+          this.checkedOptionAnswer()
+          this.params.theme_id = this.selectedTheme.id
+          ExamService.dispatch('createExam', {self: this})
+        } else {
+          alert('complete todos los campos!')
+        }
       },
       //Seconday
-      addInputRadio (item) {
-        this.dataInputs = this.dataInputs + item
-      },
-      removeInputRadio (item) {
-        this.dataInputs = (this.dataInputs - item)
-      },
-      getImage () {
-        // console.log(Util.encodeImageFileAsURL(this.params.image))
-        // (base64Img) => {
-        //    console.log(base64Img)
-        //      $('#imgLoaded')
-        //      .find('textarea')
-        //      .val(base64Img)
-        //      .end()
-        //      .find('img')
-        //      .attr('src', base64Img);
-        //    }
-        let preview = document.querySelector('img'),
-          file = document.querySelector('input[type=file]').files[0],
-          reader = new FileReader()
-
-        reader.onloadend = function () {
+      handleFileUpload() {
+        this.params.image = this.$refs.file.files[0]
+        let preview = document.querySelector('img'), file = this.$refs.file.files[0], reader = new FileReader()
+        reader.onloadend = () => {
           preview.src = reader.result
-          console.log(reader.result)
-          textarea.value = reader.result
         }
-
         if (file) {
           reader.readAsDataURL(file)
         } else {
           preview.src = ''
         }
       },
-      checkedOptionAnswer () {
+      addInputRadio(item) {
+        this.dataInputs = this.dataInputs + item
+      },
+      removeInputRadio(item) {
+        this.dataInputs = (this.dataInputs - item)
+      },
+      getImage() {
+        let preview = document.querySelector('img'),
+          file = document.querySelector('input[type=file]').files[0],
+          reader = new FileReader()
+        reader.onloadend = () => {
+          preview.src = reader.result
+          this.params.image = reader.result
+          // console.log(reader.result)
+        }
+        if (file) {
+          reader.readAsDataURL(file)
+        } else {
+          preview.src = ''
+        }
+
+      },
+      checkedOptionAnswer() {
         this.params.option_answer_ids = []
         let arrayRadios = $('#arrayRptas').find('input[type=radio]')
         let arrayInputs = $('#arrayRptas').find('input[type=text]')
@@ -267,7 +268,7 @@
           }
         })
       },
-    }
+    },
   }
 </script>
 

@@ -25,7 +25,15 @@ export default new Vuex.Store({
       })
     },
     createExam ({commit}, {self}) {
-      Axios.post(Env.API + '/create-exam', self.params).then((r) => {
+      let formData = new FormData();
+      formData.append('image', self.params.image);
+      formData.append('theme_id', self.params.theme_id);
+      formData.append('name', self.params.name);
+      formData.append('option_answer_ids', JSON.stringify(self.params.option_answer_ids));
+      formData.append('level', self.params.level);
+      formData.append('status', self.params.status);
+      console.log(formData)
+      Axios.post(Env.API + '/create-exam', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then((r) => {
         if (r.status === 200) {
           self.$router.replace({name:'themes'})
         }
