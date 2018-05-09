@@ -4,23 +4,23 @@
             <form @submit.prevent="createOrUpdateOptionAnswer()">
                 <div class="card-header bg-light text-dark">
                     <div class="row">
-                        <div class="col-3 mt-auto mb-auto">
+                        <div class="col-6 mt-auto mb-auto">
                             <span class="card-title">
                                 <span v-if="isPost">Crear Opcion Respuesta</span>
                                 <span v-else>Actualizar Opcion Respuesta</span>
                             </span>
                         </div>
-                        <div class="col-9 text-right">
+                        <div class="col-6 text-right">
                             <router-link class="btn btn-link text-secondary" :to="{name:'options-answers'}">
                                 <i class="fa fa-angle-left fa-fw"></i>
                                 <span>Volver</span>
                             </router-link>
-                            <button type="submit" class="btn btn-outline-primary w-20">
+                            <button type="submit" class="btn btn-outline-primary w-30">
                                 <i class="fa fa-check fa-fw"></i>
                                 <span v-if="isPost">Crear</span>
                                 <span v-else>Actualizar</span>
                             </button>
-                            <button type="reset" class="btn btn-outline-secondary w-20">
+                            <button type="reset" class="btn btn-outline-secondary w-30">
                                 <i class="fa fa-close fa-fw"></i>
                                 <span>Cancelar</span>
                             </button>

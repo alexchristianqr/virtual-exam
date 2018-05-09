@@ -3,37 +3,37 @@
         <div class="card mb-5">
             <div v-if="showCardHeader" class="card-header bg-white pt-1 pb-1">
                 <div class="row mb-0">
-                    <div class="alert bg-primary text-white alert-dismissible fade show mb-0" role="alert">
+                    <div class="alert bg-primary text-white fade show mb-0" role="alert">
                         <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click.prevent="showCardHeader=false">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close" @click.prevent="showCardHeader=false">-->
+                            <!--<span aria-hidden="true">&times;</span>-->
+                        <!--</button>-->
                     </div>
                 </div>
-            </div>
-            <div class="card-body mb-0 pb-0">
-                <div class="row">
+                <div class="row mt-1 mb-0 pb-0">
                     <template v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1">
-                        <div class="col-12">
+                        <div class="col-12 ml-0 pl-0 pb-0 mr-0 pr-0 mb-0">
                             <div id="showAlertFinally"
                                  v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1"
-                                 class="alert alert-danger text-center" role="alert">
+                                 class="alert alert-danger text-center mb-0" role="alert">
                                 <div>
                                     <span>El exámen va a terminar en</span>
                                     <br>
-                                    <b class=h4>{{remaining}}</b>
+                                    <b class="h5">{{remaining}}</b>
                                 </div>
                             </div>
                         </div>
                     </template>
                     <template v-else>
-                        <div class="col-12">
-                            <div class="alert alert-secondary bg-light text-center" role="alert">
-                                <b class="h4">{{remaining}}</b>
+                        <div class="col-12 ml-0 pl-0 pb-0 mr-0 pr-0 mb-0">
+                            <div class="alert alert-dark text-center mb-0" role="alert">
+                                <b class="h5">{{remaining}}</b>
                             </div>
                         </div>
                     </template >
                 </div>
+            </div>
+            <div class="card-body mb-0 pb-0">
                 <table v-if="loadingTable" class="table">
                     <tr>
                         <td colspan="auto" class="text-dark text-center">
@@ -47,29 +47,23 @@
                 <table v-if="!loadingTable && dataExam.length > 0" class="table table-sm table-vue">
                     <thead>
                     <tr>
-                        <th colspan="5" class="border-top-0 pt-0">
-                            <div class="row">
-                                <!--<div class="col-1 my-auto">-->
-                                    <!--<span>{{parseInt(Object.keys(dataExam)[next])+1}}.-</span>-->
-                                <!--</div>-->
-                                <div class="col-12">
-                                    <!--<span class="pl-2" v-html="dataExam[next].question_name"></span>-->
-                                    <div v-html="dataExam[next].question_name"></div>
-                                </div>
-                            </div>
+                        <th colspan="5" class="border-top-0 border-bottom-0 pt-0">
+                            <div v-html="dataExam[next].question_name"></div>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-if="dataExam[next].question_image !== '' ">
                         <td class="m-0 p-0">
-                            <div class="img-thumbnail text-center mt-1 mb-1">
-                                <img :src="util.getImgUrl(dataExam[next].question_image)" alt="" width="200px"/>
+                            <div class="col-4 offset-4">
+                                <div class="img-thumbnail text-center mt-1 mb-1">
+                                    <img :src="util.getImgUrl(dataExam[next].question_image)" alt="" width="200px"/>
+                                </div>
                             </div>
                         </td>
                     </tr>
                     <tr v-for="(v,k) in dataExam[next].options_answers">
-                        <td width="110%" :class="parseInt(k) == 0 ? 'pl-1 border-top-0' : 'pl-1'">
+                        <td width="110%" :class="parseInt(k) == 0 ? 'pl-1' : 'pl-1'">
                             <b>{{util.returnLetter(k)}})&nbsp;</b>
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label" :for="util.returnLetter(k)+dataExam[next].id">
@@ -124,7 +118,7 @@
             </div>
         </div>
 
-        <!-- Modal Consultar si Terminar Examen -->
+        <!-- Modal Preguntar Terminar Examen -->
         <div class="modal fade in" id="modalQueryExam" data-backdrop="static" data-keyboard="false" tabindex="-1"
              role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -230,7 +224,7 @@
         this.duration_2 = this.$route.params.dataTheme.theme_duration
         this.theme_id = this.$route.params.dataTheme.theme_id
         this.params.user_survey_theme_id = this.$route.params.dataTheme.user_survey_theme_id
-        ExamService.dispatch('getExam', {self: this})
+        ExamService.dispatch('loadExam', {self: this})
         this.timer()
       },
       change (signo) {
@@ -415,5 +409,8 @@
 </script>
 
 <style scoped>
-
+.alert-primary{
+    background-color: #007bff;
+    color:#fff;
+}
 </style>

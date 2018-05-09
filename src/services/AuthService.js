@@ -12,7 +12,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   actions: {
     doLogin({commit}, {self}){
-      Axios.post(Env.API + '/login', self.params).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/login', self.params).then((r) => {
         if (r.status === 200) {
           self.dataNotify = {}
           Storage.set('s-u-$4p14', r.data)
@@ -61,7 +61,7 @@ export default new Vuex.Store({
     },
     validateIfExist ({commit}, {self}) {
       RoleService.dispatch('allRole', {self: {}})
-      Axios.post(Env.API + '/if-exist-user', self.new_data_auth).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/if-exist-user', self.new_data_auth).then((r) => {
         switch (r.status) {
           case 201:
             Util.setCookie('co-stg-a-u-au', r.data, 1)
@@ -91,7 +91,7 @@ export default new Vuex.Store({
       self.$router.replace('/login')
     },
     getConfig ({commit}, {self}) {
-      Axios.post(Env.API + '/u-object-rest-apis-application', {username:  Util.getCookie('co-f-stg-a-u-au').username}).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/u-object-rest-apis-application', {username:  Util.getCookie('co-f-stg-a-u-au').username}).then((r) => {
         if (r.status === 200) {
           Object.assign(JsonDataAuth.json, r.data)
         }
@@ -100,7 +100,7 @@ export default new Vuex.Store({
       })
     },
     getUsers ({commit}, {self}) {
-      Axios.get(Env.API + '/get-users').then((r) => {
+      Axios.get(Env.API_LARAVEL + '/get-users').then((r) => {
         if (r.status === 200) {
           self.dataUsers= r.data
         }

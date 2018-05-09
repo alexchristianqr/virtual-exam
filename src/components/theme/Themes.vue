@@ -22,7 +22,7 @@
                             <span class="input-group-text"><i class="fa fa-filter"></i></span>
                         </div>
                         <select title v-model="params.user_survey_theme_id" class="form-control" @change="change()">
-                            <option value="">Seleccionar Categoria</option>
+                            <option value="" selected disabled>Seleccionar Categoria</option>
                             <option v-for="(v,k) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
                         </select>
                     </div>
@@ -30,11 +30,11 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
-                        <input v-model="input_search_theme" ref="inputSearchTheme" type="search" placeholder="Buscar" class="form-control">
-                        <div v-if="input_search_theme != ''" class="input-group-append">
-                            <button title="Limpiar Busqueda"
-                                    @click.prevent="input_search_theme = '' ; $refs.inputSearchTheme.focus()"
-                                    type="button" class="btn btn-danger">
+                        <input v-model="inputSearchTheme" ref="ref_inputSearchTheme" type="search" placeholder="Buscar"
+                               class="form-control">
+                        <div v-if="inputSearchTheme != ''" class="input-group-append">
+                            <button title="Limpiar Busqueda" @click="cleanSearch()" type="button"
+                                    class="btn btn-danger">
                                 <i class="fa fa-close"></i>
                             </button>
                         </div>
@@ -86,7 +86,7 @@
                                href
                                data-toggle="modal"
                                data-target="#modalStartExam"
-                               @click.prevent="subparams.dataTheme = v">
+                               @click.prevent="subParams.dataTheme = v">
                                 <i class="fa fa-file-text-o fa-fw"></i>
                                 <span>PENDIENTE</span>
                             </a>
@@ -103,10 +103,13 @@
                                             <i class="fa fa-file-text-o fa-fw"></i>
                                             <span>REALIZADO</span>
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm">
+                                        <router-link class="btn btn-info btn-sm" :to="{name:'exam-solution',params:{user_survey_theme_id:v.user_survey_theme_id}}">
                                             <i class="fa fa-eye fa-fw"></i>
                                             <span>SOLUCION</span>
-                                        </button>
+                                        </router-link>
+                                        <!--<button type="button" class="btn btn-info btn-sm" @click="validateViewSolucion(v.user_survey_theme_id)">-->
+                                          <!---->
+                                        <!--</button>-->
                                     </div>
                                 </template>
                             </template>
@@ -145,7 +148,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <span>El examen tine una duración de <b>{{util.toHHMMSS(subparams.dataTheme.theme_duration)}}</b> minutos, sin opcion de cancelar.</span>
+                        <span>El examen tine una duración de <b>{{util.toHHMMSS(subParams.dataTheme.theme_duration)}}</b> minutos, sin opcion de cancelar.</span>
                         <br>
                         <br>
                         <small class="text-secondary"><b>Nota:</b> El tiempo del examen es exacto asi que no hay
@@ -158,7 +161,7 @@
                             <span>Cancelar</span>
                         </button>
                         <router-link data-dismiss="modal" class="btn btn-outline-primary w-30"
-                                     :to="{name:'exam',params:{dataTheme:subparams.dataTheme}}">
+                                     :to="{name:'exam',params:{dataTheme:subParams.dataTheme}}">
                             <i class="fa fa-check fa-fw"></i>
                             <span>Listo</span>
                         </router-link>
@@ -183,25 +186,25 @@
     data: () => ({
       role: Role,
       util: Util,
-      moment:Moment,
+      moment: Moment,
       loadingTable: true,
       dataTheme: [],
       dataSurvey: [],
+      inputSearchTheme: '',
+      subParams: {
+        dataTheme: {}
+      },
       params: {
         user_id: '',
         user_survey_theme_id: '',
       },
-      subparams: {
-        dataTheme: {}
-      },
-      input_search_theme: '',
     }),
     created () {
       this.load()
     },
     computed: {
       filteredDataTheme () {
-        return this.dataTheme.filter((item) => {return item.theme_name.toLowerCase().indexOf(this.input_search_theme.toLowerCase()) > -1})
+        return this.dataTheme.filter((item) => {return item.theme_name.toLowerCase().indexOf(this.inputSearchTheme.toLowerCase()) > -1})
       }
     },
     methods: {
@@ -215,6 +218,10 @@
         this.dataTheme = []
         ThemeService.dispatch('allTheme', {self: this})
       },
+      cleanSearch () {
+        this.inputSearchTheme = ''
+        this.$refs.ref_inputSearchTheme.focus()
+      }
     },
   }
 </script>

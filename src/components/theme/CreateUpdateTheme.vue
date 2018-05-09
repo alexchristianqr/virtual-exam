@@ -3,22 +3,22 @@
         <form @submit.prevent="createTheme()">
             <div class="card-header bg-light text-dark">
                 <div class="row">
-                    <div class="col-3 mt-auto mb-auto">
+                    <div class="col-6 mt-auto mb-auto">
                             <span class="card-title">
                                 <span v-if="isPost">Crear Tema</span>
                                 <span v-else>Actualizar Tema</span>
                             </span>
                     </div>
-                    <div class="col-9 text-right">
+                    <div class="col-6 text-right">
                         <router-link class="btn btn-link text-secondary" :to="{name:'themes'}">
                             <i class="fa fa-angle-left fa-fw"></i>
                             <span>Volver</span>
                         </router-link>
-                        <button type="submit" class="btn btn-outline-primary w-20">
+                        <button type="submit" class="btn btn-outline-primary w-30">
                             <i class="fa fa-check fa-fw"></i>
                             <span>Crear</span>
                         </button>
-                        <button type="reset" class="btn btn-outline-secondary w-20">
+                        <button type="reset" class="btn btn-outline-secondary w-30">
                             <i class="fa fa-close fa-fw"></i>
                             <span>Cancelar</span>
                         </button>
@@ -110,7 +110,7 @@
       showError: false,
       params: {
         limite: '10',
-        name: '',
+        name: 'Examen de ',
         survey_id: '',
         user_id: '1',
         date_start: Moment().format('YYYY-MM-DD'),

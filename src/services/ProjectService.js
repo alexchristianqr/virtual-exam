@@ -11,7 +11,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   actions: {
     getProjects({commit}, {self}) {
-      Axios.get(Env.API + '/all-project').then(r => {
+      Axios.get(Env.API_LARAVEL + '/all-project').then(r => {
         if (r.status === 200) {
           self.selectedProject = r.data[0].id
           self.dataProject = r.data
@@ -21,7 +21,7 @@ export default new Vuex.Store({
       })
     },
     updateProject({commit}, {self}) {
-      Axios.put(Env.API + '/update-project/' + Util.getCookie('co-stg-a-u-au').id, self.params).then(r => {
+      Axios.put(Env.API_LARAVEL + '/update-project/' + Util.getCookie('co-stg-a-u-au').id, self.params).then(r => {
         if (r.status === 200) {
           const objAuth = Util.getCookie('co-stg-a-u-au')
           objAuth.project.id = self.newProject.id

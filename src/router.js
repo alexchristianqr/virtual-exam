@@ -45,16 +45,22 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Tema', roleId: Role.TODOS},
     },
     {
-      path: '/exam',
+      path: '/create/exam',
+      name: 'create-exam',
+      component: CreateExam,
+      meta: {requiresAuth: true, title: 'Crear Examen', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
+    },
+    {
+      path: '/load/exam',
       name: 'exam',
       component: Exam,
       meta: {requiresAuth: true, title: 'Examen', roleId: Role.TODOS},
     },
     {
-      path: '/exam-solution/:exam_id',
+      path: '/solution/exam/:user_survey_theme_id',
       name: 'exam-solution',
       component: ExamSolution,
-      meta: {requiresAuth: true, title: 'Usuario', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.INVITADO]},
+      meta: {requiresAuth: true, title: 'Examen Solucion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.INVITADO]},
     },
     {
       path: '/create/theme',
@@ -131,12 +137,6 @@ const router = new Router({
       name: 'edit-category',
       component: CreateUpdateCategory,
       meta: {requiresAuth: true, title: 'Editar Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
-    },
-    {
-      path: '/create/exam',
-      name: 'create-exam',
-      component: CreateExam,
-      meta: {requiresAuth: true, title: 'Crear Examen', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     /**View Errors**/
     {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},

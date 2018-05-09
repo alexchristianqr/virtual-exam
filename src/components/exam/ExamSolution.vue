@@ -2,12 +2,26 @@
     <div class="card mt-0 mb-0">
         <div class="card-header">
             <div class="row">
+                <div class="col-6 mt-auto mb-auto">
+                    <span class="card-title">
+                        <span>Solucion del Examen</span>
+                    </span>
+                </div>
+                <div class="col-6 text-right">
+                    <router-link class="btn btn-link text-secondary" :to="{name:'themes'}">
+                        <i class="fa fa-angle-left fa-fw"></i>
+                        <span>Volver</span>
+                    </router-link>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
                 <div class="col-2 mt-3 mb-3">
                     <div class="input-group input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Nota</span>
                         </div>
-                        <span class="form-control">{{modal.note}}</span>
+                        <span class="form-control">{{dataExamSolution.score}}</span>
                     </div>
                 </div>
                 <div class="col-10 mt-3 mb-3">
@@ -17,8 +31,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Rpta Correcta</span>
                                 </div>
-                                <span class="form-control text-center"><i
-                                        class="fa fa-check text-success"></i></span>
+                                <span class="form-control text-center"><i class="fa fa-check text-success"></i></span>
                             </div>
                         </div>
                         <div class="col-4">
@@ -26,8 +39,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Rpta Incorrecta</span>
                                 </div>
-                                <span class="form-control text-center"><i
-                                        class="fa fa-close text-danger"></i></span>
+                                <span class="form-control text-center"><i class="fa fa-close text-danger"></i></span>
                             </div>
                         </div>
                         <div class="col-4">
@@ -35,20 +47,14 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">Rpta vacia</span>
                                 </div>
-                                <span class="form-control text-center"><i
-                                        class="fa fa-exclamation-triangle text-warning"></i></span>
+                                <span class="form-control text-center"><i class="fa fa-exclamation-triangle text-warning"></i></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="msg != undefined " class="card-body">
-            <div class="col-12 text-center">
-                <span>{{msg}} aqui</span>
-            </div>
-        </div>
-        <div v-if="msg == undefined" class="card-body">
+        <div class="card-body">
             <div v-if="loadingTable" class="text-center">
                 <table class="table">
                     <tr>
@@ -61,45 +67,41 @@
                     </tr>
                 </table>
             </div>
-            <div v-if="!loadingTable && data_exam_solution.length >= 1" v-for="(v,k) in data_exam_solution">
+            <div v-if="!loadingTable && dataExamSolution.dataExam.length" v-for="(v,k) in dataExamSolution.dataExam">
                 <table class="table table-vue">
                     <thead>
                     <tr>
-                        <th scope="row" colspan="5">
+                        <th colspan="5">
                             <div class="row">
                                 <div class="col-1 mt-auto mb-auto">
                                     <span>{{k+1}}.-</span>
                                 </div>
-                                <div class="col-11 pl-0">
-                                    <span class="pl-2" v-html="v.name"></span>
-                                    <i v-if="v.answer_register == '0' " title="Pregunta sin Rpta!"
-                                       class="fa fa-exclamation-triangle text-warning"></i>
+                                <div class="col-10 pl-0 mt-3 mb-0">
+                                    <span v-html="v.question_name"></span>
+                                </div>
+                                <div v-show="v.user_option_answer_id == null" class="col-1 text-right mt-auto mb-auto" title="Pregunta sin Rpta!">
+                                    <i class="fa fa-exclamation-triangle text-warning"></i>
                                 </div>
                             </div>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(vv,kk) in v.options">
+                    <tr v-for="(vv,kk) in dataExamSolution.dataExam[k].options_answers">
                         <td width="90%">
                             <b>{{util.returnLetter(kk)}})&nbsp;</b>
                             <div class="form-check form-check-inline">
-                                <label class="form-check-label" :for="returnLetter(kk)+v.id">{{vv.name}}</label>
+                                <label class="form-check-label" :for="util.returnLetter(kk)+v.id">{{vv.name}}</label>
                             </div>
                         </td>
                         <td width="10%" class="text-right">
-                            <template v-if="v.answer_correct == v.answer_register">
-                                <i v-if="vv.id == v.answer_correct"
-                                   class="fa fa-check text-success"
-                                   title="Este es la rpta correcta."></i>
+                            <template v-if="vv.id == v.option_answer_id && vv.id == v.user_option_answer_id">
+                                <i class="fa fa-check text-success" title="Esta es la rpta correcta"></i>
+                                <i class="fa fa-check text-success" title="Esta es la rpta que marcaste"></i>
                             </template>
                             <template v-else>
-                                <i v-if="vv.id == v.answer_correct"
-                                   class="fa fa-check text-success"
-                                   title="Este es la rpta correcta."></i>
-                                <i v-if="vv.id == v.answer_register"
-                                   class="fa fa-close text-danger"
-                                   title="Este es la rpta que marcaste"></i>
+                                <i v-if="vv.id == v.option_answer_id" class="fa fa-check text-success" title="Esta es la rpta correcta"></i>
+                                <i v-if="vv.id == v.user_option_answer_id" class="fa fa-close text-danger" title="Esta es la rpta que marcaste"></i>
                             </template>
                         </td>
                     </tr>
@@ -107,7 +109,7 @@
                 </table>
                 <br>
             </div>
-            <div v-if="!loadingTable && data_exam_solution.length <= 0" class="text-center">
+            <div v-if="!loadingTable && dataExamSolution.dataExam.length < 1" class="text-center">
                 <table class="table">
                     <tr>
                         <td class="text-dark text-center">
@@ -135,75 +137,22 @@
       storage: Storage,
       loadingTable: true,
       loadComponentExamSolution: false,
-      dataExamSolution: [],
+      dataExamSolution: {},
+      // dataExam: [],
       params: {
-        exam_id: 0,
-        user_id: '',
-        exam_state_id: 3,
+        user_survey_theme_id: null,
       },
-      subparams: {
-        theme_id: null,
-        duration: 0
-      },
-      created () {
-        this.load()
-      },
-      methods: {
-        load () {
-          this.loadingTable = true
-          return ExamService.dispatch('loadExams', {self: this})
-        },
-        openModal (object) {
-          this.loadComponentExamSolution = true
-          this.params.exam_id = object.exam_id
-          this.modal.note = object.note
-          $('#modal-id-exam-solucion').modal({keyboard: false, show: true})
-          this.loadExamSolution()
-        },
-        closeModal (num) {
-          if (num == 1) {
-            this.deadInterval()
-            $('#infoModal').modal('hide')
-            this.loadComponentExam = false
-            $('#modal-id-exam').modal('hide')
-          } else {
-            this.loadComponentExamSolution = false
-            $('#modal-id-exam-solucion').modal('hide')
-          }
-        },
-        loadExamSolution () {
-          ExamService.dispatch('loadExamSolution', {self: this})
-        },
-        toFormatHours (seg) {
-          const timeBox = {seg: seg, min: '', hrs: ''}
-          let result = ''
-          const extractQuotientResidue = (limit, valor) => {
-            if (timeBox['seg'] >= limit) {
-              timeBox[valor] = (timeBox['seg'] / limit).toString().split('.')[0]
-              timeBox['seg'] = timeBox['seg'] - (timeBox[valor] * limit)
-            }
-          }
-          extractQuotientResidue(3600, 'hrs')   // Extrayendo el cociente para las horas
-          extractQuotientResidue(60, 'min')     // Extrayendo el cociente para las minutos
-          result = (timeBox.hrs) ? result.concat(timeBox.hrs, 'hrs ') : result.concat('')
-          result = (timeBox.min) ? result.concat(timeBox.min, 'min ') : result.concat('')
-          result = (timeBox.seg) ? result.concat(timeBox.seg, 'seg ') : result.concat('')
-          return result
-        },
-        updateStatusExam () {
-          this.msg_validate = undefined
-          this.params.exam_id = this.p_theme_id
-          this.params.user_id = this.storage.get('s-u-$4p14').id
-          this.params.exam_state_id = 3
-          ExamService.dispatch('updateStatusExam', {self: this})
-        },
-        openedModal () {
-          $('#infoModal').modal('hide')
-          this.$router.push({name: 'exam', params: {theme_id: this.p_theme_id, exam_duration: this.p_exam_duration}})
-        }
-      }
     }),
-
+    created () {
+      this.load()
+    },
+    methods: {
+      load () {
+        this.loadingTable = true
+        this.params.user_survey_theme_id = this.$route.params.user_survey_theme_id
+        ExamService.dispatch('loadExamSolution', {self: this})
+      }
+    }
   }
 </script>
 

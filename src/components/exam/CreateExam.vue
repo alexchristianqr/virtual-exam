@@ -7,11 +7,11 @@
                         <span class="card-title">Asignar Pregunta y Respuesta</span>
                     </div>
                     <div class="col-6 text-right">
-                        <button type="submit" class="btn btn-outline-primary w-20">
+                        <button type="submit" class="btn btn-outline-primary w-30">
                             <i class="fa fa-check fa-fw"></i>
                             <span>Crear</span>
                         </button>
-                        <button type="reset" class="btn btn-outline-secondary w-20">
+                        <button type="reset" class="btn btn-outline-secondary w-30">
                             <i class="fa fa-close fa-fw"></i>
                             <span>Cancelar</span>
                         </button>
@@ -21,18 +21,17 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <div id="imgLoaded" class="text-center">
+                        <div v-show="showImageLoaded" id="imgLoaded" class="text-center">
                             <img class="img-thumbnail w-20" src="" alt="">
                         </div>
                         <div class="form-group">
                             <label>Cargar Imagen</label>
                             <input type="file" id="file" ref="file" class="form-control" @change="handleFileUpload()"/>
-                            <!--<input type="file" class="form-control" @change="getImage"/>-->
                         </div>
                     </div>
                     <div class="col-12">
                         <div class="form-group">
-                            <label>Tema</label>
+                            <label>Seleccionar Tema o Examen</label>
                             <vue-multiselect v-model="selectedTheme"
                                              selectedLabel="Seleccionado"
                                              deselectLabel="Remover"
@@ -45,7 +44,7 @@
                                              class="w-100"/>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6" hidden>
                         <div class="form-group">
                             <label>Nivel de Dificultad</label>
                             <select title v-model="params.level" class="form-control" required>
@@ -56,7 +55,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6" hidden>
                         <div class="form-group">
                             <label>Estado</label>
                             <select title v-model="params.status" class="form-control" required>
@@ -108,14 +107,12 @@
 </template>
 
 <script>
-  import OptionAnswerService from '../../services/OptionAnswerService'
-  import ThemeService        from '../../services/ThemeService'
-  import ExamService         from '../../services/ExamService'
-  import AuthService         from '../../services/AuthService'
-  import Util                from '../../util'
-  import VueMultiselect      from 'vue-multiselect/src/Multiselect'
-  import Editor              from '@tinymce/tinymce-vue'
-  import $                   from 'jquery'
+  import ThemeService   from '../../services/ThemeService'
+  import ExamService    from '../../services/ExamService'
+  import Util           from '../../util'
+  import VueMultiselect from 'vue-multiselect/src/Multiselect'
+  import Editor         from '@tinymce/tinymce-vue'
+  import $              from 'jquery'
 
   export default {
     name: 'CreateUpdateExam',
@@ -123,13 +120,14 @@
     data: () => ({
       util: Util,
       isPost: true,
+      showImageLoaded: false,
+      showError: false,
       dataTheme: [],
       dataQuestion: [],
       dataOptionAnswer: [],
       dataUsers: [],
       dataError: {},
       dataInputs: 4,
-      showError: false,
       question_id: '',
       selectedTheme: '',
       configEditor: {
@@ -139,8 +137,8 @@
         theme: 'modern',
         skin: 'lightgray',
         /* width and height of the editor */
-        width: '100%',
-        height: 150,
+        // width: '100%',
+        // height: 150,
         /* display statusbar */
         statubar: true,
         /* plugin */
@@ -200,19 +198,14 @@
         status: 'A',
       },
     }),
-    created() {
+    created () {
       this.load()
     },
     methods: {
-      //Primary
-      load() {
+      load () {
         ThemeService.dispatch('allTheme', {self: this})
-        AuthService.dispatch('getUsers', {self: this})
-        OptionAnswerService.dispatch('allOptionAnswer', {self: this})
-        if (this.$route.params.dataQuestion != undefined &&
-          Object.keys(this.$route.params.dataQuestion).length) this.editQuestion()
       },
-      createExam() {
+      createExam () {
         if (this.selectedUserId != null && this.selectedTheme != null) {
           this.checkedOptionAnswer()
           this.params.theme_id = this.selectedTheme.id
@@ -221,42 +214,27 @@
           alert('complete todos los campos!')
         }
       },
-      //Seconday
-      handleFileUpload() {
+      handleFileUpload () {
         this.params.image = this.$refs.file.files[0]
         let preview = document.querySelector('img'), file = this.$refs.file.files[0], reader = new FileReader()
         reader.onloadend = () => {
           preview.src = reader.result
         }
         if (file) {
+          this.showImageLoaded = true
           reader.readAsDataURL(file)
         } else {
+          this.showImageLoaded = false
           preview.src = ''
         }
       },
-      addInputRadio(item) {
+      addInputRadio (item) {
         this.dataInputs = this.dataInputs + item
       },
-      removeInputRadio(item) {
+      removeInputRadio (item) {
         this.dataInputs = (this.dataInputs - item)
       },
-      getImage() {
-        let preview = document.querySelector('img'),
-          file = document.querySelector('input[type=file]').files[0],
-          reader = new FileReader()
-        reader.onloadend = () => {
-          preview.src = reader.result
-          this.params.image = reader.result
-          // console.log(reader.result)
-        }
-        if (file) {
-          reader.readAsDataURL(file)
-        } else {
-          preview.src = ''
-        }
-
-      },
-      checkedOptionAnswer() {
+      checkedOptionAnswer () {
         this.params.option_answer_ids = []
         let arrayRadios = $('#arrayRptas').find('input[type=radio]')
         let arrayInputs = $('#arrayRptas').find('input[type=text]')

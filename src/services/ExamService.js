@@ -9,18 +9,14 @@ import $         from 'jquery'
 Vue.use(Vuex, Storage)
 
 export default new Vuex.Store({
-  state: {
-    intent: null,
-  },
   actions: {
-    getExam ({commit}, {self}) {
-      Axios.get(Env.API + '/load-exam', {params: {theme_id: self.theme_id}}).then((r) => {
+    loadExam ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/load-exam', {params: {theme_id: self.theme_id}}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataExam = r.data
         }
       }).catch((e) => {
-        self.method = 'loadExam'
         console.error(e)
       })
     },
@@ -32,8 +28,8 @@ export default new Vuex.Store({
       formData.append('option_answer_ids', JSON.stringify(self.params.option_answer_ids));
       formData.append('level', self.params.level);
       formData.append('status', self.params.status);
-      console.log(formData)
-      Axios.post(Env.API + '/create-exam', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then((r) => {
+
+      Axios.post(Env.API_LARAVEL + '/create-exam', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then((r) => {
         if (r.status === 200) {
           self.$router.replace({name:'themes'})
         }
@@ -42,7 +38,7 @@ export default new Vuex.Store({
       })
     },
     updateExam ({commit}, {self}) {
-      Axios.put(Env.API + '/update-exam', self.params).then((r) => {
+      Axios.put(Env.API_LARAVEL + '/update-exam', self.params).then((r) => {
         if (r.status === 200) {
           $('#modalQueryExam').modal('hide')
           self.$router.replace('/themes')
@@ -52,8 +48,20 @@ export default new Vuex.Store({
       })
     },
     updateExamAutomatic ({commit}, {self}) {
-      Axios.put(Env.API + '/update-exam', self.params).then((r) => {
+      Axios.put(Env.API_LARAVEL + '/update-exam', self.params).then((r) => {
         if (r.status === 200) {console.log(r.statusText)}
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
+    loadExamSolution ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/load-exam-solution', {params: self.params}).then((r) => {
+        if (r.status === 200) {
+          self.loadingTable = false
+          // self.dataExam = r.data.dataExam
+          self.dataExamSolution = r.data.dataExamSolution
+          // self.dataExam = r.data
+        }
       }).catch((e) => {
         console.error(e)
       })

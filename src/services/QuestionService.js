@@ -10,7 +10,7 @@ export default new Vuex.Store({
   actions: {
     allQuestion ({commit}, {self}) {
       if (this.state.intent != null) window.clearInterval(this.state.intent)
-      Axios.get(Env.API + '/all-question', {params: self.params}).then((r) => {
+      Axios.get(Env.API_LARAVEL + '/all-question', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataQuestion = r.data
@@ -21,7 +21,7 @@ export default new Vuex.Store({
       })
     },
     createQuestion ({commit}, {self}) {
-      Axios.post(Env.API + '/create-question', self.params).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/create-question', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/questions')
         }
@@ -30,7 +30,7 @@ export default new Vuex.Store({
       })
     },
     updateQuestion ({commit}, {self}) {
-      Axios.put(Env.API + '/update-question/' + self.question_id, self.params).then((r) => {
+      Axios.put(Env.API_LARAVEL + '/update-question/' + self.question_id, self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/questions')
         }

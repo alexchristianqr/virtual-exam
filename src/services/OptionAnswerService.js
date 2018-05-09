@@ -9,7 +9,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   actions: {
     getOptionsAnswers ({commit}, {self}) {
-      Axios.get(Env.API + '/get-options-anwers').then((r) => {
+      Axios.get(Env.API_LARAVEL + '/get-options-anwers').then((r) => {
         if (r.status === 200) {
           self.dataOptionAnswer = r.data
         }
@@ -18,7 +18,7 @@ export default new Vuex.Store({
       })
     },
     allOptionAnswer ({commit}, {self}) {
-      Axios.get(Env.API + '/all-option-answer', {params: self.params}).then((r) => {
+      Axios.get(Env.API_LARAVEL + '/all-option-answer', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataOptionAnswer = r.data
@@ -28,7 +28,7 @@ export default new Vuex.Store({
       })
     },
     createOptionAnswer ({commit}, {self}) {
-      Axios.post(Env.API + '/create-option-answer', self.params).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/create-option-answer', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/options-answers')
         }
@@ -37,7 +37,7 @@ export default new Vuex.Store({
       })
     },
     updateOptionAnswer ({commit}, {self}) {
-      Axios.put(Env.API + '/update-option-answer', self.params).then((r) => {
+      Axios.put(Env.API_LARAVEL + '/update-option-answer', self.params).then((r) => {
         if (r.status === 200) {
           self.$router.replace('/options-answers')
         }
