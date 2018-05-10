@@ -1,4 +1,5 @@
 import Storage from 'vue-local-storage'
+import $       from 'jquery'
 
 export default {
   toHHMMSS (sec) {
@@ -78,5 +79,15 @@ export default {
     let arr = new Uint8Array((len || 40) / 2)
     window.crypto.getRandomValues(arr)
     return Array.from(arr, dec2hex).join('')
+  },
+  openModal (modalId, config) {
+    if (config != undefined) {
+      $(modalId).modal(config)
+    } else {
+      $(modalId).modal('show')
+    }
+  },
+  closeModal (modalId) {
+    $(modalId).modal('hide')
   },
 }

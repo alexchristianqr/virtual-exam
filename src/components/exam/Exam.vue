@@ -390,18 +390,15 @@
         this.params.theme_id = this.theme_id
         this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExamAutomatic', {self: this})
-        $('#modalEndExam').modal('show')
+        Util.openModal('#modalEndExam')
       },
       saveQueryExam () {
         window.clearInterval(this.timerUpdate)
         this.showLoading = true
         this.saveEndExam()
       },
-      openModal () {
-        $('#modalQueryExam').modal({backdrop: 'static', keyboard: false, show: true})
-      },
       closeModal () {
-        $('#modalQueryExam').modal('hide')
+        Util.closeModal('#modalQueryExam')
         this.$router.replace('/themes')
       },
     }

@@ -50,8 +50,7 @@
                     <tr>
                         <th><b>#</b></th>
                         <th>Nombre o Titulo</th>
-                        <th>Fecha Inicial - Fecha Final</th>
-                        <th>Actualizado</th>
+                        <th width="35%">Fecha Inicial - Fecha Final</th>
                         <th>Duración</th>
                         <th>Nota</th>
                         <th width="5%" class="text-center" v-show="util.validateRole(role.SUPER)">Estado</th>
@@ -72,8 +71,7 @@
                     <tr v-for="(v,k) in filteredDataTheme">
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
-                        <td>{{moment(v.theme_date_start).format('DD/MM/YYYY')}}&nbsp;&nbsp;-&nbsp;&nbsp;{{moment(v.theme_date_expired).format('DD/MM/YYYY')}}</td>
-                        <td>{{v.theme_updated_at}}</td>
+                        <td>{{moment(v.theme_date_start).format('DD/MM/YYYY')}} {{v.theme_time_start}}&nbsp;-&nbsp;{{moment(v.theme_date_expired).format('DD/MM/YYYY')}} {{v.theme_time_expired}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.user_survey_theme_score}}</td>
                         <td class="text-center" v-show="util.validateRole(role.SUPER)">
@@ -81,7 +79,7 @@
                             <i v-if="v.theme_status === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
                         <td class="text-right">
-                            <a v-if="v.user_survey_theme_status == 'P' "
+                            <a v-if="v.user_survey_theme_status == 'PE' "
                                class="btn btn-warning btn-sm btn-block"
                                href
                                data-toggle="modal"
@@ -90,8 +88,8 @@
                                 <i class="fa fa-file-text-o fa-fw"></i>
                                 <span>PENDIENTE</span>
                             </a>
-                            <template v-if="v.user_survey_theme_status == 'D' || v.user_survey_theme_status == 'DD'">
-                                <template v-if="v.user_survey_theme_status == 'D'">
+                            <template v-if="v.user_survey_theme_status == 'RE' || v.user_survey_theme_status == 'PR'">
+                                <template v-if="v.user_survey_theme_status == 'RE'">
                                     <button type="button" class="btn btn-success btn-sm btn-block">
                                         <i class="fa fa-file-text-o fa-fw"></i>
                                         <span>REALIZADO</span>
@@ -103,19 +101,22 @@
                                             <i class="fa fa-file-text-o fa-fw"></i>
                                             <span>REALIZADO</span>
                                         </button>
-                                        <router-link class="btn btn-info btn-sm" :to="{name:'exam-solution',params:{user_survey_theme_id:v.user_survey_theme_id}}">
+                                        <button type="button" class="btn btn-info btn-sm"
+                                                @click="verifyExamSolution(v.user_survey_theme_id)">
                                             <i class="fa fa-eye fa-fw"></i>
                                             <span>SOLUCION</span>
-                                        </router-link>
-                                        <!--<button type="button" class="btn btn-info btn-sm" @click="validateViewSolucion(v.user_survey_theme_id)">-->
-                                          <!---->
-                                        <!--</button>-->
+                                        </button>
+                                        <!--<router-link class="btn btn-info btn-sm"-->
+                                        <!--:to="{name:'exam-solution',params:{user_survey_theme_id:v.user_survey_theme_id}}">-->
+                                        <!--<i class="fa fa-eye fa-fw"></i>-->
+                                        <!--<span>SOLUCION</span>-->
+                                        <!--</router-link>-->
                                     </div>
                                 </template>
                             </template>
-                            <button v-if="v.user_survey_theme_status == 'E'" type="button" class="btn btn-danger">
+                            <button v-if="v.user_survey_theme_status == 'VE'" type="button" class="btn btn-danger">
                                 <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>EXPIRADO</span>
+                                <span>VENCIDO</span>
                             </button>
                         </td>
                     </tr>
@@ -135,8 +136,7 @@
         </div>
 
         <!-- Modal Iniciar Examen -->
-        <div class="modal fade in" id="modalStartExam" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
+        <div class="modal fade in" id="modalStartExam" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -170,6 +170,31 @@
             </div>
         </div>
 
+        <!-- Modal Preguntar Terminar Examen -->
+        <div class="modal fade in" id="modalQueryExamSolution" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel2">
+                            <span class="text-secondary">Atención</span>
+                        </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <span>{{dataExamSolution}}</span>
+                    </div>
+                    <div class="modal-footer w-100">
+                        <button class="btn btn-outline-secondary w-30" type="button" data-dismiss="modal">
+                            <i class="fa fa-close fa-fw"></i>
+                            <span>Cancelar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -180,6 +205,7 @@
   import Storage       from 'vue-local-storage'
   import Role          from '../../role'
   import Moment        from 'moment'
+  import ExamService   from '../../services/ExamService'
 
   export default {
     name: 'Themes',
@@ -191,6 +217,7 @@
       dataTheme: [],
       dataSurvey: [],
       inputSearchTheme: '',
+      dataExamSolution: {},
       subParams: {
         dataTheme: {}
       },
@@ -221,7 +248,11 @@
       cleanSearch () {
         this.inputSearchTheme = ''
         this.$refs.ref_inputSearchTheme.focus()
-      }
+      },
+      verifyExamSolution (param_user_survey_theme_id) {
+        this.params.user_survey_theme_id = param_user_survey_theme_id
+        ExamService.dispatch('verifyExamSolution', {self: this})
+      },
     },
   }
 </script>
