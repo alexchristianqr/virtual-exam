@@ -69,7 +69,7 @@
         Util.removeCookie('co-stg-a-u-au', '/login')
       },
       getClass () {
-        return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer w-100'
+        return (this.$route.path == '/login') ? 'sticky-footer w-100' : 'sticky-footer'
       },
       loadSbadmin () {
         Sbadmin.init()
