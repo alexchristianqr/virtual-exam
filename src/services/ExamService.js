@@ -71,7 +71,7 @@ export default new Vuex.Store({
         }
       }).catch((e) => {
         self.dataExamSolution = e.response.data
-        Util.openModal('#modalQueryExamSolution')
+        Util.openModal(self.document,'#modalQueryExamSolution')
         console.error(e)
       })
 

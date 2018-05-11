@@ -390,7 +390,7 @@
         this.params.theme_id = this.theme_id
         this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExamAutomatic', {self: this})
-        Util.openModal('#modalEndExam')
+        Util.openModal(document,'#modalEndExam')
       },
       saveQueryExam () {
         window.clearInterval(this.timerUpdate)

@@ -1,40 +1,50 @@
 <template>
-    <div class="card">
-        <div class="card-header bg-light text-dark">
-            <div class="row">
-                <div class="col-6 mt-auto mb-auto">
-                    <span class="card-title">Lista de Categorias</span>
+    <div>
+
+        <div class="card">
+            <div class="card-header bg-light text-dark">
+                <div class="row">
+                    <div class="col-6 mt-auto mb-auto">
+                        <span class="card-title">Lista de Categorias</span>
+                    </div>
+                    <div class="col-6 text-right">
+                        <button @click.prevent="openModal('#modalCreateCategory')" type="button"
+                                class="btn btn-outline-secondary">
+                            <i class="fa fa-plus fa-fw"></i>
+                            <span>Nueva Categoria</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="col-6 text-right">
-                    <router-link :to="{name:'create-category'}" class="btn btn-outline-secondary">
-                        <i class="fa fa-plus fa-fw"></i>
-                        <span>Crear Nuevo</span>
-                    </router-link>
+                <hr>
+                <div class="form-inline">
+                    <div class="input-group w-35">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-search"></i></span>
+                        </div>
+                        <input v-model="inputSearchSurvey" ref="ref_inputSearchSurvey" type="search" placeholder="Buscar" class="form-control">
+                        <div v-if="inputSearchSurvey != ''" class="input-group-append">
+                            <button title="Limpiar Busqueda" @click="cleanSearch()" type="button"
+                                    class="btn btn-danger">
+                                <i class="fa fa-close"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-filter"></i></span>
+                        </div>
+                        <select title="" class="form-control" v-model="params.status" @change="change()">
+                            <option value="" selected>Seleccionar Estado</option>
+                            <option value="A">Activo</option>
+                            <option value="I">Inactivo</option>
+                        </select>
+                    </div>
+                    <button title="actualizar datos" class="btn btn-outline-secondary" @click="change()"><i
+                            class="fa fa-refresh"></i></button>
                 </div>
             </div>
-            <hr>
-            <div class="form-inline">
-                <div class="input-group w-35">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-search"></i></span>
-                    </div>
-                    <input type="search" placeholder="Search" class="form-control">
-                </div>
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fa fa-filter"></i></span>
-                    </div>
-                    <select title="" class="form-control" v-model="params.status" @change="change()">
-                        <option value="" selected>Seleccionar Estado</option>
-                        <option value="A">Activo</option>
-                        <option value="I">Inactivo</option>
-                    </select>
-                </div>
-                <button title="actualizar datos" class="btn btn-outline-secondary" @click="change()"><i class="fa fa-refresh"></i></button>
-            </div>
-        </div>
-        <div class="card-body">
-            <table class="table table-sm">
+            <div class="card-body">
+                <table class="table table-sm">
                     <thead>
                     <tr>
                         <th><b>#</b></th>
@@ -55,7 +65,7 @@
                     </tr>
                     </tbody>
                     <tbody v-if="!loadingTable && dataSurvey.length">
-                    <tr v-for="(v,k) in dataSurvey">
+                    <tr v-for="(v,k) in filteredDataSurvey">
                         <th>{{k+1}}</th>
                         <td>{{v.name}}</td>
                         <td>{{v.updated_at}}</td>
@@ -65,7 +75,8 @@
                         </td>
                         <td hidden class="text-right">
                             <div class="btn-group dropdown" role="group">
-                                <router-link class="btn btn-warning btn-sm" :to="{name:'edit-question',params:{dataSurvey:v}}">
+                                <router-link class="btn btn-warning btn-sm"
+                                             :to="{name:'edit-question',params:{dataSurvey:v}}">
                                     <i class="fa fa-edit fa-fw"></i>
                                 </router-link>
                                 <div class="btn-group open" role="group">
@@ -96,35 +107,62 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
         </div>
+
+        <!-- Modal Crear Categoria -->
+        <modal-create-category v-if="loadModal" :dataProps="{dataSurvey}" @closeModal="closeModal('#modalCreateCategory')" @eventClose="load()"/>
+
     </div>
 </template>
 
 <script>
-  import SurveyService from '../../services/SurveyService'
-  import Moment        from 'moment'
+  import SurveyService       from '../../services/SurveyService'
+  import ModalCreateCategory from '../layouts_category/ModalCreateCategory'
+  import Util                from '../../util'
+  import Moment              from 'moment'
 
   export default {
     name: 'Categories',
+    components: {ModalCreateCategory},
     data: () => ({
-      moment:Moment,
+      moment: Moment,
       loadingTable: true,
+      loadModal: false,
       dataSurvey: [],
+      inputSearchSurvey: '',
       params: {
         status: '',
       },
     }),
-    created(){
+    created () {
       this.load()
     },
-    methods:{
+    computed: {
+      filteredDataSurvey () {
+        return this.dataSurvey.filter((item) => {return item.name.toLowerCase().indexOf(this.inputSearchSurvey.toLowerCase()) > -1})
+      }
+    },
+    methods: {
       change () {
         this.loadingTable = true
         this.load()
       },
-      load(){
+      load () {
         SurveyService.dispatch('allSurvey', {self: this})
-      }
+      },
+      openModal (modalId) {
+        this.loadModal = true
+        Util.openModal(document, modalId)
+      },
+      closeModal (modalId) {
+        this.loadModal = false
+        Util.closeModal(modalId)
+      },
+      cleanSearch () {
+        this.inputSearchSurvey = ''
+        this.$refs.ref_inputSearchSurvey.focus()
+      },
     }
   }
 </script>

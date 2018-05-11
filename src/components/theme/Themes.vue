@@ -1,5 +1,6 @@
 <template>
     <div>
+
         <div class="card">
             <div class="card-header bg-light text-dark">
                 <div class="row">
@@ -8,10 +9,14 @@
                     </div>
                     <div class="col-6 text-right">
                         <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                            <router-link :to="{name:'create-theme'}" class="btn btn-outline-secondary">
+                            <button @click.prevent="openModal('#modalCreateTheme',1)" type="button" class="btn btn-outline-secondary" >
                                 <i class="fa fa-plus fa-fw"></i>
-                                <span>Crear Nuevo</span>
-                            </router-link>
+                                <span>Nuevo Tema</span>
+                            </button>
+                            <button @click.prevent="openModal('#modalAssignTheme',2)" type="button" class="btn btn-outline-secondary" >
+                                <i class="fa fa-plus fa-fw"></i>
+                                <span>Asignar Fecha</span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -21,12 +26,12 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-filter"></i></span>
                         </div>
-                        <select title v-model="params.user_survey_theme_id" class="form-control" @change="change()">
+                        <select title v-model="params.user_survey_id" class="form-control" @change="change()">
                             <option value="" selected disabled>Seleccionar Categoria</option>
                             <option v-for="(v,k) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
                         </select>
                     </div>
-                    <div v-show="params.user_survey_theme_id != ''" class="input-group w-35">
+                    <div v-show="params.user_survey_id != ''" class="input-group w-35">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
@@ -170,12 +175,12 @@
             </div>
         </div>
 
-        <!-- Modal Preguntar Terminar Examen -->
+        <!-- Modal Mensaje Error de Examen Solucion -->
         <div class="modal fade in" id="modalQueryExamSolution" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel2">
+                        <h5 class="modal-title">
                             <span class="text-secondary">Atención</span>
                         </h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -187,28 +192,36 @@
                     </div>
                     <div class="modal-footer w-100">
                         <button class="btn btn-outline-secondary w-30" type="button" data-dismiss="modal">
-                            <i class="fa fa-close fa-fw"></i>
-                            <span>Cancelar</span>
+                            <span>Cerrar</span>
                         </button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Modal Crear Tema -->
+        <modal-create-theme v-if="loadModal.createTheme" :dataProps="{dataSurvey}" @closeModal="closeModal('#modalCreateTheme',1)"/>
+
+        <!-- Modal Asignar Tema -->
+        <modal-assign-theme  v-if="loadModal.assignTheme" :dataProps="{dataSurvey}" @closeModal="closeModal('#modalAssignTheme',2)"/>
+
     </div>
 </template>
 
 <script>
-  import SurveyService from '../../services/SurveyService'
-  import ThemeService  from '../../services/ThemeService'
-  import Util          from '../../util'
-  import Storage       from 'vue-local-storage'
-  import Role          from '../../role'
-  import Moment        from 'moment'
-  import ExamService   from '../../services/ExamService'
+  import SurveyService    from '../../services/SurveyService'
+  import ThemeService     from '../../services/ThemeService'
+  import Util             from '../../util'
+  import Storage          from 'vue-local-storage'
+  import Role             from '../../role'
+  import Moment           from 'moment'
+  import ExamService      from '../../services/ExamService'
+  import ModalCreateTheme from '../layouts_theme/ModalCreateTheme'
+  import ModalAssignTheme from '../layouts_theme/ModalAssignTheme'
 
   export default {
     name: 'Themes',
+    components: {ModalAssignTheme, ModalCreateTheme},
     data: () => ({
       role: Role,
       util: Util,
@@ -218,12 +231,17 @@
       dataSurvey: [],
       inputSearchTheme: '',
       dataExamSolution: {},
+      loadModal:{
+        createTheme:false,
+        assignTheme:false,
+      },
       subParams: {
         dataTheme: {}
       },
       params: {
         user_id: '',
-        user_survey_theme_id: '',
+        user_survey_id: '',
+        user_survey_theme_id:''
       },
     }),
     created () {
@@ -237,8 +255,11 @@
     methods: {
       load () {
         this.params.user_id = Storage.get('s-u-$4p14').id
-        ThemeService.dispatch('allTheme', {self: this})
-        SurveyService.dispatch('allByUserSurvey', {self: this})
+        if(Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == 2){
+            SurveyService.dispatch('allSurvey', {self: this})
+        }else{
+            SurveyService.dispatch('allByUserSurvey', {self: this})
+        }
       },
       change () {
         this.loadingTable = true
@@ -253,6 +274,14 @@
         this.params.user_survey_theme_id = param_user_survey_theme_id
         ExamService.dispatch('verifyExamSolution', {self: this})
       },
+      openModal(modalId,self){
+          if(self == 1) this.loadModal.createTheme = true; else this.loadModal.assignTheme = true;
+            Util.openModal(document,modalId)
+      },
+      closeModal(modalId,self){
+        if(self == 1) this.loadModal.createTheme = false; else this.loadModal.assignTheme = false;
+        Util.closeModal(modalId)
+      }
     },
   }
 </script>

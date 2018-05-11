@@ -2,6 +2,7 @@ import Vue       from 'vue'
 import * as Vuex from 'vuex'
 import Axios     from 'axios'
 import Env       from '../env'
+import Util      from '../util'
 
 Vue.use(Vuex)
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
     createTheme ({commit}, {self}) {
       Axios.post(Env.API_LARAVEL + '/create-theme', self.params).then((r) => {
         if (r.status === 200) {
-          self.$router.replace('/themes')
+          Util.closeModal(self.modalId)
+          self.$emit('eventClose')
         }
       }).catch((e) => {
         console.error(e)

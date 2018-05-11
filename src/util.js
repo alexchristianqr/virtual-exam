@@ -80,11 +80,15 @@ export default {
     window.crypto.getRandomValues(arr)
     return Array.from(arr, dec2hex).join('')
   },
-  openModal (modalId, config) {
+  openModal (doc,modalId, config) {
     if (config != undefined) {
-      $(modalId).modal(config)
+      $(doc).ready(() => {
+        $(modalId).modal(config)
+      })
     } else {
-      $(modalId).modal('show')
+      $(doc).ready(() => {
+        $(modalId).modal('show')
+      })
     }
   },
   closeModal (modalId) {

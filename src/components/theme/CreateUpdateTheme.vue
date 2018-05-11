@@ -115,9 +115,9 @@
         user_id: '1',
         date_start: Moment().format('YYYY-MM-DD'),
         date_expired: Moment().format('YYYY-MM-DD'),
-        duration: '00:10:00',
-        time_start: '00:00:00',
-        time_expired: '00:00:00',
+        duration: '00:10',
+        time_start: '00:00',
+        time_expired: '00:00',
       },
     }),
     created () {
