@@ -8,8 +8,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   actions: {
-    allTheme ({commit}, {self}) {
-      Axios.get(Env.API_LARAVEL + '/all-theme', {params: self.params}).then((r) => {
+    getThemesByUserSurveyTheme ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/get-themes-by-user-survey-theme', {params: self.params}).then((r) => {
+        if (r.status === 200) {
+          self.loadingTable = false
+          self.dataTheme = r.data
+        }
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
+    getThemesBySurvey ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/get-themes-by-survey', {params: {survey_id: self.params.survey_id}}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataTheme = r.data
@@ -21,8 +31,20 @@ export default new Vuex.Store({
     createTheme ({commit}, {self}) {
       Axios.post(Env.API_LARAVEL + '/create-theme', self.params).then((r) => {
         if (r.status === 200) {
+          self.restart()
           Util.closeModal(self.modalId)
-          self.$emit('eventClose')
+          // self.$emit('eventClose')
+        }
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
+    createUserSurveyTheme ({commit}, {self}) {
+      Axios.post(Env.API_LARAVEL + '/create-user-survey-theme', self.params).then((r) => {
+        if (r.status === 200) {
+          self.restart()
+          Util.closeModal(self.modalId)
+          this.dispatch('getThemesByUserSurveyTheme',{self:self})
         }
       }).catch((e) => {
         console.error(e)

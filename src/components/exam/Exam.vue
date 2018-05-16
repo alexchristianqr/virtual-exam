@@ -6,12 +6,13 @@
                     <div class="alert bg-primary text-white fade show mb-0" role="alert">
                         <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
                         <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close" @click.prevent="showCardHeader=false">-->
-                            <!--<span aria-hidden="true">&times;</span>-->
+                        <!--<span aria-hidden="true">&times;</span>-->
                         <!--</button>-->
                     </div>
                 </div>
                 <div class="row mt-1 mb-0 pb-0">
-                    <template v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1">
+                    <template
+                            v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1">
                         <div class="col-12 ml-0 pl-0 pb-0 mr-0 pr-0 mb-0">
                             <div id="showAlertFinally"
                                  v-if="isMinute<=0 && (isMinute==0 ? isSecond<=31 : isSecond!=undefined) && remaining != duration_1"
@@ -30,7 +31,7 @@
                                 <b class="h5">{{remaining}}</b>
                             </div>
                         </div>
-                    </template >
+                    </template>
                 </div>
             </div>
             <div class="card-body mb-0 pb-0">
@@ -95,10 +96,13 @@
                                         <i class="fa fa-arrow-right fa-fw"></i>
                                         <span></span>
                                     </button>
-                                    <a v-else class="btn btn-outline-secondary" href data-toggle="modal"
-                                       data-target="#modalQueryExam" @click.prevent="pauseTimer = true">
+                                    <!--<a v-else class="btn btn-outline-secondary" href data-toggle="modal"-->
+                                       <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
+                                        <!--<span>Terminar Examen</span>-->
+                                    <!--</a>-->
+                                    <button v-else class="btn btn-outline-secondary" @click="validateEndExam()">
                                         <span>Terminar Examen</span>
-                                    </a>
+                                    </button>
                                 </div>
                             </div>
                         </td>
@@ -208,7 +212,7 @@
         user_id: '',
         theme_id: '',
         answer_by_question: [],
-        user_survey_theme_id: null
+        user_survey_theme_id: null,
       },
     }),
     beforeCreate () {
@@ -343,12 +347,12 @@
                 this.tempChecked.push({
                   question_id: this.dataExam[this.next].id,
                   option_answer_id: $(v).val(),
-                  checked_id: k
+                  checked_id: k,
                 })
                 $.each(this.tempChecked, (kk, vv) => {
                   if (vv == undefined) this.tempChecked[kk] = {
                     question_id: this.dataExam[this.next].id,
-                    option_answer_id: null
+                    option_answer_id: null,
                   }
                 })
               } else {
@@ -356,13 +360,13 @@
                 this.tempChecked[this.next] = {
                   question_id: this.dataExam[this.next].id,
                   option_answer_id: $(v).val(),
-                  checked_id: k
+                  checked_id: k,
                 }
                 //recorrer lo cargado, y setear las posiciones con valores invalidos para controlar el arreglo
                 $.each(this.tempChecked, (kk, vv) => {
                   if (vv == undefined) this.tempChecked[kk] = {
                     question_id: this.dataExam[kk].id,
-                    option_answer_id: null
+                    option_answer_id: null,
                   }
                 })
               }
@@ -381,7 +385,6 @@
       saveEndExam () {
         this.params.user_id = Storage.get('s-u-$4p14').id
         this.params.theme_id = this.theme_id
-        this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExam', {self: this})
       },
       saveEndExamAutomatic () {
@@ -390,7 +393,7 @@
         this.params.theme_id = this.theme_id
         this.params.answer_by_question = this.tempChecked
         ExamService.dispatch('updateExamAutomatic', {self: this})
-        Util.openModal(document,'#modalEndExam')
+        Util.openModal(document, '#modalEndExam')
       },
       saveQueryExam () {
         window.clearInterval(this.timerUpdate)
@@ -401,13 +404,23 @@
         Util.closeModal('#modalQueryExam')
         this.$router.replace('/themes')
       },
-    }
+      validateEndExam(num = 1) {
+        this.pauseTimer = true
+        this.params.answer_by_question = this.tempChecked
+        if (this.params.answer_by_question.length == 0) {
+          alert('No se ha seleccionado ninguna respuesta!')
+          return false
+        } else {
+          this.saveEndExam()
+        }
+      }
+    },
   }
 </script>
 
 <style scoped>
-.alert-primary{
-    background-color: #007bff;
-    color:#fff;
-}
+    .alert-primary {
+        background-color: #007bff;
+        color: #fff;
+    }
 </style>

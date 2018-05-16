@@ -104,7 +104,7 @@
     },
     methods: {
       load(){
-        ThemeService.dispatch("allTheme", {self: this});
+        ThemeService.dispatch("getThemesByUserSurveyTheme", {self: this});
         QuestionService.dispatch('allQuestion', {self: this})
         if (this.$route.params.dataOptionAnswer != undefined && Object.keys(this.$route.params.dataOptionAnswer).length) this.editOptionAnswer()
       },

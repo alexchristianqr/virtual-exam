@@ -149,7 +149,7 @@
         this.load()
       },
       load () {
-        SurveyService.dispatch('allSurvey', {self: this})
+        SurveyService.dispatch('getSurveys', {self: this})
       },
       openModal (modalId) {
         this.loadModal = true

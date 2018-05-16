@@ -9,27 +9,31 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   actions: {
-    allByUserSurvey ({commit}, {self}) {
-      Axios.get(Env.API_LARAVEL + '/all-by-user-survey', {params: self.params}).then((r) => {
+    getSurveysByUserSurvey ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/get-surveys-by-user-survey', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.dataSurvey = r.data
-          if(self.dataSurvey.length){
-            self.params.user_survey_id = self.dataSurvey[0].id
-            ThemeService.dispatch('allTheme', {self: self})
+          if(self.isViewTheme){
+            if(self.dataSurvey.length) {
+              ThemeService.dispatch('getThemesByUserSurveyTheme', {self: self})
+              self.params.user_survey_id = self.dataSurvey[0].id
+            }
           }
         }
       }).catch((e) => {
         Util.fnError(e, self, this)
       })
     },
-    allSurvey ({commit}, {self}) {
-      Axios.get(Env.API_LARAVEL + '/all-survey', {params: self.params}).then((r) => {
+    getSurveys ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/get-surveys',(self.isViewTheme)?{params:{status:'A'}}:{params:self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataSurvey = r.data
-          if(self.dataSurvey.length) {
-            self.params.user_survey_id = self.dataSurvey[0].id
-            ThemeService.dispatch('allTheme', {self: self})
+          if(self.isViewTheme){
+            if(self.dataSurvey.length) {
+              ThemeService.dispatch('getThemesByUserSurveyTheme', {self: self})
+              self.params.user_survey_id = self.dataSurvey[0].id
+            }
           }
         }
       }).catch((e) => {
@@ -39,8 +43,9 @@ export default new Vuex.Store({
     createSurvey ({commit}, {self}) {
       Axios.post(Env.API_LARAVEL + '/create-survey', self.params).then((r) => {
         if (r.status === 200) {
-          Util.closeModal(self.modalId)
-          self.$emit('eventClose')
+          // Util.closeModal(self.modalId)
+          // self.restart()
+          // self.$emit('eventClose')
         }
       }).catch((e) => {
         Util.fnError(e, self)

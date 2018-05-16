@@ -4,7 +4,6 @@ import Storage      from 'vue-local-storage'
 import Axios        from 'axios'
 import Env          from '../env'
 import Util         from '../util'
-import RoleService  from '../services/RoleService'
 import JsonDataAuth from '../api/file_data_auth.json'
 
 Vue.use(Vuex)
@@ -60,7 +59,6 @@ export default new Vuex.Store({
       })
     },
     validateIfExist ({commit}, {self}) {
-      RoleService.dispatch('allRole', {self: {}})
       Axios.post(Env.API_LARAVEL + '/if-exist-user', self.new_data_auth).then((r) => {
         switch (r.status) {
           case 201:

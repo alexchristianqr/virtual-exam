@@ -1,10 +1,14 @@
 import Vue                      from 'vue'
 import Router                   from 'vue-router'
 import Storage                  from 'vue-local-storage'
+import PageKnow                 from './components/errors/Nnow'
+import Util                     from './util'
+import Role                     from './role'
+import AuthService              from './services/AuthService'
+import JsonDataAuth             from './api/file_data_auth.json'
 import Login                    from './components/login/Login'
 import Project                  from './components/project/Project'
 import Themes                   from './components/theme/Themes'
-import CreateUpdateTheme        from './components/theme/CreateUpdateTheme'
 import Exam                     from './components/exam/Exam'
 import Questions                from './components/question/Questions'
 import CreateUpdateQuestion     from './components/question/CreateUpdateQuestion'
@@ -14,14 +18,7 @@ import Users                    from './components/user/Users'
 import UserHistory              from './components/user/UserHistory'
 import ExamSolution             from './components/exam/ExamSolution'
 import Categories               from './components/category/Categories'
-import CreateUpdateCategory     from './components/category/CreateUpdateCategory'
 import CreateExam               from './components/exam/CreateExam'
-
-import PageKnow     from './components/errors/Nnow'
-import Util         from './util'
-import Role         from './role'
-import AuthService  from './services/AuthService'
-import JsonDataAuth from './api/file_data_auth.json'
 
 Vue.use(Router)
 
@@ -61,12 +58,6 @@ const router = new Router({
       name: 'exam-solution',
       component: ExamSolution,
       meta: {requiresAuth: true, title: 'Examen Solucion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.INVITADO]},
-    },
-    {
-      path: '/create/theme',
-      name: 'create-theme',
-      component: CreateUpdateTheme,
-      meta: {requiresAuth: true, title: 'Crear Tema', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
     },
     {
       path: '/questions',
@@ -126,25 +117,13 @@ const router = new Router({
       component: Categories,
       meta: {requiresAuth: true, title: 'Categoria', roleId: Role.GESTION},
     },
-    {
-      path: '/create/category',
-      name: 'create-category',
-      component: CreateUpdateCategory,
-      meta: {requiresAuth: true, title: 'Crear Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
-    },
-    {
-      path: '/edit/category',
-      name: 'edit-category',
-      component: CreateUpdateCategory,
-      meta: {requiresAuth: true, title: 'Editar Categoria', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.ESCRITOR]},
-    },
     /**View Errors**/
     {path: '/know', name: 'know', component: PageKnow, meta: {title: 'Unhautorized'}},
   ],
 })
 
 const setTtitle = (to) => {
-  document.title = 'Examen Virtual | ' + to.meta.title
+  document.title = 'Evaluaciones Virtuales | ' + to.meta.title
 }
 const validateAccessByRole = (to, roleId, next) => {
   //recargamos la configuracion de el perfil del usuario en session como seguridad
@@ -175,7 +154,7 @@ const allRemoveCookies = (to) => {
 const reloadUsrCfg = (to) => {
   if (to.path !== '/login') {
     AuthService.dispatch('getConfig', {self: {}})
-    if (Object.keys(JsonDataAuth.json).length !== 0) {//si el objeto esta cargado
+    if (Object.keys(JsonDataAuth.json).length) {//si el objeto esta cargado
       Storage.set('s-u-$4p14', JsonDataAuth.json)
       console.log('load U-Cfg! -> by Route of ' + window.location.origin + '/google.domains/security/app/' + Util.generateId())
     } else {//sino

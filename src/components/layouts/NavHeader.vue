@@ -2,7 +2,7 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark text-white" id="mainNav">
             <span class="navbar-brand">
-                <span class="h5 m-auto">Examen Virtual ( {{storage.get('s-u-$4p14').project.name.toUpperCase()}} )</span>
+                <span class="h5 m-auto">Evaluaciones Virtuales ( {{storage.get('s-u-$4p14').project.name.toUpperCase()}} )</span>
             </span>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"

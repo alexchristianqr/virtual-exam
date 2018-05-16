@@ -69,7 +69,6 @@ export default {
       return (Storage.get('s-u-$4p14').role.id == role) ? true : false
     }
   },
-  // generateId :: Integer -> String
   generateId (len) {
     // dec2hex :: Integer -> String
     const dec2hex = (dec) => {
@@ -80,7 +79,7 @@ export default {
     window.crypto.getRandomValues(arr)
     return Array.from(arr, dec2hex).join('')
   },
-  openModal (doc,modalId, config) {
+  openModal (doc, modalId, config) {
     if (config != undefined) {
       $(doc).ready(() => {
         $(modalId).modal(config)

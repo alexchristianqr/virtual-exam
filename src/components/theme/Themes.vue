@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <div class="card">
             <div class="card-header bg-light text-dark">
                 <div class="row">
@@ -9,11 +8,13 @@
                     </div>
                     <div class="col-6 text-right">
                         <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                            <button @click.prevent="openModal('#modalCreateTheme',1)" type="button" class="btn btn-outline-secondary" >
+                            <button @click.prevent="openModal('#modalCreateTheme',1)" type="button"
+                                    class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
                                 <span>Nuevo Tema</span>
                             </button>
-                            <button @click.prevent="openModal('#modalAssignTheme',2)" type="button" class="btn btn-outline-secondary" >
+                            <button @click.prevent="openModal('#modalAssignTheme',2)" type="button"
+                                    class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
                                 <span>Asignar Fecha</span>
                             </button>
@@ -28,7 +29,7 @@
                         </div>
                         <select title v-model="params.user_survey_id" class="form-control" @change="change()">
                             <option value="" selected disabled>Seleccionar Categoria</option>
-                            <option v-for="(v,k) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
+                            <option v-for="(v) in dataSurvey" :value="v.id">{{v.name}}</option>
                         </select>
                     </div>
                     <div v-show="params.user_survey_id != ''" class="input-group w-35">
@@ -76,7 +77,10 @@
                     <tr v-for="(v,k) in filteredDataTheme">
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
-                        <td>{{moment(v.theme_date_start).format('DD/MM/YYYY')}} {{v.theme_time_start}}&nbsp;-&nbsp;{{moment(v.theme_date_expired).format('DD/MM/YYYY')}} {{v.theme_time_expired}}</td>
+                        <td>{{moment(v.user_survey_theme_date_start).format('DD/MM/YYYY')}}
+                            {{v.user_survey_theme_time_start}}&nbsp;-&nbsp;{{moment(v.user_survey_theme_date_expired).format('DD/MM/YYYY')}}
+                            {{v.user_survey_theme_time_expired}}
+                        </td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.user_survey_theme_score}}</td>
                         <td class="text-center" v-show="util.validateRole(role.SUPER)">
@@ -153,22 +157,21 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <span>El examen tine una duración de <b>{{util.toHHMMSS(subParams.dataTheme.theme_duration)}}</b> minutos, sin opcion de cancelar.</span>
+                        <br>
+                        <span>El exámen tiene una duración de <b>{{util.toHHMMSS(subParams.dataTheme.theme_duration)}}</b> minutos</span>
                         <br>
                         <br>
-                        <small class="text-secondary"><b>Nota:</b> El tiempo del examen es exacto asi que no hay
-                            opciones de retroceso.
-                        </small>
+                        <span class="small text-danger">Atención: Una vez iniciado no hay opciones de reinicio del exámen, éste puede ser reprogramado solo por el administrador</span>
+                        <br>
+                        <br>
                     </div>
                     <div class="modal-footer w-100">
                         <button class="btn btn-outline-secondary w-30" type="button" data-dismiss="modal">
-                            <i class="fa fa-close fa-fw"></i>
                             <span>Cancelar</span>
                         </button>
                         <router-link data-dismiss="modal" class="btn btn-outline-primary w-30"
                                      :to="{name:'exam',params:{dataTheme:subParams.dataTheme}}">
-                            <i class="fa fa-check fa-fw"></i>
-                            <span>Listo</span>
+                            <span>Aceptar</span>
                         </router-link>
                     </div>
                 </div>
@@ -200,10 +203,10 @@
         </div>
 
         <!-- Modal Crear Tema -->
-        <modal-create-theme v-if="loadModal.createTheme" :dataProps="{dataSurvey}" @closeModal="closeModal('#modalCreateTheme',1)"/>
+        <modal-create-theme v-if="loadModal.createTheme" :dataProps="{dataSurvey,loadModal}"/>
 
         <!-- Modal Asignar Tema -->
-        <modal-assign-theme  v-if="loadModal.assignTheme" :dataProps="{dataSurvey}" @closeModal="closeModal('#modalAssignTheme',2)"/>
+        <modal-assign-theme v-if="loadModal.assignTheme" :dataProps="{dataSurvey,loadModal}"/>
 
     </div>
 </template>
@@ -231,17 +234,18 @@
       dataSurvey: [],
       inputSearchTheme: '',
       dataExamSolution: {},
-      loadModal:{
-        createTheme:false,
-        assignTheme:false,
+      isViewTheme: true,
+      loadModal: {
+        createTheme: false,
+        assignTheme: false,
       },
       subParams: {
-        dataTheme: {}
+        dataTheme: {},
       },
       params: {
         user_id: '',
         user_survey_id: '',
-        user_survey_theme_id:''
+        user_survey_theme_id: '',
       },
     }),
     created () {
@@ -249,22 +253,23 @@
     },
     computed: {
       filteredDataTheme () {
-        return this.dataTheme.filter((item) => {return item.theme_name.toLowerCase().indexOf(this.inputSearchTheme.toLowerCase()) > -1})
-      }
+        return this.dataTheme.filter(
+          (item) => {return item.theme_name.toLowerCase().indexOf(this.inputSearchTheme.toLowerCase()) > -1})
+      },
     },
     methods: {
       load () {
         this.params.user_id = Storage.get('s-u-$4p14').id
-        if(Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == 2){
-            SurveyService.dispatch('allSurvey', {self: this})
-        }else{
-            SurveyService.dispatch('allByUserSurvey', {self: this})
+        if (Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == 2) {
+          SurveyService.dispatch('getSurveys', {self: this})
+        } else {
+          SurveyService.dispatch('getSurveysByUserSurvey', {self: this})
         }
       },
       change () {
         this.loadingTable = true
         this.dataTheme = []
-        ThemeService.dispatch('allTheme', {self: this})
+        ThemeService.dispatch('getThemesByUserSurveyTheme', {self: this})
       },
       cleanSearch () {
         this.inputSearchTheme = ''
@@ -274,18 +279,17 @@
         this.params.user_survey_theme_id = param_user_survey_theme_id
         ExamService.dispatch('verifyExamSolution', {self: this})
       },
-      openModal(modalId,self){
-          if(self == 1) this.loadModal.createTheme = true; else this.loadModal.assignTheme = true;
-            Util.openModal(document,modalId)
+      openModal (modalId, self) {
+        if (self == 1) {
+          this.loadModal.createTheme = true
+        } else {
+          this.loadModal.assignTheme = true
+        }
+        Util.openModal(document, modalId)
       },
-      closeModal(modalId,self){
-        if(self == 1) this.loadModal.createTheme = false; else this.loadModal.assignTheme = false;
-        Util.closeModal(modalId)
-      }
     },
   }
 </script>
 
 <style scoped>
-
 </style>

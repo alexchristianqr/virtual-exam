@@ -203,7 +203,7 @@
     },
     methods: {
       load () {
-        ThemeService.dispatch('allTheme', {self: this})
+        ThemeService.dispatch('getThemesByUserSurveyTheme', {self: this})
       },
       createExam () {
         if (this.selectedUserId != null && this.selectedTheme != null) {

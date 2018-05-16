@@ -137,7 +137,7 @@
     },
     methods: {
       load () {
-        ThemeService.dispatch('allTheme', {self: this})
+        ThemeService.dispatch('getThemesByUserSurveyTheme', {self: this})
         QuestionService.dispatch('allQuestion', {self: this})
       },
       dataLevels (key) {

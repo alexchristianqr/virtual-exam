@@ -113,7 +113,7 @@
       },
     }),
     created () {
-      this.allTheme()
+      this.getThemesByUserSurveyTheme()
       OptionAnswerService.dispatch('allOptionAnswer', {self: this})
       if (this.$route.params.dataQuestion != undefined && Object.keys(this.$route.params.dataQuestion).length) this.editQuestion()
     },
@@ -135,8 +135,8 @@
         this.params.level = this.dataQuestion.level
         this.params.status = this.dataQuestion.status
       },
-      allTheme () {
-        ThemeService.dispatch('allTheme', {self: this})
+      getThemesByUserSurveyTheme () {
+        ThemeService.dispatch('getThemesByUserSurveyTheme', {self: this})
       },
       changeLoadOptionAnswers () {
         OptionAnswerService.dispatch('allOptionAnswer', {self: this})

@@ -1,15 +1,13 @@
 <template>
-    <div class="modal fade in" id="modalCreateCategory" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade in" id="modalCreateCategory" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <form @submit.prevent="createCategory()">
-                    <div class="modal-header">
+                    <div class="modal-header bg-light">
                         <h5 class="modal-title">
                             <span class="text-secondary">Crear Categoria</span>
                         </h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -20,23 +18,44 @@
                                 </div>
                             </div>
                             <div class="col-12">
-                                <label>Usuario</label>
-                                <vue-multiselect v-model="selectedUserId"
-                                                 selectedLabel="Seleccionado"
-                                                 deselectLabel="Remover"
-                                                 selectLabel="Seleccionar"
-                                                 placeholder="Buscar"
-                                                 :options="dataUsers"
-                                                 label="value"
-                                                 track-by="id"
-                                                 class="w-100"/>
+                                <div class="form-group">
+                                    <div class="form-group row">
+                                        <div class="col-sm-3">Seleccionar Usuarios</div>
+                                        <div class="col-sm-9">
+                                            <div class="form-check">
+                                                <input v-model="checkedAll" class="form-check-input" type="checkbox"
+                                                       id="gridCheck1" @click="checkedAllUsers()">
+                                                <label class="form-check-label" for="gridCheck1">Todos</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <vue-multiselect v-model="selectedUserId"
+                                                     :options="dataUsers"
+                                                     :disabled="checkedAll"
+                                                     required
+                                                     label="value"
+                                                     track-by="id"
+                                                     selectedLabel="Seleccionado"
+                                                     deselectLabel="Remover"
+                                                     selectLabel="Seleccionar"
+                                                     placeholder="Buscar"
+                                                     :multiple="true"
+                                                     :close-on-select="false"
+                                                     :clear-on-select="true"
+                                                     :hide-selected="true"
+                                                     :preserve-search="true"
+                                                     :preselect-first="true"
+                                                     @search-change="selectedUsers()">
+                                        <span slot="noResult">No se han encontrado registros</span>
+                                    </vue-multiselect>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <!--<button type="button" class="btn btn-secondary w-30" data-dismiss="modal">Cancelar</button>-->
-                        <button type="reset" class="btn btn-secondary w-30"  @click="closeModal()">Cancelar</button>
-                        <button type="submit" class="btn btn-primary w-30">Guardar</button>
+                    <div class="modal-footer bg-light">
+                        <button type="reset" class="btn btn-outline-secondary w-20" @click="closeModal()">Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-outline-primary w-20">Aceptar</button>
                     </div>
                 </form>
             </div>
@@ -53,42 +72,54 @@
     name: 'ModalCreateCategory',
     components: {VueMultiselect},
     data: () => ({
+      modalId: '#modalCreateCategory',
       isPost: true,
       loadingTable: true,
-      modalId:'#modalCreateCategory',
       dataSurvey: [],
       dataUsers: [],
-      selectedUserId: {id: 0, value: 'Todos'},
+      checkedAll: false,
+      selectedUserId: null,
       params: {
         name: '',
         user_id: [],
       },
     }),
-    created () {
+    created() {
       this.load()
     },
     methods: {
-      load () {
+      load() {
         AuthService.dispatch('getUsers', {self: this})
       },
-      createCategory () {
-        if (this.selectedUserId != null) {
-          if (this.selectedUserId.id == 0) {
-            this.dataUsers.forEach((v) => {
-              if (v.id !== 0) this.params.user_id.push(v.id)
-            })
-          } else {
-            this.params.user_id = this.selectedUserId.id
-          }
+      restart() {
+        this.params.name = ''
+        this.selectedUserId = null
+        this.params.user_id = []
+      },
+      createCategory() {
+        if (this.params.user_id.length) {
           SurveyService.dispatch('createSurvey', {self: this})
         } else {
-          alert('debe seleccionar usuario')
+          alert('Debe seleccionar uno o mas usuarios.')
+          return false
         }
       },
-      closeModal () {
+      closeModal() {
         this.$emit('closeModal')
-      }
-    }
+      },
+      checkedAllUsers() {
+        this.params.user_id = []
+        if (!this.checkedAll) {
+          this.selectedUserId = null
+          this.dataUsers.forEach((v) => {
+            this.params.user_id.push(v)
+          })
+        }
+      },
+      selectedUsers() {
+        this.params.user_id = this.selectedUserId
+      },
+    },
   }
 </script>
 

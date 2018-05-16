@@ -105,4 +105,7 @@
         box-shadow: none !important;
         -webkit-box-shadow:none !important;
     }
+    .multiselect__tags{
+        min-height: inherit !important;
+    }
 </style>
