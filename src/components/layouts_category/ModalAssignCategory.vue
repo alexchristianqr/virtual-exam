@@ -5,15 +5,18 @@
                 <form @submit.prevent="assignCategory()">
                     <div class="modal-header bg-light">
                         <h5 class="modal-title">
-                            <span class="text-secondary">Crear Categoria</span>
+                            <span class="text-secondary">Asignar Categoria / Usuario</span>
                         </h5>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label>Nombre Categoria</label>
-                                    <input title="tema" v-model="params.name" type="text" class="form-control" required>
+                                    <label>Seleccionar Categoria</label>
+                                    <select class="form-control" v-model="params.survey_id" required>
+                                        <option value="" disabled selected>Seleccionar Categoria</option>
+                                        <option v-for="(v) in dataProps.dataSurvey" :value="v.id">{{v.name}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -22,8 +25,7 @@
                                         <div class="col-sm-3">Seleccionar Usuarios</div>
                                         <div class="col-sm-9">
                                             <div class="form-check">
-                                                <input v-model="checkedAll" class="form-check-input" type="checkbox"
-                                                       id="gridCheck1" @click="checkedAllUsers()">
+                                                <input v-model="checkedAll" class="form-check-input" type="checkbox" id="gridCheck1" @click="checkedAllUsers()">
                                                 <label class="form-check-label" for="gridCheck1">Todos</label>
                                             </div>
                                         </div>
@@ -52,8 +54,7 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="reset" class="btn btn-outline-secondary w-20" @click="closeModal()">Cancelar
-                        </button>
+                        <button type="reset" class="btn btn-outline-secondary w-20" @click="closeModal()">Cancelar</button>
                         <button type="submit" class="btn btn-outline-primary w-20">Aceptar</button>
                     </div>
                 </form>
@@ -64,8 +65,8 @@
 
 <script>
   import AuthService    from '../../services/AuthService'
-  import VueMultiselect from 'vue-multiselect'
   import SurveyService  from '../../services/SurveyService'
+  import VueMultiselect from 'vue-multiselect'
   import Util             from '../../util'
 
   export default {
@@ -85,6 +86,7 @@
       params: {
         name: '',
         user_id: [],
+        survey_id : ''
       },
     }),
     created() {
@@ -98,9 +100,10 @@
         this.checkedAll = false
         this.params.name = ''
         this.selectedUserId = null
+        this.params.survey_id = ''
         this.params.user_id = []
       },
-      createCategory() {
+      assignCategory() {
         if (this.params.user_id.length == 0) {
           alert('Debe seleccionar uno o mas usuarios.')
           return false

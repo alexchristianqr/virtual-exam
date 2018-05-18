@@ -1,12 +1,11 @@
 <template>
-    <div class="modal fade in" id="modalAssignTheme" data-backdrop="static" data-keyboard="false" tabindex="-1"
-         role="dialog" aria-hidden="true">
+    <div class="modal fade in" id="modalAssignTheme" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <form @submit.prevent="createUserSurveyTheme()">
                     <div class="modal-header bg-light">
                         <h5 class="modal-title">
-                            <span class="text-secondary">Asignar</span>
+                            <span class="text-secondary">Asignar Tema / Usuario</span>
                         </h5>
                     </div>
                     <div class="modal-body">
@@ -97,8 +96,7 @@
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="reset" class="btn btn-outline-secondary w-20" @click="closeModal()">Cancelar
-                        </button>
+                        <button type="reset" class="btn btn-outline-secondary w-20" @click="closeModal()">Cancelar</button>
                         <button type="submit" class="btn btn-outline-primary w-20">Aceptar</button>
                     </div>
                 </form>
@@ -110,10 +108,10 @@
 <script>
   import PopoverInfo    from '../layouts/PopoverInfo'
   import ThemeService   from '../../services/ThemeService'
+  import AuthService    from '../../services/AuthService'
   import Moment         from 'moment'
   import VueMultiselect from 'vue-multiselect/src/Multiselect'
-  import AuthService    from '../../services/AuthService'
-  import Util             from '../../util'
+  import Util           from '../../util'
 
   export default {
     name: 'ModalAssignTheme',
@@ -146,7 +144,7 @@
       load () {
         AuthService.dispatch('getUsers', {self: this})
       },
-      restart() {
+      restart () {
         this.selectedThemeId = null
         this.params.theme_id = null
         this.selectedUserId = null
@@ -168,8 +166,9 @@
         }
       },
       change () {
-        ThemeService.dispatch('getThemesBySurvey', {self: this})
+        this.params.theme_id = null
         this.selectedThemeId = null
+        ThemeService.dispatch('getThemesBySurvey', {self: this})
       },
       closeModal () {
         this.dataProps.loadModal.assignTheme = false
@@ -188,10 +187,10 @@
         this.params.user_id = this.selectedUserId
       },
       selectedTheme () {
-        if(this.selectedThemeId != null){
-            this.params.theme_id = this.selectedThemeId.id
-        }else{
-            this.params.theme_id = null
+        if (this.selectedThemeId != null) {
+          this.params.theme_id = this.selectedThemeId.id
+        } else {
+          this.params.theme_id = null
         }
       },
     },

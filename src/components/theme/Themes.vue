@@ -8,13 +8,11 @@
                     </div>
                     <div class="col-6 text-right">
                         <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
-                            <button @click.prevent="openModal('#modalCreateTheme',1)" type="button"
-                                    class="btn btn-outline-secondary">
+                            <button @click.prevent="openModal('#modalCreateTheme',1)" type="button" class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
                                 <span>Crear Tema / Categoria</span>
                             </button>
-                            <button @click.prevent="openModal('#modalAssignTheme',2)" type="button"
-                                    class="btn btn-outline-secondary">
+                            <button @click.prevent="openModal('#modalAssignTheme',2)" type="button" class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
                                 <span>Asignar Tema / Usuario</span>
                             </button>
@@ -195,7 +193,6 @@
 
         <!-- Modal Crear Tema -->
         <modal-create-theme v-if="loadModal.createTheme" :dataProps="{dataSurvey,loadModal}"/>
-
         <!-- Modal Asignar Tema -->
         <modal-assign-theme v-if="loadModal.assignTheme" :dataProps="{dataSurvey,loadModal}"/>
 
@@ -250,11 +247,7 @@
     methods: {
       load () {
         this.params.user_id = Storage.get('s-u-$4p14').id
-        // if (Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == 2) {
-        //   SurveyService.dispatch('getSurveys', {self: this})
-        // } else {
           SurveyService.dispatch('getSurveysByUserSurvey', {self: this})
-        // }
       },
       change () {
         this.loadingTable = true

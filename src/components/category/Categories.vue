@@ -8,16 +8,16 @@
                         <span class="card-title">Lista de Categorias</span>
                     </div>
                     <div class="col-6 text-right">
-                        <button @click.prevent="openModal('#modalCreateCategory',1)" type="button"
-                                class="btn btn-outline-secondary">
-                            <i class="fa fa-plus fa-fw"></i>
-                            <span>Crear Categoria</span>
-                        </button>
-                        <button @click.prevent="openModal('#modalCreateCategory',2)" type="button"
-                                class="btn btn-outline-secondary">
-                            <i class="fa fa-plus fa-fw"></i>
-                            <span>Asignar Categoria / Usuario</span>
-                        </button>
+                        <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
+                            <button @click.prevent="openModal('#modalCreateCategory',1)" type="button" class="btn btn-outline-secondary">
+                                <i class="fa fa-plus fa-fw"></i>
+                                <span>Crear Categoria</span>
+                            </button>
+                            <button @click.prevent="openModal('#modalAssignCategory',2)" type="button" class="btn btn-outline-secondary">
+                                <i class="fa fa-plus fa-fw"></i>
+                                <span>Asignar Categoria / Usuario</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -80,8 +80,7 @@
                         </td>
                         <td hidden class="text-right">
                             <div class="btn-group dropdown" role="group">
-                                <router-link class="btn btn-warning btn-sm"
-                                             :to="{name:'edit-question',params:{dataSurvey:v}}">
+                                <router-link class="btn btn-warning btn-sm" :to="{name:'edit-question',params:{dataSurvey:v}}">
                                     <i class="fa fa-edit fa-fw"></i>
                                 </router-link>
                                 <div class="btn-group open" role="group">
@@ -117,7 +116,8 @@
 
         <!-- Modal Crear Categoria -->
         <modal-create-category v-if="loadModal.createCategory" :dataProps="{dataSurvey,loadModal}" @eventClose="load()"/>
-        <modal-create-category v-if="loadModal.assignCategory" :dataProps="{dataSurvey,loadModal}" @eventClose="load()"/>
+        <!-- Modal Asignar Categoria -->
+        <modal-assign-category v-if="loadModal.assignCategory" :dataProps="{dataSurvey,loadModal}" @eventClose="load()"/>
 
     </div>
 </template>
@@ -126,12 +126,16 @@
   import SurveyService       from '../../services/SurveyService'
   import ModalCreateCategory from '../layouts_category/ModalCreateCategory'
   import Util                from '../../util'
+  import Role                from '../../role'
   import Moment              from 'moment'
+  import ModalAssignCategory from '../layouts_category/ModalAssignCategory'
 
   export default {
     name: 'Categories',
-    components: {ModalCreateCategory},
+    components: {ModalAssignCategory, ModalCreateCategory},
     data: () => ({
+      role: Role,
+      util: Util,
       moment: Moment,
       loadingTable: true,
       loadModal: {
@@ -158,6 +162,7 @@
         this.load()
       },
       load () {
+        SurveyService.dispatch('getSurveysByUserSurvey', {self: this})
         SurveyService.dispatch('getSurveys', {self: this})
       },
       openModal (modalId, self) {
