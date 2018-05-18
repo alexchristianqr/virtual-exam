@@ -12,11 +12,12 @@ export default new Vuex.Store({
     getSurveysByUserSurvey ({commit}, {self}) {
       Axios.get(Env.API_LARAVEL + '/get-surveys-by-user-survey', {params: self.params}).then((r) => {
         if (r.status === 200) {
+          self.loadingTable = false
           self.dataSurvey = r.data
           if(self.isViewTheme){
             if(self.dataSurvey.length) {
               ThemeService.dispatch('getThemesByUserSurveyTheme', {self: self})
-              self.params.user_survey_id = self.dataSurvey[0].id
+              self.params.user_survey_id = self.dataSurvey[0].user_survey_id
             }
           }
         }
@@ -32,7 +33,7 @@ export default new Vuex.Store({
           if(self.isViewTheme){
             if(self.dataSurvey.length) {
               ThemeService.dispatch('getThemesByUserSurveyTheme', {self: self})
-              self.params.user_survey_id = self.dataSurvey[0].id
+              self.params.user_survey_id = self.dataSurvey[0].user_survey_id
             }
           }
         }
@@ -43,9 +44,9 @@ export default new Vuex.Store({
     createSurvey ({commit}, {self}) {
       Axios.post(Env.API_LARAVEL + '/create-survey', self.params).then((r) => {
         if (r.status === 200) {
-          // Util.closeModal(self.modalId)
-          // self.restart()
-          // self.$emit('eventClose')
+          self.restart()
+          Util.closeModal(self.modalId)
+          self.$emit('eventClose')
         }
       }).catch((e) => {
         Util.fnError(e, self)

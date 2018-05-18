@@ -103,6 +103,10 @@
                                     <button v-else class="btn btn-outline-secondary" @click="validateEndExam()">
                                         <span>Terminar Examen</span>
                                     </button>
+                                    <!--<a v-else class="btn btn-outline-secondary" href data-toggle="modal"-->
+                                       <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
+                                        <!--<span>Terminar Examen</span>-->
+                                    <!--</a>-->
                                 </div>
                             </div>
                         </td>
@@ -404,14 +408,17 @@
         Util.closeModal('#modalQueryExam')
         this.$router.replace('/themes')
       },
-      validateEndExam(num = 1) {
+      openModal () {
+        Util.openModal(document,'#modalQueryExam',{backdrop: 'static', keyboard: false, show: true})
+      },
+      validateEndExam() {
         this.pauseTimer = true
         this.params.answer_by_question = this.tempChecked
         if (this.params.answer_by_question.length == 0) {
           alert('No se ha seleccionado ninguna respuesta!')
           return false
         } else {
-          this.saveEndExam()
+          this.openModal()
         }
       }
     },

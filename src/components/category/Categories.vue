@@ -8,10 +8,15 @@
                         <span class="card-title">Lista de Categorias</span>
                     </div>
                     <div class="col-6 text-right">
-                        <button @click.prevent="openModal('#modalCreateCategory')" type="button"
+                        <button @click.prevent="openModal('#modalCreateCategory',1)" type="button"
                                 class="btn btn-outline-secondary">
                             <i class="fa fa-plus fa-fw"></i>
-                            <span>Nueva Categoria</span>
+                            <span>Crear Categoria</span>
+                        </button>
+                        <button @click.prevent="openModal('#modalCreateCategory',2)" type="button"
+                                class="btn btn-outline-secondary">
+                            <i class="fa fa-plus fa-fw"></i>
+                            <span>Asignar Categoria / Usuario</span>
                         </button>
                     </div>
                 </div>
@@ -111,7 +116,8 @@
         </div>
 
         <!-- Modal Crear Categoria -->
-        <modal-create-category v-if="loadModal" :dataProps="{dataSurvey}" @closeModal="closeModal('#modalCreateCategory')" @eventClose="load()"/>
+        <modal-create-category v-if="loadModal.createCategory" :dataProps="{dataSurvey,loadModal}" @eventClose="load()"/>
+        <modal-create-category v-if="loadModal.assignCategory" :dataProps="{dataSurvey,loadModal}" @eventClose="load()"/>
 
     </div>
 </template>
@@ -128,7 +134,10 @@
     data: () => ({
       moment: Moment,
       loadingTable: true,
-      loadModal: false,
+      loadModal: {
+        createCategory: false,
+        assignCategory: false,
+      },
       dataSurvey: [],
       inputSearchSurvey: '',
       params: {
@@ -151,14 +160,19 @@
       load () {
         SurveyService.dispatch('getSurveys', {self: this})
       },
-      openModal (modalId) {
-        this.loadModal = true
+      openModal (modalId, self) {
+        if (self == 1) {
+          this.loadModal.createCategory = true
+        } else {
+          this.loadModal.assignCategory = true
+        }
         Util.openModal(document, modalId)
+
       },
-      closeModal (modalId) {
-        this.loadModal = false
-        Util.closeModal(modalId)
-      },
+      // closeModal (modalId) {
+      //   this.loadModal = false
+      //   Util.closeModal(modalId)
+      // },
       cleanSearch () {
         this.inputSearchSurvey = ''
         this.$refs.ref_inputSearchSurvey.focus()

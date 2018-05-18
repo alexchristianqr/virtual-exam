@@ -1,8 +1,8 @@
 <template>
-    <div class="modal fade in" id="modalCreateCategory" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade in" id="modalAssignCategory" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form @submit.prevent="createCategory()">
+                <form @submit.prevent="assignCategory()">
                     <div class="modal-header bg-light">
                         <h5 class="modal-title">
                             <span class="text-secondary">Crear Categoria</span>
@@ -64,18 +64,18 @@
 
 <script>
   import AuthService    from '../../services/AuthService'
-  import SurveyService  from '../../services/SurveyService'
   import VueMultiselect from 'vue-multiselect'
+  import SurveyService  from '../../services/SurveyService'
   import Util             from '../../util'
 
   export default {
-    name: 'ModalCreateCategory',
+    name: 'ModalAssignCategory',
     components: {VueMultiselect},
     props: {
       dataProps: {},
     },
     data: () => ({
-      modalId: '#modalCreateCategory',
+      modalId: '#modalAssignCategory',
       isPost: true,
       loadingTable: true,
       dataSurvey: [],
@@ -105,12 +105,8 @@
           alert('Debe seleccionar uno o mas usuarios.')
           return false
         } else {
-          SurveyService.dispatch('createSurvey', {self: this})
+          SurveyService.dispatch('assignSurvey', {self: this})
         }
-      },
-      closeModal() {
-        this.dataProps.loadModal.createCategory = false
-        Util.closeModal(this.modalId)
       },
       checkedAllUsers() {
         this.params.user_id = []
@@ -123,6 +119,10 @@
       },
       selectedUsers() {
         this.params.user_id = this.selectedUserId
+      },
+      closeModal() {
+        this.dataProps.loadModal.assignCategory = false
+        Util.closeModal(this.modalId)
       },
     },
   }

@@ -11,12 +11,12 @@
                             <button @click.prevent="openModal('#modalCreateTheme',1)" type="button"
                                     class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
-                                <span>Nuevo Tema</span>
+                                <span>Crear Tema / Categoria</span>
                             </button>
                             <button @click.prevent="openModal('#modalAssignTheme',2)" type="button"
                                     class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
-                                <span>Asignar Fecha</span>
+                                <span>Asignar Tema / Usuario</span>
                             </button>
                         </div>
                     </div>
@@ -29,7 +29,7 @@
                         </div>
                         <select title v-model="params.user_survey_id" class="form-control" @change="change()">
                             <option value="" selected disabled>Seleccionar Categoria</option>
-                            <option v-for="(v) in dataSurvey" :value="v.id">{{v.name}}</option>
+                            <option v-for="(v) in dataSurvey" :value="v.user_survey_id">{{v.name}}</option>
                         </select>
                     </div>
                     <div v-show="params.user_survey_id != ''" class="input-group w-35">
@@ -77,10 +77,7 @@
                     <tr v-for="(v,k) in filteredDataTheme">
                         <th>{{k+1}}</th>
                         <td>{{v.theme_name}}</td>
-                        <td>{{moment(v.user_survey_theme_date_start).format('DD/MM/YYYY')}}
-                            {{v.user_survey_theme_time_start}}&nbsp;-&nbsp;{{moment(v.user_survey_theme_date_expired).format('DD/MM/YYYY')}}
-                            {{v.user_survey_theme_time_expired}}
-                        </td>
+                        <td>{{moment(v.user_survey_theme_date_start).format('DD/MM/YYYY')}} {{v.user_survey_theme_time_start}}&nbsp;-&nbsp;{{moment(v.user_survey_theme_date_expired).format('DD/MM/YYYY')}} {{v.user_survey_theme_time_expired}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
                         <td>{{v.user_survey_theme_score}}</td>
                         <td class="text-center" v-show="util.validateRole(role.SUPER)">
@@ -110,16 +107,10 @@
                                             <i class="fa fa-file-text-o fa-fw"></i>
                                             <span>REALIZADO</span>
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm"
-                                                @click="verifyExamSolution(v.user_survey_theme_id)">
+                                        <button type="button" class="btn btn-info btn-sm" @click="verifyExamSolution(v.user_survey_theme_id)">
                                             <i class="fa fa-eye fa-fw"></i>
                                             <span>SOLUCION</span>
                                         </button>
-                                        <!--<router-link class="btn btn-info btn-sm"-->
-                                        <!--:to="{name:'exam-solution',params:{user_survey_theme_id:v.user_survey_theme_id}}">-->
-                                        <!--<i class="fa fa-eye fa-fw"></i>-->
-                                        <!--<span>SOLUCION</span>-->
-                                        <!--</router-link>-->
                                     </div>
                                 </template>
                             </template>
@@ -253,18 +244,17 @@
     },
     computed: {
       filteredDataTheme () {
-        return this.dataTheme.filter(
-          (item) => {return item.theme_name.toLowerCase().indexOf(this.inputSearchTheme.toLowerCase()) > -1})
+        return this.dataTheme.filter((item) => {return item.theme_name.toLowerCase().indexOf(this.inputSearchTheme.toLowerCase()) > -1})
       },
     },
     methods: {
       load () {
         this.params.user_id = Storage.get('s-u-$4p14').id
-        if (Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == 2) {
-          SurveyService.dispatch('getSurveys', {self: this})
-        } else {
+        // if (Storage.get('s-u-$4p14').role.id == 1 || Storage.get('s-u-$4p14').role.id == 2) {
+        //   SurveyService.dispatch('getSurveys', {self: this})
+        // } else {
           SurveyService.dispatch('getSurveysByUserSurvey', {self: this})
-        }
+        // }
       },
       change () {
         this.loadingTable = true
