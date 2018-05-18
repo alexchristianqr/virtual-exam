@@ -165,25 +165,18 @@ const reloadUsrCfg = (to) => {
 }
 
 router.beforeEach((to, from, next) => {
-    console.log(from,to,next)
-  if(from.name == 'exam' && to.name == 'themes'){
-    if(from.params.permitir == true || from.params.permitir != undefined){
-      // next('/themes')
-      next()
-    } else {
-      event.preventDefault()
-      return window.onbeforeunload = () => {
-        return false
+  if(from.name == 'exam'){
+    if( to.name != '' ) {
+      if (from.params.unrestrictLoad == undefined) {
+        return window.onbeforeunload = () => { return false }
       }
     }
   }
   //modificamos el valor del titulo del documento web
   setTtitle(to)
-
   //valida el meta de authenticacion
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const roleId = to.meta.roleId
-
   //validamos si la ruta en la que estamos es Project y necesita antes haber pasado la authenticacion
   if (to.path === '/project') {
     // console.log(Util.getCookie('co-stg-a-u-au'))
@@ -194,13 +187,11 @@ router.beforeEach((to, from, next) => {
       next()
     }
   }
-
   //validamos si la ruta en la que estamos es Login y debe obligatoriamente hacer authenticacion
   if (to.path === '/login') {
     allRemoveCookies(to)
     Storage.remove('s-u-$4p14')
   }
-
   //validamos en todas las rutas
   if (requiresAuth) {
     allRemoveCookies(to)

@@ -174,7 +174,6 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <!--<router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar</router-link>-->
                         <button class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" @click="backButton()"><i class="fa fa-check fa-fw"></i>Aceptar</button>
                     </div>
                 </div>
@@ -400,6 +399,7 @@
         })
       },
       saveEndExam () {
+        this.$route.params.unrestrictLoad = true
         this.params.user_id = Storage.get('s-u-$4p14').id
         this.params.theme_id = this.theme_id
         ExamService.dispatch('updateExam', {self: this})
@@ -431,11 +431,9 @@
           Util.openModal(document, '#modalQueryExam', {backdrop: 'static', keyboard: false, show: true})
         }
       },
-      backButton(){
-        console.log('lagggg')
-        this.$route.params.permitir = true
-        this.$router.replace('/themes')
-       // return window.location.replace('/themes')
+      backButton () {
+        this.$route.params.unrestrictLoad = true
+        return window.location.replace('/themes')
       }
     },
   }

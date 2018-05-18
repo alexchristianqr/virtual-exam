@@ -42,7 +42,7 @@ export default new Vuex.Store({
       Axios.put(Env.API_LARAVEL + '/update-exam', self.params).then((r) => {
         if (r.status === 200) {
           Util.closeModal('#modalQueryExam')
-          self.$router.replace('/themes')
+          self.$router.replace({name:'themes'})
         }
       }).catch((e) => {
         console.error(e)
