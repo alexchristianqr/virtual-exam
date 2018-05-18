@@ -13,9 +13,7 @@
                     <div class="form-group">
                         <label>Nombre Usuario</label>
                         <div class="input-group mb-1">
-                            <input v-model="params.username" ref="inputUsername" name="username" class="form-control"
-                                   type="text"
-                                   placeholder="username" title="Registrar" required autofocus>
+                            <input v-model="params.username" ref="inputUsername" name="username" class="form-control" type="text" placeholder="username" title="Registrar" required autofocus>
                             <div class="input-group-append">
                                 <span class="input-group-text bg-white">@sapia.com.pe</span>
                             </div>
@@ -25,9 +23,7 @@
                     </div>
                     <div class="form-group">
                         <label>Contraseña</label>
-                        <input v-model="params.password" ref="inputPassword" name="password" class="form-control mb-1"
-                               type="password"
-                               placeholder="password" required>
+                        <input v-model="params.password" ref="inputPassword" name="password" class="form-control mb-1" type="password" placeholder="password" required>
                         <span v-if="errors.password !== '' " class="help-block"><small><strong>{{errors.password}}</strong></small></span>
                     </div>
                     <template v-if="!loading">

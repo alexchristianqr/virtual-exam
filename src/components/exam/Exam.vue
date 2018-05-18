@@ -97,15 +97,15 @@
                                         <span></span>
                                     </button>
                                     <!--<a v-else class="btn btn-outline-secondary" href data-toggle="modal"-->
-                                       <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
-                                        <!--<span>Terminar Examen</span>-->
+                                    <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
+                                    <!--<span>Terminar Examen</span>-->
                                     <!--</a>-->
                                     <button v-else class="btn btn-outline-secondary" @click="validateEndExam()">
                                         <span>Terminar Examen</span>
                                     </button>
                                     <!--<a v-else class="btn btn-outline-secondary" href data-toggle="modal"-->
-                                       <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
-                                        <!--<span>Terminar Examen</span>-->
+                                    <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
+                                    <!--<span>Terminar Examen</span>-->
                                     <!--</a>-->
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                         </button>
                         <template v-if="!showLoading">
                             <button :disabled="!showLoading && message !== '' " class="btn btn-outline-primary w-30"
-                                    type="button" @click.prevent="saveQueryExam()">
+                                    type="button" @click.prevent="saveModalQueryExam()">
                                 <span v-if="showLoading"><i
                                         class="fa fa-circle-o-notch fa-spin fa-fw"></i>Enviando</span>
                                 <span v-else><i class="fa fa-check fa-fw"></i>Aceptar</span>
@@ -174,13 +174,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal"
-                                     :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar
-                        </router-link>
+                        <!--<router-link class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" :to="'/themes'"><i class="fa fa-check fa-fw"></i>Aceptar</router-link>-->
+                        <button class="btn btn-danger" style="border:solid 1px #ffffff" data-dismiss="modal" @click="backButton()"><i class="fa fa-check fa-fw"></i>Aceptar</button>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -223,7 +223,20 @@
       window.clearInterval(this.timerUpdate)
     },
     created () {
-      this.load()
+      if (this.$route.params.dataTheme != undefined) {
+        //Click not refresh page
+        function disableF5 (e) {
+          if ((e.which || e.keyCode) == 116) e.preventDefault()
+        }
+        $(document).on('keydown', disableF5)
+        window.onbeforeunload = () => {
+          return false
+        }
+        // init Page
+        this.load()
+      } else {
+        return window.location.replace('/themes')
+      }
     },
     methods: {
       load () {
@@ -399,7 +412,7 @@
         ExamService.dispatch('updateExamAutomatic', {self: this})
         Util.openModal(document, '#modalEndExam')
       },
-      saveQueryExam () {
+      saveModalQueryExam () {
         window.clearInterval(this.timerUpdate)
         this.showLoading = true
         this.saveEndExam()
@@ -408,26 +421,26 @@
         Util.closeModal('#modalQueryExam')
         this.$router.replace('/themes')
       },
-      openModal () {
-        Util.openModal(document,'#modalQueryExam',{backdrop: 'static', keyboard: false, show: true})
-      },
-      validateEndExam() {
+      validateEndExam () {
         this.pauseTimer = true
         this.params.answer_by_question = this.tempChecked
         if (this.params.answer_by_question.length == 0) {
           alert('No se ha seleccionado ninguna respuesta!')
           return false
         } else {
-          this.openModal()
+          Util.openModal(document, '#modalQueryExam', {backdrop: 'static', keyboard: false, show: true})
         }
+      },
+      backButton(){
+        console.log('lagggg')
+        this.$route.params.permitir = true
+        this.$router.replace('/themes')
+       // return window.location.replace('/themes')
       }
     },
   }
 </script>
 
 <style scoped>
-    .alert-primary {
-        background-color: #007bff;
-        color: #fff;
-    }
+
 </style>

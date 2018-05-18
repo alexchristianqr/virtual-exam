@@ -55,13 +55,13 @@
     },
     watch: {
       $route () {
-        if (this.$route.path !== '/login' && this.$route.path !== '/project') {
-          this.loadFileDataAuthJson()
+          if (this.$route.path !== '/login' && this.$route.path !== '/project') {
+            this.loadFileDataAuthJson()
+          }
+          this.loadSbadmin()
+          this.validateRoleAuthorized()
+          this.validateShowPageKnow()
         }
-        this.loadSbadmin()
-        this.validateRoleAuthorized()
-        this.validateShowPageKnow()
-      }
     },
     methods: {
       removeCookies () {

@@ -12,13 +12,13 @@
   export default {
     name: 'Notify',
     props: {
-      dataNotify: {}
+      dataNotify: {},
     },
     methods: {
       eventClose () {
         this.$emit('eventClose', this)
-      }
-    }
+      },
+    },
   }
 </script>
 

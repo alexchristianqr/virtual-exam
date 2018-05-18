@@ -8,16 +8,18 @@
                         <span class="card-title">Lista de Categorias</span>
                     </div>
                     <div class="col-6 text-right">
-                        <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
+                        <template v-if="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
                             <button @click.prevent="openModal('#modalCreateCategory',1)" type="button" class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
                                 <span>Crear Categoria</span>
                             </button>
+                        </template>
+                        <template v-if="util.validateRole([role.SUPER])">
                             <button @click.prevent="openModal('#modalAssignCategory',2)" type="button" class="btn btn-outline-secondary">
                                 <i class="fa fa-plus fa-fw"></i>
                                 <span>Asignar Categoria / Usuario</span>
                             </button>
-                        </div>
+                        </template>
                     </div>
                 </div>
                 <hr>
@@ -116,6 +118,7 @@
 
         <!-- Modal Crear Categoria -->
         <modal-create-category v-if="loadModal.createCategory" :dataProps="{dataSurvey,loadModal}" @eventClose="load()"/>
+
         <!-- Modal Asignar Categoria -->
         <modal-assign-category v-if="loadModal.assignCategory" :dataProps="{dataSurvey,loadModal}" @eventClose="load()"/>
 

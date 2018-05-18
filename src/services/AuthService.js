@@ -50,7 +50,7 @@ export default new Vuex.Store({
         }
       }).catch((e) => {
         self.dataNotify = e.response
-        self.dataNotify.classAlert = 'alert alert-dark alert-dismissible fade show mb-0 border-0 '
+        self.dataNotify.classAlert = 'alert alert-danger alert-dismissible fade show mb-0 border-0 '
         self.dataNotify.style = 'border-radius:0'
         self.params.username = ''
         self.params.password = ''

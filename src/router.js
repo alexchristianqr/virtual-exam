@@ -165,7 +165,18 @@ const reloadUsrCfg = (to) => {
 }
 
 router.beforeEach((to, from, next) => {
-
+    console.log(from,to,next)
+  if(from.name == 'exam' && to.name == 'themes'){
+    if(from.params.permitir == true || from.params.permitir != undefined){
+      // next('/themes')
+      next()
+    } else {
+      event.preventDefault()
+      return window.onbeforeunload = () => {
+        return false
+      }
+    }
+  }
   //modificamos el valor del titulo del documento web
   setTtitle(to)
 

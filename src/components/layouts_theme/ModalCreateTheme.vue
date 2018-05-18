@@ -72,10 +72,7 @@
         duration: '00:10:00',
       },
     }),
-    created () {
-    },
     methods: {
-      load () {},
       restart() {
         this.params.name = 'Examen de '
         this.params.survey_id = ''
