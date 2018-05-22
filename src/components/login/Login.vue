@@ -65,8 +65,7 @@
     methods: {
       doLogin () {
         this.loading = true
-        AuthService.dispatch('doLogin', {self: this})
-        // AuthService.dispatch('doLoginAD', {self: this})
+        AuthService.dispatch('doLoginAD', {self: this})
       },
       eventClose () {
         this.dataNotify = {}

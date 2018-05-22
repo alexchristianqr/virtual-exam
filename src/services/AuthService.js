@@ -10,6 +10,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   actions: {
+    /*
     doLogin({commit}, {self}){
       Axios.post(Env.API_LARAVEL + '/login', self.params).then((r) => {
         if (r.status === 200) {
@@ -29,6 +30,7 @@ export default new Vuex.Store({
         self.loading = false
       })
     },
+    */
     doLoginAD ({commit}, {self}) {
       Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).then((r) => {
         if (r.status === 200) {
