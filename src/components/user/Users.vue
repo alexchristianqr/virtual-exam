@@ -15,12 +15,15 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
-                        <input v-model="input_search_user" ref="inputSearchUser" type="search" placeholder="Buscar" class="form-control">
+                        <input v-model="input_search_user" ref="inputSearchUser" type="search" placeholder="Buscar"
+                               class="form-control">
                         <div v-if="input_search_user != ''" class="input-group-append">
-                            <button title="Limpiar Busqueda" @click.prevent="input_search_user='' ; $refs.inputSearchUser.focus()" type="button" class="btn btn-danger"><i class="fa fa-close"></i></button>
+                            <button title="Limpiar Busqueda"
+                                    @click.prevent="input_search_user='' ; $refs.inputSearchUser.focus()" type="button"
+                                    class="btn btn-danger"><i class="fa fa-close"></i></button>
                         </div>
                     </div>
-                    <div class="input-group">
+                    <div hidden class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-search"></i></span>
                         </div>
@@ -31,6 +34,16 @@
                             <option value="3">Corporativo</option>
                         </select>
                     </div>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-filter"></i></span>
+                        </div>
+                        <select title="" class="form-control" v-model="params.status" @change="change()">
+                            <option value="" selected>Seleccionar Estado</option>
+                            <option value="A">Activo</option>
+                            <option value="I">Inactivo</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -39,7 +52,7 @@
                     <tr>
                         <th><b>#</b></th>
                         <th>Usuario</th>
-                        <th>Proyecto</th>
+                        <!--<th>Proyecto</th>-->
                         <th width="5%" class="text-center">Estado</th>
                         <th width="20%" class="text-right">Acción</th>
                     </tr>
@@ -48,13 +61,15 @@
                     <tr v-for="(v,k) in filteredDataUsers">
                         <th>{{k+1}}</th>
                         <td>{{v.name}}</td>
-                        <td>{{v.project.name}}</td>
+                        <!--<td>{{v.project.name}}</td>-->
                         <td class="text-center">
                             <i v-if="v.status === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.status === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
                         <td class="text-right">
-                            <router-link class="btn btn-info btn-sm" :to="{name:'user-history',params:{user_id:v.id}}">Historial de Examenes</router-link>
+                            <router-link class="btn btn-info btn-sm" :to="{name:'user-history',params:{user_id:v.id}}">
+                                Historial de Examenes
+                            </router-link>
                             <!--<button class="btn btn-info btn-sm" @click="$router.push('/user-history')" type="button">Historial de Examenes</button>-->
                         </td>
                     </tr>
@@ -66,20 +81,37 @@
 </template>
 
 <script>
+  import AuthService from '../../services/AuthService'
+
   export default {
     name: 'Users',
     data: () => ({
       input_search_user: '',
-      dataUsers:[
-        {id:1, name:'Alex Christian',project:{id:2,name:'interbank'},status:'A'},
-        {id:2, name:'Dennis Davalos',project:{id:3,name:'corporativo'},status:'A'},
+      dataUsers: [
+        // {id:1, name:'Alex Christian',project:{id:2,name:'interbank'},status:'A'},
+        // {id:2, name:'Dennis Davalos',project:{id:3,name:'corporativo'},status:'A'},
       ],
+      params: {
+        status: 'A',
+      },
     }),
-    computed:{
-      filteredDataUsers(){
-        return this.dataUsers.filter((item)=>{return item.name.toLowerCase().indexOf(this.input_search_user.toLowerCase()) > -1})
-      }
-    }
+    computed: {
+      filteredDataUsers () {
+        return this.dataUsers.filter(
+          (item) => {return item.name.toLowerCase().indexOf(this.input_search_user.toLowerCase()) > -1})
+      },
+    },
+    created () {
+      this.load()
+    },
+    methods: {
+      load () {
+        AuthService.dispatch('allUser', {self: this})
+      },
+      change () {
+        this.load()
+      },
+    },
   }
 </script>
 

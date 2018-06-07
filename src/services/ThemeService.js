@@ -59,5 +59,15 @@ export default new Vuex.Store({
         console.error(e)
       })
     },
+    getUserHistory ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/get-user-history', {params: self.params}).then((r) => {
+        if (r.status === 200) {
+          // self.loadingTable = false
+          self.dataUserHistory = r.data
+        }
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
   }
 })

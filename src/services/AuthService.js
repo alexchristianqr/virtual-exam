@@ -108,5 +108,14 @@ export default new Vuex.Store({
         console.error(e)
       })
     },
+    allUser ({commit}, {self}) {
+      Axios.get(Env.API_LARAVEL + '/all-user',{params:self.params}).then((r) => {
+        if (r.status === 200) {
+          self.dataUsers= r.data
+        }
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
   },
 })

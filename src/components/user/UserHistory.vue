@@ -23,7 +23,7 @@
                         <th>Usuario</th>
                         <th>Fecha Inicial</th>
                         <th>Fecha Final</th>
-                        <th>Proyecto</th>
+                        <!--<th>Proyecto</th>-->
                         <th>Nota</th>
                         <th hidden width="5%" class="text-center">Estado</th>
                         <th width="20%" class="text-right">Acción</th>
@@ -33,13 +33,13 @@
                     <tr v-for="(v,k) in dataUserHistory">
                         <th>{{k+1}}</th>
                         <td>{{v.name}}</td>
-                        <td>{{v.date_ini}}</td>
-                        <td>{{v.date_fin}}</td>
-                        <td>{{v.project.name}}</td>
+                        <td>{{v.date_start}}</td>
+                        <td>{{v.date_expired}}</td>
+                        <!--<td>{{v.project.name}}</td>-->
                         <td>{{v.score}}</td>
                         <td hidden class="text-center">
-                            <i v-if="v.status === 'A' " class="fa fa-circle text-success"></i>
-                            <i v-if="v.status === 'I' " class="fa fa-circle text-danger"></i>
+                            <i v-if="v.status_table === 'A' " class="fa fa-circle text-success"></i>
+                            <i v-if="v.status_table === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
                         <td class="text-right">
                             <div class="btn-group dropdown" role="group">
@@ -50,9 +50,9 @@
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
                                         <li title="Exportar">
-                                            <a href class="dropdown-item text-muted"><small><i class="fa fa-area-chart fa-fw"></i>Indicador</small></a>
-                                            <a href class="dropdown-item text-muted"><small><i class="fa fa-clock-o fa-fw"></i>Tiempo Promedio</small></a>
-                                            <a href class="dropdown-item text-muted"><small><i class="fa fa-file-photo-o fa-fw"></i>Grafico Progresivo</small></a>
+                                            <a href="#" class="dropdown-item text-muted"><small><i class="fa fa-area-chart fa-fw"></i>Indicador</small></a>
+                                            <a href="#" class="dropdown-item text-muted"><small><i class="fa fa-clock-o fa-fw"></i>Tiempo Promedio</small></a>
+                                            <a href="#" class="dropdown-item text-muted"><small><i class="fa fa-file-photo-o fa-fw"></i>Grafico Progresivo</small></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -67,24 +67,39 @@
 </template>
 
 <script>
+  import ThemeService    from '../../services/ThemeService'
+
   export default {
     name: 'UserHistory',
     data:()=>({
-      dataUserHistory:[]
+      dataUserHistory:[],
+      params:{
+        user_id:'A',
+      }
     }),
     created(){
-      if(this.$route.params.user_id == 1){
-        this.dataUserHistory = [
-          {id:1, name:'Alex Christian',date_ini:'12/04/2018 18:00:01',date_fin:'12/04/2018 18:00:01',score:'13',project:{id:2,name:'interbank'},status:'A'},
-          {id:2, name:'Alex Christian',date_ini:'10/04/2018 18:00:01',date_fin:'10/04/2018 18:00:01',score:'17',project:{id:2,name:'interbank'},status:'A'},
-          {id:3, name:'Alex Christian',date_ini:'06/04/2018 18:00:01',date_fin:'06/04/2018 18:00:01',score:'19',project:{id:2,name:'interbank'},status:'A'},
-        ]
-      }else{
-        this.dataUserHistory = [
-          {id:1, name:'Dennis Davalos',date_ini:'12/04/2018 18:00:01',date_fin:'12/04/2018 18:00:01',score:'15',project:{id:3,name:'corporativo'},status:'A'},
-          {id:2, name:'Dennis Davalos',date_ini:'10/04/2018 18:00:01',date_fin:'10/04/2018 18:00:01',score:'19',project:{id:3,name:'corporativo'},status:'A'},
-          {id:3, name:'Dennis Davalos',date_ini:'06/04/2018 18:00:01',date_fin:'06/04/2018 18:00:01',score:'12',project:{id:3,name:'corporativo'},status:'A'},
-        ]
+      // if(this.$route.params.user_id == 1){
+      //   this.dataUserHistory = [
+      //     {id:1, name:'Alex Christian',date_ini:'12/04/2018 18:00:01',date_fin:'12/04/2018 18:00:01',score:'13',project:{id:2,name:'interbank'},status:'A'},
+      //     {id:2, name:'Alex Christian',date_ini:'10/04/2018 18:00:01',date_fin:'10/04/2018 18:00:01',score:'17',project:{id:2,name:'interbank'},status:'A'},
+      //     {id:3, name:'Alex Christian',date_ini:'06/04/2018 18:00:01',date_fin:'06/04/2018 18:00:01',score:'19',project:{id:2,name:'interbank'},status:'A'},
+      //   ]
+      // }else{
+      //   this.dataUserHistory = [
+      //     {id:1, name:'Dennis Davalos',date_ini:'12/04/2018 18:00:01',date_fin:'12/04/2018 18:00:01',score:'15',project:{id:3,name:'corporativo'},status:'A'},
+      //     {id:2, name:'Dennis Davalos',date_ini:'10/04/2018 18:00:01',date_fin:'10/04/2018 18:00:01',score:'19',project:{id:3,name:'corporativo'},status:'A'},
+      //     {id:3, name:'Dennis Davalos',date_ini:'06/04/2018 18:00:01',date_fin:'06/04/2018 18:00:01',score:'12',project:{id:3,name:'corporativo'},status:'A'},
+      //   ]
+      // }
+      this.load()
+    },
+    methods:{
+      load(){
+        this.params.user_id = this.$route.params.user_id;
+        ThemeService.dispatch('getUserHistory',{self:this});
+      },
+      change(){
+        this.load();
       }
     }
   }

@@ -13,7 +13,7 @@
                     <span class="nav-link-text">Tema</span>
                 </router-link>
             </li>
-            <li class="nav-item" title="Modulo Pregunta y Respuesta" data-toggle="tooltip" data-placement="right">
+            <li v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])" class="nav-item" title="Modulo Pregunta y Respuesta" data-toggle="tooltip" data-placement="right">
                 <router-link :to="{name:'create-exam'}" class="nav-link">
                     <i class="fa fa-fw fa-check-square-o"></i>
                     <span class="nav-link-text">Pregunta y Respuesta</span>

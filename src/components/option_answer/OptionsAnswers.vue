@@ -7,10 +7,12 @@
                         <span class="card-title">Lista de Opciones de Respuesta</span>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link :to="{name:'create-option-answer'}" class="btn btn-outline-secondary">
-                            <i class="fa fa-plus fa-fw"></i>
-                            <span>Crear Nuevo</span>
-                        </router-link>
+                        <div v-show="util.validateRole([role.SUPER,role.ADMINISTRADOR,role.ESCRITOR])">
+                            <router-link :to="{name:'create-option-answer'}" class="btn btn-outline-secondary">
+                                <i class="fa fa-plus fa-fw"></i>
+                                <span>Crear Nuevo</span>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
                 <hr>
@@ -126,10 +128,14 @@
   import ThemeService        from '../../services/ThemeService'
   import OptionAnswerService from '../../services/OptionAnswerService'
   import QuestionService     from '../../services/QuestionService'
+  import Util             from '../../util'
+  import Role             from '../../role'
 
   export default {
     name: 'OptionsAnswers',
     data: () => ({
+      util:Util,
+      role:Role,
       loadingTable: true,
       dataTheme: [],
       dataQuestion: [],
