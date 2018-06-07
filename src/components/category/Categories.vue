@@ -148,7 +148,7 @@
       dataSurvey: [],
       inputSearchSurvey: '',
       params: {
-        status: '',
+        status: 'A',
       },
     }),
     created () {
@@ -175,12 +175,7 @@
           this.loadModal.assignCategory = true
         }
         Util.openModal(document, modalId)
-
       },
-      // closeModal (modalId) {
-      //   this.loadModal = false
-      //   Util.closeModal(modalId)
-      // },
       cleanSearch () {
         this.inputSearchSurvey = ''
         this.$refs.ref_inputSearchSurvey.focus()

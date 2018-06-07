@@ -13,7 +13,8 @@
                     <div class="form-group">
                         <label>Nombre Usuario</label>
                         <div class="input-group mb-1">
-                            <input v-model="params.username" ref="inputUsername" name="username" class="form-control" type="text" placeholder="username" title="Registrar" required autofocus>
+                            <input v-model="params.username" ref="inputUsername" name="username" class="form-control"
+                                   type="text" placeholder="username" title="Registrar" required autofocus>
                             <div class="input-group-append">
                                 <span class="input-group-text bg-white">@sapia.com.pe</span>
                             </div>
@@ -26,7 +27,7 @@
                         <input v-model="params.password" ref="inputPassword" name="password" class="form-control mb-1" type="password" placeholder="password" required>
                         <span v-if="errors.password !== '' " class="help-block"><small><strong>{{errors.password}}</strong></small></span>
                     </div>
-                    <template v-if="!loading">
+                    <template v-if="!loading.btn">
                         <button type="submit" class="btn btn-secondary btn-block">Entrar</button>
                     </template>
                     <template v-else>
@@ -37,6 +38,9 @@
                 </form>
             </div>
         </div>
+
+        <modal v-if="modal.show" :data-props="{loading,params}"/>
+
     </div>
 </template>
 
@@ -44,13 +48,15 @@
   import AuthService from '../../services/AuthService'
   import Logo        from '../layouts/Logo'
   import Notify      from '../layouts/Notify'
+  import Modal       from '../layouts/Modal'
 
   export default {
     name: 'Login',
-    components: {Notify, Logo},
+    components: {Modal, Notify, Logo},
     data: () => ({
-      loading: false,
+      loading: {btn: false},
       validate: null,
+      modalId: '#modalLogin',
       data: [],
       dataNotify: {},
       params: {
@@ -61,15 +67,18 @@
         email: '',
         password: '',
       },
+      modal: {
+        show: true,
+      },
     }),
     methods: {
       doLogin () {
-        this.loading = true
+        this.loading.btn = true
         AuthService.dispatch('doLoginAD', {self: this})
       },
       eventClose () {
         this.dataNotify = {}
-      }
+      },
     },
   }
 </script>

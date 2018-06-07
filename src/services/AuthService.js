@@ -10,17 +10,18 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   actions: {
-    /*
-    doLogin({commit}, {self}){
+
+    /*doLogin ({commit}, {self}) {
       Axios.post(Env.API_LARAVEL + '/login', self.params).then((r) => {
         if (r.status === 200) {
           self.dataNotify = {}
           Storage.set('s-u-$4p14', r.data)
           Util.setCookie('co-stg-a-u-au', r.data, 1)
-          this.dispatch('validateIfExist', {self: {self, new_data_auth: r.data}})
+          this.dispatch('validateIfExist',
+            {self: {self, new_data_auth: r.data}})
           self.loading = false
         }
-      }).catch((e)=>{
+      }).catch((e) => {
         self.dataNotify = e.response
         self.dataNotify.classAlert = 'alert alert-dark alert-dismissible fade show mb-0 border-0 '
         self.dataNotify.style = 'border-radius:0'
@@ -29,8 +30,8 @@ export default new Vuex.Store({
         self.$refs.inputUsername.focus()
         self.loading = false
       })
-    },
-    */
+    },*/
+
     doLoginAD ({commit}, {self}) {
       Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).then((r) => {
         if (r.status === 200) {
@@ -48,16 +49,20 @@ export default new Vuex.Store({
           Storage.set('s-u-$4p14', new_data_auth)
           Util.setCookie('co-stg-a-u-au', new_data_auth, 1)
           this.dispatch('validateIfExist', {self: {self, new_data_auth: new_data_auth}})
-          self.loading = false
         }
       }).catch((e) => {
-        self.dataNotify = e.response
-        self.dataNotify.classAlert = 'alert alert-danger alert-dismissible fade show mb-0 border-0 '
-        self.dataNotify.style = 'border-radius:0'
-        self.params.username = ''
-        self.params.password = ''
-        self.$refs.inputUsername.focus()
-        self.loading = false
+        if (e.response != undefined) {
+          self.dataNotify = e.response
+          self.dataNotify.classAlert = 'alert alert-danger alert-dismissible fade show mb-0 border-0 '
+          self.dataNotify.style = 'border-radius:0'
+          self.params.username = ''
+          self.params.password = ''
+          self.$refs.inputUsername.focus()
+          self.loading.btn = false
+        } else {
+          self.modal.show = true
+          Util.openModal(document, self.modalId)
+        }
       })
     },
     validateIfExist ({commit}, {self}) {
@@ -67,6 +72,7 @@ export default new Vuex.Store({
             Util.setCookie('co-stg-a-u-au', r.data, 1)
             Storage.set('s-u-$4p14', Util.getCookie('co-stg-a-u-au'))
             self.self.$router.push('/project')
+            self.self.loading.btn = false
             break
           default://200
             Util.setCookie('co-stg-a-u-au', r.data, 1)
@@ -78,11 +84,14 @@ export default new Vuex.Store({
               //crear cookie de configuracion de toda la app
               Util.setCookie('co-f-stg-a-u-au', Util.getCookie('co-stg-a-u-au'), 1)
               self.self.$router.replace('/themes')
+              self.self.loading.btn = false
             }
             break
         }
       }).catch((e) => {
         console.error(e)
+        self.self.modal.show = true
+        Util.openModal(document, self.self.modalId)
       })
     },
     doLogout ({commit}, {self}) {
@@ -91,29 +100,31 @@ export default new Vuex.Store({
       self.$router.replace('/login')
     },
     getConfig ({commit}, {self}) {
-      Axios.post(Env.API_LARAVEL + '/u-object-rest-apis-application', {username:  Util.getCookie('co-f-stg-a-u-au').username}).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/u-object-rest-apis-application', {username: Util.getCookie('co-f-stg-a-u-au').username}).then((r) => {
         if (r.status === 200) {
           Object.assign(JsonDataAuth.json, r.data)
         }
-      }).catch((e)=>{
+      }).catch((e) => {
         console.error(e)
       })
     },
     getUsers ({commit}, {self}) {
       Axios.get(Env.API_LARAVEL + '/get-users').then((r) => {
         if (r.status === 200) {
-          self.dataUsers= r.data
+          self.dataUsers = r.data
         }
       }).catch((e) => {
         console.error(e)
       })
     },
     allUser ({commit}, {self}) {
-      Axios.get(Env.API_LARAVEL + '/all-user',{params:self.params}).then((r) => {
+      Axios.get(Env.API_LARAVEL + '/all-user', {params: self.params}).
+      then((r) => {
         if (r.status === 200) {
-          self.dataUsers= r.data
+          self.dataUsers = r.data
         }
-      }).catch((e) => {
+      }).
+      catch((e) => {
         console.error(e)
       })
     },
