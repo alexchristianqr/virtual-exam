@@ -175,6 +175,8 @@
                 }
                 this.params.user_survey_theme_id = this.$route.params.user_survey_theme_id
                 ExamService.dispatch('loadExamSolution', {self: this})
+            }else{
+              this.$router.replace({path:'/know'})
             }
           }else{
             this.$router.replace({path:'/know'})
