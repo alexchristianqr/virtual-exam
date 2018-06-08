@@ -237,6 +237,8 @@
       },
     }),
     created () {
+      // Eliminamos el storage de seguridad para la solucion de examenes
+      Storage.remove('$h4sh')
       this.load()
     },
     computed: {

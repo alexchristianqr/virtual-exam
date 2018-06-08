@@ -137,6 +137,7 @@
   import Util        from '../../util'
   import Storage     from 'vue-local-storage'
   import ExamService from '../../services/ExamService'
+  import Role from '../../role'
 
   export default {
     name: 'ExamSolution',
@@ -156,12 +157,29 @@
     },
     methods: {
       load () {
-        this.loadingTable = true
-        if(this.$route.params.before_path != undefined){
-          this.before_path = this.$route.params.before_path;
+        // Si son usuarios administradores pueden agregar cualquier cosa en la url en el parametro de hash
+        if(Util.validateRole([Role.SUPER,Role.ADMINISTRADOR])){
+          this.loadingTable = true
+          if(this.$route.params.before_path != undefined){
+            this.before_path = this.$route.params.before_path;
+          }
+          this.params.user_survey_theme_id = this.$route.params.user_survey_theme_id
+          ExamService.dispatch('loadExamSolution', {self: this})
+        } else {
+          // Si son otros usuarios es necesario crear el hash, por seguridad al sabotaje
+          if(Storage.get('$h4sh') != null){
+            if(this.$route.params.hash !== Storage.get('$h4sh').hash){
+                this.loadingTable = true
+                if(this.$route.params.before_path != undefined){
+                  this.before_path = this.$route.params.before_path;
+                }
+                this.params.user_survey_theme_id = this.$route.params.user_survey_theme_id
+                ExamService.dispatch('loadExamSolution', {self: this})
+            }
+          }else{
+            this.$router.replace({path:'/know'})
+          }
         }
-        this.params.user_survey_theme_id = this.$route.params.user_survey_theme_id
-        ExamService.dispatch('loadExamSolution', {self: this})
       }
     }
   }

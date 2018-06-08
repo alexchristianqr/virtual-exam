@@ -54,10 +54,16 @@ const router = new Router({
       meta: {requiresAuth: true, title: 'Examen', roleId: Role.TODOS},
     },
     {
-      path: '/solution/exam/:user_survey_theme_id',
+      path: '/solution/exam/:user_survey_theme_id/:hash',
       name: 'exam-solution',
       component: ExamSolution,
       meta: {requiresAuth: true, title: 'Examen Solucion', roleId: [Role.SUPER, Role.ADMINISTRADOR, Role.INVITADO]},
+    },
+    {
+      path: '/admin/solution/exam/:user_survey_theme_id',
+      name: 'admin-exam-solution',
+      component: ExamSolution,
+      meta: {requiresAuth: true, title: 'Examen Solucion', roleId: [Role.SUPER, Role.ADMINISTRADOR]},
     },
     {
       path: '/questions',
@@ -191,6 +197,7 @@ router.beforeEach((to, from, next) => {
   if (to.path === '/login') {
     allRemoveCookies(to)
     Storage.remove('s-u-$4p14')
+    Storage.remove('$h4sh')
   }
   //validamos en todas las rutas
   if (requiresAuth) {

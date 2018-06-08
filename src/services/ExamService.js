@@ -68,12 +68,12 @@ export default new Vuex.Store({
       })
     },
     verifyExamSolution({commit}, {self}) {
-      Axios.get(Env.API_LARAVEL + '/verify-exam-solution',
-        {params: self.params}).then((r) => {
+      Axios.get(Env.API_LARAVEL + '/verify-exam-solution', {params: self.params}).then((r) => {
         if (r.status === 200) {
+          Storage.set('$h4sh', {hash:Util.generateHash(32)})
           self.$router.replace({
             name: 'exam-solution',
-            params: {user_survey_theme_id: self.params.user_survey_theme_id},
+            params: {user_survey_theme_id: self.params.user_survey_theme_id,hash:Storage.get('$h4sh').hash},
           })
         }
       }).catch((e) => {

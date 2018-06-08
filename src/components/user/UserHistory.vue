@@ -123,7 +123,7 @@
       },
       loadExamSolution (param_user_survey_theme_id) {
         this.$router.replace({
-          name: 'exam-solution',
+          name: 'admin-exam-solution',
           params: {user_survey_theme_id:param_user_survey_theme_id,before_path:this.$route.fullPath},
         })
       },

@@ -93,4 +93,16 @@ export default {
   closeModal (modalId) {
     $(modalId).modal('hide')
   },
+  /**
+   * Método para generar un texto alfanumerico
+   * @param param_length = tamaño
+   */
+  generateHash (param_length = 11) {
+    const dec2hex = (dec) => {
+      return ('0' + dec.toString(16)).substr(-2)
+    }
+    let arr = new Uint8Array((param_length || 40) / 2)
+    window.crypto.getRandomValues(arr)
+    return Array.from(arr, dec2hex).join('')
+  },
 }
