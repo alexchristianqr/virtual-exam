@@ -8,10 +8,18 @@
                     </span>
                 </div>
                 <div class="col-6 text-right">
-                    <router-link class="btn btn-link text-secondary" :to="{name:'themes'}">
-                        <i class="fa fa-angle-left fa-fw"></i>
-                        <span>Volver</span>
-                    </router-link>
+                    <template v-if="before_path != ''">
+                        <router-link class="btn btn-link text-secondary" :to="{path:before_path}">
+                            <i class="fa fa-angle-left fa-fw"></i>
+                            <span>Volver</span>
+                        </router-link>
+                    </template>
+                    <template v-else>
+                        <router-link class="btn btn-link text-secondary" :to="{name:'themes'}">
+                            <i class="fa fa-angle-left fa-fw"></i>
+                            <span>Volver</span>
+                        </router-link>
+                    </template>
                 </div>
             </div>
             <hr>
@@ -138,10 +146,10 @@
       loadingTable: true,
       loadComponentExamSolution: false,
       dataExamSolution: {},
-      // dataExam: [],
       params: {
         user_survey_theme_id: null,
       },
+      before_path:''
     }),
     created () {
       this.load()
@@ -149,6 +157,9 @@
     methods: {
       load () {
         this.loadingTable = true
+        if(this.$route.params.before_path != undefined){
+          this.before_path = this.$route.params.before_path;
+        }
         this.params.user_survey_theme_id = this.$route.params.user_survey_theme_id
         ExamService.dispatch('loadExamSolution', {self: this})
       }

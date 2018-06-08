@@ -21,6 +21,7 @@
                     <tr>
                         <th><b>#</b></th>
                         <th>Usuario</th>
+                        <th>Examen</th>
                         <th>Fecha Inicial</th>
                         <th>Fecha Final</th>
                         <!--<th>Proyecto</th>-->
@@ -33,6 +34,7 @@
                     <tr v-for="(v,k) in dataUserHistory">
                         <th>{{k+1}}</th>
                         <td>{{v.name}}</td>
+                        <td>{{v.theme_name}}</td>
                         <td>{{v.date_start}}</td>
                         <td>{{v.date_expired}}</td>
                         <!--<td>{{v.project.name}}</td>-->
@@ -41,7 +43,7 @@
                             <i v-if="v.status_table === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.status_table === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
-                        <td class="text-right">
+                        <td hidden class="text-right">
                             <div class="btn-group dropdown" role="group">
                                 <button class="btn btn-warning btn-sm">Ver Solución</button>
                                 <div class="btn-group open" role="group">
@@ -57,6 +59,36 @@
                                     </ul>
                                 </div>
                             </div>
+                        </td>
+                        <td class="text-right">
+                            <a v-if="v.user_survey_theme_status == 'PE' " class="btn btn-warning btn-sm btn-block" href="#">
+                                <i class="fa fa-file-text-o fa-fw"></i>
+                                <span>PENDIENTE</span>
+                            </a>
+                            <template v-if="v.user_survey_theme_status == 'RE' || v.user_survey_theme_status == 'PR'">
+                                <template v-if="v.user_survey_theme_status == 'RE'">
+                                    <button type="button" class="btn btn-success btn-sm btn-block">
+                                        <i class="fa fa-file-text-o fa-fw"></i>
+                                        <span>REALIZADO</span>
+                                    </button>
+                                </template>
+                                <template v-else>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            <i class="fa fa-file-text-o fa-fw"></i>
+                                            <span>REALIZADO</span>
+                                        </button>
+                                        <button type="button" class="btn btn-info btn-sm" @click="loadExamSolution (v.user_survey_theme_id)">
+                                            <i class="fa fa-eye fa-fw"></i>
+                                            <span>SOLUCION</span>
+                                        </button>
+                                    </div>
+                                </template>
+                            </template>
+                            <button v-if="v.user_survey_theme_status == 'VE'" type="button" class="btn btn-danger">
+                                <i class="fa fa-file-text-o fa-fw"></i>
+                                <span>VENCIDO</span>
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -75,22 +107,10 @@
       dataUserHistory:[],
       params:{
         user_id:'A',
+        user_survey_theme_id:''
       }
     }),
     created(){
-      // if(this.$route.params.user_id == 1){
-      //   this.dataUserHistory = [
-      //     {id:1, name:'Alex Christian',date_ini:'12/04/2018 18:00:01',date_fin:'12/04/2018 18:00:01',score:'13',project:{id:2,name:'interbank'},status:'A'},
-      //     {id:2, name:'Alex Christian',date_ini:'10/04/2018 18:00:01',date_fin:'10/04/2018 18:00:01',score:'17',project:{id:2,name:'interbank'},status:'A'},
-      //     {id:3, name:'Alex Christian',date_ini:'06/04/2018 18:00:01',date_fin:'06/04/2018 18:00:01',score:'19',project:{id:2,name:'interbank'},status:'A'},
-      //   ]
-      // }else{
-      //   this.dataUserHistory = [
-      //     {id:1, name:'Dennis Davalos',date_ini:'12/04/2018 18:00:01',date_fin:'12/04/2018 18:00:01',score:'15',project:{id:3,name:'corporativo'},status:'A'},
-      //     {id:2, name:'Dennis Davalos',date_ini:'10/04/2018 18:00:01',date_fin:'10/04/2018 18:00:01',score:'19',project:{id:3,name:'corporativo'},status:'A'},
-      //     {id:3, name:'Dennis Davalos',date_ini:'06/04/2018 18:00:01',date_fin:'06/04/2018 18:00:01',score:'12',project:{id:3,name:'corporativo'},status:'A'},
-      //   ]
-      // }
       this.load()
     },
     methods:{
@@ -100,7 +120,13 @@
       },
       change(){
         this.load();
-      }
+      },
+      loadExamSolution (param_user_survey_theme_id) {
+        this.$router.replace({
+          name: 'exam-solution',
+          params: {user_survey_theme_id:param_user_survey_theme_id,before_path:this.$route.fullPath},
+        })
+      },
     }
   }
 </script>
