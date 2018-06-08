@@ -168,7 +168,7 @@
         } else {
           // Si son otros usuarios es necesario crear el hash, por seguridad al sabotaje
           if(Storage.get('$h4sh') != null){
-            if(this.$route.params.hash !== Storage.get('$h4sh').hash){
+            if(this.$route.params.hash == Storage.get('$h4sh').hash){
                 this.loadingTable = true
                 if(this.$route.params.before_path != undefined){
                   this.before_path = this.$route.params.before_path;
