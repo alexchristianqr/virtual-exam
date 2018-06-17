@@ -38,7 +38,16 @@
                         <td>{{v.date_start}}</td>
                         <td>{{v.date_expired}}</td>
                         <!--<td>{{v.project.name}}</td>-->
-                        <td>{{v.score}}</td>
+                        <td>
+                            <template v-if="v.user_survey_theme_status.toUpperCase() == 'P'">
+                                <span>{{util.addCero(v.score)}}</span>
+                            </template>
+                            <template v-else>
+                                <b title="Nota Desaprobada" v-if="parseInt(v.score) >= 0 && parseInt(v.score) <= 10" class="text-danger">{{util.addCero(v.score)}}</b>
+                                <b title="Nota Media" v-if="parseInt(v.score) > 10 && parseInt(v.score) <= 12" class="text-secondary">{{v.score}}</b>
+                                <b title="Nota Aprobada" v-if="parseInt(v.score) > 12" class="text-success">{{v.score}}</b>
+                            </template>
+                        </td>
                         <td hidden class="text-center">
                             <i v-if="v.status_table === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.status_table === 'I' " class="fa fa-circle text-danger"></i>
@@ -61,34 +70,30 @@
                             </div>
                         </td>
                         <td class="text-right">
-                            <a v-if="v.user_survey_theme_status == 'PE' " class="btn btn-warning btn-sm btn-block" href="#">
-                                <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>PENDIENTE</span>
-                            </a>
-                            <template v-if="v.user_survey_theme_status == 'RE' || v.user_survey_theme_status == 'PR'">
-                                <template v-if="v.user_survey_theme_status == 'RE'">
-                                    <button type="button" class="btn btn-success btn-sm btn-block">
-                                        <i class="fa fa-file-text-o fa-fw"></i>
-                                        <span>REALIZADO</span>
-                                    </button>
-                                </template>
-                                <template v-else>
+                            <template v-if="v.user_survey_theme_status.toUpperCase() == 'P' ">
+                                <button type="button" class="btn btn-warning btn-sm btn-block" style="cursor: default">
+                                    <i class="fa fa-file-text-o fa-fw"></i>
+                                    <span>PENDIENTE</span>
+                                </button>
+                            </template>
+                            <template v-else-if="v.user_survey_theme_status.toUpperCase() == 'RS'">
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-success btn-sm">
-                                            <i class="fa fa-file-text-o fa-fw"></i>
+                                        <button type="button" class="btn btn-success btn-sm" style="cursor: default">
+                                            <i class="fa fa-check fa-fw"></i>
                                             <span>REALIZADO</span>
                                         </button>
-                                        <button type="button" class="btn btn-info btn-sm" @click="loadExamSolution (v.user_survey_theme_id)">
+                                        <button type="button" class="btn btn-info btn-sm" @click="loadExamSolution(v.user_survey_theme_id)">
                                             <i class="fa fa-eye fa-fw"></i>
                                             <span>SOLUCION</span>
                                         </button>
                                     </div>
-                                </template>
                             </template>
-                            <button v-if="v.user_survey_theme_status == 'VE'" type="button" class="btn btn-danger">
-                                <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>VENCIDO</span>
-                            </button>
+                            <template v-else-if="v.user_survey_theme_status.toUpperCase() == 'V'">
+                                <button type="button" class="btn btn-danger btn-sm btn-block" style="cursor: default">
+                                    <i class="fa fa-file-text-o fa-fw"></i>
+                                    <span>VENCIDO</span>
+                                </button>
+                            </template>
                         </td>
                     </tr>
                     </tbody>
@@ -100,10 +105,12 @@
 
 <script>
   import ThemeService    from '../../services/ThemeService'
+  import Util            from '../../util'
 
   export default {
     name: 'UserHistory',
     data:()=>({
+      util:Util,
       dataUserHistory:[],
       params:{
         user_id:'A',

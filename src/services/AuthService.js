@@ -31,9 +31,9 @@ export default new Vuex.Store({
         self.loading = false
       })
     },*/
-
     doLoginAD ({commit}, {self}) {
-      Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).then((r) => {
+      Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).
+      then((r) => {
         if (r.status === 200) {
           const new_data_auth = {
             email: null,
@@ -48,25 +48,33 @@ export default new Vuex.Store({
           self.dataNotify = {}
           Storage.set('s-u-$4p14', new_data_auth)
           Util.setCookie('co-stg-a-u-au', new_data_auth, 1)
-          this.dispatch('validateIfExist', {self: {self, new_data_auth: new_data_auth}})
+          this.dispatch('validateIfExist',
+            {self: {self, new_data_auth: new_data_auth}})
         }
-      }).catch((e) => {
+      }).
+      catch((e) => {
         if (e.response != undefined) {
           self.dataNotify = e.response
           self.dataNotify.classAlert = 'alert alert-danger alert-dismissible fade show mb-0 border-0 '
           self.dataNotify.style = 'border-radius:0'
-          self.params.username = ''
           self.params.password = ''
-          self.$refs.inputUsername.focus()
+          self.$refs.inputPassword.focus()
           self.loading.btn = false
         } else {
+          console.error(e)
           self.modal.show = true
+          if (e.response.status == 401) {
+            self.dataError = e.response.data
+          } else {
+            self.dataError = '<span>Estimado <b>Usuario</b>, estamos presentando problemas en nuestros servicios; por favor vuelva intentarlo de nuevo o mas tarde.</span>'
+          }
           Util.openModal(document, self.modalId)
         }
       })
     },
     validateIfExist ({commit}, {self}) {
-      Axios.post(Env.API_LARAVEL + '/if-exist-user', self.new_data_auth).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/if-exist-user', self.new_data_auth).
+      then((r) => {
         switch (r.status) {
           case 201:
             Util.setCookie('co-stg-a-u-au', r.data, 1)
@@ -88,9 +96,15 @@ export default new Vuex.Store({
             }
             break
         }
-      }).catch((e) => {
+      }).
+      catch((e) => {
         console.error(e)
         self.self.modal.show = true
+        if (e.response.status == 401) {
+          self.self.dataError = e.response.data
+        } else {
+          self.self.dataError = '<span>Estimado <b>Usuario</b>, estamos presentando problemas en nuestros servicios; porfavor vuelva intentarlo de nuevo o mas tarde.</span>'
+        }
         Util.openModal(document, self.self.modalId)
       })
     },
@@ -121,6 +135,7 @@ export default new Vuex.Store({
       Axios.get(Env.API_LARAVEL + '/all-user', {params: self.params}).
       then((r) => {
         if (r.status === 200) {
+          self.loadingTable = false
           self.dataUsers = r.data
         }
       }).

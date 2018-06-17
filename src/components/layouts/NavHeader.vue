@@ -19,16 +19,16 @@
                     <div class="dropdown-menu dropdown-menu-right w-75 mt-3" aria-labelledby="alertsDropdown">
                         <a href class="dropdown-item text-secondary" v-show="util.validateRole(role_auth.TODOS)">
                             <i class="fa fa-comment fa-fw"></i>
-                            Sugerencia
+                            <span>Sugerencia</span>
                         </a>
                         <a href class="dropdown-item text-secondary" v-show="util.validateRole(role_auth.SUPER)">
                             <i class="fa fa-cogs fa-fw"></i>
-                            Configuración General
+                            <span>Configuración General</span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href class="dropdown-item text-dark" @click.prevent="logout()">
                             <i class="fa fa-fw fa-sign-out"></i>
-                            <span>Logout</span>
+                            <span>Cerrar Sesión</span>
                         </a>
                     </div>
                 </li>

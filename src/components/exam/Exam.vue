@@ -4,10 +4,7 @@
             <div v-if="showCardHeader" class="card-header bg-white pt-1 pb-1">
                 <div class="row mb-0">
                     <div class="alert bg-primary text-white fade show mb-0" role="alert">
-                        <span><b>Nota:&nbsp;&nbsp;</b>Usted esta realizando el examen en estos momentos, favor no refresque el navegador el controlador de refresh se encuentra inabilitado caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
-                        <!--<button type="button" class="close" data-dismiss="alert" aria-label="Close" @click.prevent="showCardHeader=false">-->
-                        <!--<span aria-hidden="true">&times;</span>-->
-                        <!--</button>-->
+                        <span><b>Nota: </b>Usted está realizando el exámen en este momento, por favor no actualice el navegador el control de <b>Refresh</b> y <b>Back-Forward</b> se encuentra desabilitados, caso contrario los datos seran enviados y no podra nuevamente tomar su examen.</span>
                     </div>
                 </div>
                 <div class="row mt-1 mb-0 pb-0">
@@ -40,77 +37,87 @@
                         <td colspan="auto" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
                                 <i class="fa fa-circle-o-notch fa-spin fa-2x mb-2"></i>
-                                <p>Obteniendo Informacion!</p>
+                                <p>Obteniendo Información!</p>
                             </div>
                         </td>
                     </tr>
                 </table>
-                <table v-if="!loadingTable && dataExam.length > 0" class="table table-sm table-vue">
+                <table v-if="!loadingTable && dataExam.length > 0" class="table table-vue">
                     <thead>
-                    <tr>
-                        <th colspan="5" class="border-top-0 border-bottom-0 pt-0">
-                            <div v-html="dataExam[next].question_name"></div>
+                    <tr class="bg-light">
+                        <th class="pb-0">
+                            <!-- Pregunta -->
+                            <table class="w-100">
+                                <tr>
+                                    <td width="2%" style="border-top: none">
+                                        <span>{{parseInt(Object.keys(dataExam)[next])+1}}.-</span>
+                                    </td>
+                                    <td width="98%" style="border-top: none">
+                                        <span v-html="dataExam[next].question_name"></span>
+                                    </td>
+                                </tr>
+                            </table>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-if="dataExam[next].question_image !== '' ">
-                        <td class="m-0 p-0">
-                            <div class="col-4 offset-4">
-                                <div class="img-thumbnail text-center mt-1 mb-1">
-                                    <img :src="util.getImgUrl(dataExam[next].question_image)" alt="" width="200px"/>
+                        <tr v-if="dataExam[next].question_image !== 'logo.svg' ">
+                            <td class="m-0 p-0">
+                                <div class="col-4 offset-4">
+                                    <div class="img-thumbnail text-center mt-1 mb-1">
+                                        <img :src="util.getImgUrl(dataExam[next].question_image)" alt="" width="200px"/>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr v-for="(v,k) in dataExam[next].options_answers">
-                        <td width="110%" :class="parseInt(k) == 0 ? 'pl-1' : 'pl-1'">
-                            <b>{{util.returnLetter(k)}})&nbsp;</b>
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label" :for="util.returnLetter(k)+dataExam[next].id">
-                                    <input :data-id="dataExam[next].id"
-                                           class="form-check-input"
-                                           type="radio"
-                                           :name="'opt'+dataExam[next].id" :id="util.returnLetter(k)+dataExam[next].id"
-                                           :value="v.id"
-                                           @click="doChecked()"/>
-                                    <span>{{v.name}}</span>
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td width="100%" class="text-center pt-3">
-                            <div class="row">
-                                <div class="col-6 text-right">
-                                    <button :hidden="parseInt(Object.keys(dataExam)[next]) === 0 "
-                                            class="btn btn-outline-secondary"
-                                            @click="change('-')">
-                                        <i class="fa fa-arrow-left fa-fw"></i>
-                                        <span></span>
-                                    </button>
+                            </td>
+                        </tr>
+                        <tr v-for="(v,k) in dataExam[next].options_answers">
+                            <td class="pt-0 pb-0">
+                                <!-- Opciones de Respuesta -->
+                                <table class="w-100">
+                                    <tr>
+                                        <td width="2%" style="border-top: none">
+                                            <b>{{util.returnLetter(k)}})&nbsp;</b>
+                                        </td>
+                                        <td width="1%" style="border-top: none">
+                                            <div class="form-check form-check-inline mx-auto" :for="util.returnLetter(k)+dataExam[next].id">
+                                                <label class="form-check-label" :for="util.returnLetter(k)+dataExam[next].id">
+                                                    <input :data-id="dataExam[next].id"
+                                                           class="form-check-input"
+                                                           type="radio"
+                                                           :name="'opt'+dataExam[next].id" :id="util.returnLetter(k)+dataExam[next].id"
+                                                           :value="v.id"
+                                                           @click="doChecked()"/>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td width="97%" style="border-top: none">
+                                            <span>{{v.name}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="100%" class="text-center pt-3">
+                                <div class="row">
+                                    <div class="col-6 text-right">
+                                        <button :hidden="parseInt(Object.keys(dataExam)[next]) === 0 "
+                                                class="btn btn-outline-secondary"
+                                                @click="change('-')">
+                                            <i class="fa fa-arrow-left fa-fw"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-6 text-left">
+                                        <button v-if="dataExam.length != next+1" class="btn btn-outline-secondary" @click="change('+')">
+                                            <i class="fa fa-arrow-right fa-fw"></i>
+                                        </button>
+                                        <button v-else class="btn btn-outline-secondary" @click="validateEndExam()">
+                                            <span>Terminar Examen</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="col-6 text-left">
-                                    <button v-if="dataExam.length != next+1" class="btn btn-outline-secondary"
-                                            @click="change('+')">
-                                        <i class="fa fa-arrow-right fa-fw"></i>
-                                        <span></span>
-                                    </button>
-                                    <!--<a v-else class="btn btn-outline-secondary" href data-toggle="modal"-->
-                                    <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
-                                    <!--<span>Terminar Examen</span>-->
-                                    <!--</a>-->
-                                    <button v-else class="btn btn-outline-secondary" @click="validateEndExam()">
-                                        <span>Terminar Examen</span>
-                                    </button>
-                                    <!--<a v-else class="btn btn-outline-secondary" href data-toggle="modal"-->
-                                    <!--data-target="#modalQueryExam" @click.prevent="pauseTimer = true">-->
-                                    <!--<span>Terminar Examen</span>-->
-                                    <!--</a>-->
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <table v-else-if="!loadingTable && dataExam.length <= 0" class="table">

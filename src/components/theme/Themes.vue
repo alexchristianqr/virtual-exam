@@ -77,45 +77,49 @@
                         <td>{{v.theme_name}}</td>
                         <td>{{moment(v.user_survey_theme_date_start).format('DD/MM/YYYY')}} {{v.user_survey_theme_time_start}}&nbsp;-&nbsp;{{moment(v.user_survey_theme_date_expired).format('DD/MM/YYYY')}} {{v.user_survey_theme_time_expired}}</td>
                         <td>{{util.toHHMMSS(v.theme_duration)}}</td>
-                        <td>{{v.user_survey_theme_score}}</td>
+                        <td>
+                            <template v-if="v.user_survey_theme_status.toUpperCase() == 'P'">
+                                <span>{{util.addCero(v.user_survey_theme_score)}}</span>
+                            </template>
+                            <template v-else>
+                                <b title="Nota Desaprobada" v-if="parseInt(v.user_survey_theme_score) >= 0 && parseInt(v.user_survey_theme_score) <= 10" class="text-danger">{{util.addCero(v.user_survey_theme_score)}}</b>
+                                <b title="Nota Media" v-if="parseInt(v.user_survey_theme_score) > 10 && parseInt(v.user_survey_theme_score) <= 12" class="text-secondary">{{v.user_survey_theme_score}}</b>
+                                <b title="Nota Aprobada" v-if="parseInt(v.user_survey_theme_score) > 12" class="text-success">{{v.user_survey_theme_score}}</b>
+                            </template>
+                        </td>
                         <td class="text-center" v-show="util.validateRole(role.SUPER)">
                             <i v-if="v.theme_status === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.theme_status === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
                         <td class="text-right">
-                            <a v-if="v.user_survey_theme_status == 'PE' "
-                               class="btn btn-warning btn-sm btn-block"
-                               href
-                               data-toggle="modal"
-                               data-target="#modalStartExam"
-                               @click.prevent="subParams.dataTheme = v">
-                                <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>PENDIENTE</span>
-                            </a>
-                            <template v-if="v.user_survey_theme_status == 'RE' || v.user_survey_theme_status == 'PR'">
-                                <template v-if="v.user_survey_theme_status == 'RE'">
-                                    <button type="button" class="btn btn-success btn-sm btn-block">
-                                        <i class="fa fa-file-text-o fa-fw"></i>
+                            <template v-if="v.user_survey_theme_status.toUpperCase() == 'P' ">
+                                <a class="btn btn-warning btn-sm btn-block"
+                                   href
+                                   data-toggle="modal"
+                                   data-target="#modalStartExam"
+                                   @click.prevent="subParams.dataTheme = v">
+                                    <i class="fa fa-file-text-o fa-fw"></i>
+                                    <span>PENDIENTE</span>
+                                </a>
+                            </template>
+                            <template v-else-if="v.user_survey_theme_status.toUpperCase() == 'RS'">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-success btn-sm" style="cursor: default">
+                                        <i class="fa fa-check fa-fw"></i>
                                         <span>REALIZADO</span>
                                     </button>
-                                </template>
-                                <template v-else>
-                                    <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-success btn-sm">
-                                            <i class="fa fa-file-text-o fa-fw"></i>
-                                            <span>REALIZADO</span>
-                                        </button>
-                                        <button type="button" class="btn btn-info btn-sm" @click="verifyExamSolution(v.user_survey_theme_id)">
-                                            <i class="fa fa-eye fa-fw"></i>
-                                            <span>SOLUCION</span>
-                                        </button>
-                                    </div>
-                                </template>
+                                    <button type="button" class="btn btn-info btn-sm" @click="verifyExamSolution(v.user_survey_theme_id)">
+                                        <i class="fa fa-eye fa-fw"></i>
+                                        <span>SOLUCION</span>
+                                    </button>
+                                </div>
                             </template>
-                            <button v-if="v.user_survey_theme_status == 'VE'" type="button" class="btn btn-danger">
-                                <i class="fa fa-file-text-o fa-fw"></i>
-                                <span>VENCIDO</span>
-                            </button>
+                            <template v-else-if="v.user_survey_theme_status.toUpperCase() == 'V'">
+                                <button type="button" class="btn btn-danger btn-sm btn-block" style="cursor: default">
+                                    <i class="fa fa-close fa-fw"></i>
+                                    <span>VENCIDO</span>
+                                </button>
+                            </template>
                         </td>
                     </tr>
                     </tbody>

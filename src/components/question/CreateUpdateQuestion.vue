@@ -27,13 +27,6 @@
                 </div>
             </div>
             <div class="card-body">
-                <div v-if="Object.keys(dataError).length > 0"
-                     class="alert alert-danger alert-dismissible fade show pb-0" role="alert">
-                    <h5>Errors Found!</h5>
-                    <div v-for="(v) in dataError">
-                        <p><i class="fa fa-close fa-fw"></i>{{v[0]}}</p>
-                    </div>
-                </div>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
@@ -68,8 +61,8 @@
                     </div>
                     <div class="col-12">
                         <div class="form-group">
-                            <label>Nombre Pregunta</label>
-                            <input title v-model="params.name" type="text" class="form-control" required>
+                            <label>Pregunta</label>
+                            <editor v-model="params.name" :init="configEditor"></editor>
                         </div>
                     </div>
                     <template v-if="params.theme_id != '' ">
@@ -93,9 +86,11 @@
   import OptionAnswerService from '../../services/OptionAnswerService'
   import QuestionService     from '../../services/QuestionService'
   import ThemeService        from '../../services/ThemeService'
+  import Editor         from '@tinymce/tinymce-vue'
 
   export default {
     name: 'CreateUpdateQuestion',
+    components: {Editor},
     data: () => ({
       isPost: true,
       dataTheme: [],
@@ -110,6 +105,64 @@
         option_answer_id: '',
         level: 'F',
         status: 'A',
+      },
+      configEditor: {
+        /* replace textarea having class .tinymce with tinymce editor */
+        // selector: 'textarea#editor',
+        /* theme of the editor */
+        theme: 'modern',
+        skin: 'lightgray',
+        /* width and height of the editor */
+        // width: '100%',
+        // height: 150,
+        /* display statusbar */
+        statubar: true,
+        /* plugin */
+        plugins: [
+          'visualblocks paste',
+        ],
+        /* toolbar */
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor',
+        /* style */
+        style_formats: [
+          {
+            title: 'Headers', items: [
+              {title: 'Header 1', format: 'h1'},
+              {title: 'Header 2', format: 'h2'},
+              {title: 'Header 3', format: 'h3'},
+              {title: 'Header 4', format: 'h4'},
+              {title: 'Header 5', format: 'h5'},
+              {title: 'Header 6', format: 'h6'},
+            ],
+          },
+          {
+            title: 'Inline', items: [
+              {title: 'Bold', icon: 'bold', format: 'bold'},
+              {title: 'Italic', icon: 'italic', format: 'italic'},
+              {title: 'Underline', icon: 'underline', format: 'underline'},
+              {title: 'Strikethrough', icon: 'strikethrough', format: 'strikethrough'},
+              {title: 'Superscript', icon: 'superscript', format: 'superscript'},
+              {title: 'Subscript', icon: 'subscript', format: 'subscript'},
+              {title: 'Code', icon: 'code', format: 'code'},
+            ],
+          },
+          {
+            title: 'Blocks', items: [
+              {title: 'Paragraph', format: 'p'},
+              {title: 'Blockquote', format: 'blockquote'},
+              {title: 'Div', format: 'div'},
+              {title: 'Pre', format: 'pre'},
+            ],
+          },
+          {
+            title: 'Alignment', items: [
+              {title: 'Left', icon: 'alignleft', format: 'alignleft'},
+              {title: 'Center', icon: 'aligncenter', format: 'aligncenter'},
+              {title: 'Right', icon: 'alignright', format: 'alignright'},
+              {title: 'Justify', icon: 'alignjustify', format: 'alignjustify'},
+            ],
+          },
+        ],
       },
     }),
     created () {

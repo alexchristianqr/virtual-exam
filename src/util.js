@@ -105,4 +105,11 @@ export default {
     window.crypto.getRandomValues(arr)
     return Array.from(arr, dec2hex).join('')
   },
+  addCero(val) {
+    if (val < 10) {
+      return  '0' + val;
+    }else{
+      return val;
+    }
+  }
 }

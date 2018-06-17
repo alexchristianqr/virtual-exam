@@ -38,12 +38,13 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-filter"></i></span>
                         </div>
-                        <select title="" class="form-control" v-model="params.status" @change="change()">
+                        <select title="" class="form-control" v-model="params.status" @change="change">
                             <option value="" selected>Seleccionar Estado</option>
                             <option value="A">Activo</option>
                             <option value="I">Inactivo</option>
                         </select>
                     </div>
+                    <button title="actualizar datos" class="btn btn-outline-secondary" @click="change"><i class="fa fa-refresh"></i></button>
                 </div>
             </div>
             <div class="card-body">
@@ -52,25 +53,42 @@
                     <tr>
                         <th><b>#</b></th>
                         <th>Usuario</th>
-                        <!--<th>Proyecto</th>-->
+                        <th>Tipo</th>
                         <th width="5%" class="text-center">Estado</th>
                         <th width="20%" class="text-right">Acción</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="loadingTable" class="table">
+                    <tr>
+                        <td colspan="4" class="text-dark text-center">
+                            <div style="padding: 3em 2em 0 2em">
+                                <i class="fa fa-circle-o-notch fa-spin fa-2x mb-2"></i>
+                                <p>Obteniendo Informacion!</p>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-if="!loadingTable && dataUsers.length" class="table">
                     <tr v-for="(v,k) in filteredDataUsers">
                         <th>{{k+1}}</th>
                         <td>{{v.name}}</td>
-                        <!--<td>{{v.project.name}}</td>-->
+                        <td><span class="text-capitalize">{{v.role_name}}</span></td>
                         <td class="text-center">
                             <i v-if="v.status === 'A' " class="fa fa-circle text-success"></i>
                             <i v-if="v.status === 'I' " class="fa fa-circle text-danger"></i>
                         </td>
                         <td class="text-right">
-                            <router-link class="btn btn-info btn-sm" :to="{name:'user-history',params:{user_id:v.id}}">
-                                Historial de Examenes
-                            </router-link>
-                            <!--<button class="btn btn-info btn-sm" @click="$router.push('/user-history')" type="button">Historial de Examenes</button>-->
+                            <router-link class="btn btn-info btn-sm" :to="{name:'user-history',params:{user_id:v.id}}">Historial de Examenes</router-link>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-else-if="!loadingTable && dataUsers.length < 1">
+                    <tr>
+                        <td colspan="4" class="text-dark text-center">
+                            <div style="padding: 3em 2em 0 2em">
+                                <i class="fa fa-exclamation-triangle fa-2x mb-2"></i>
+                                <p>No hay información disponible!</p>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -82,17 +100,17 @@
 
 <script>
   import AuthService from '../../services/AuthService'
+  import Storage from 'vue-local-storage'
 
   export default {
     name: 'Users',
     data: () => ({
       input_search_user: '',
-      dataUsers: [
-        // {id:1, name:'Alex Christian',project:{id:2,name:'interbank'},status:'A'},
-        // {id:2, name:'Dennis Davalos',project:{id:3,name:'corporativo'},status:'A'},
-      ],
+      loadingTable: true,
+      dataUsers: [],
       params: {
         status: 'A',
+        role_id:Storage.get('s-u-$4p14').role.id
       },
     }),
     computed: {
@@ -109,6 +127,7 @@
         AuthService.dispatch('allUser', {self: this})
       },
       change () {
+        this.loadingTable = true
         this.load()
       },
     },

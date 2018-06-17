@@ -9,7 +9,7 @@
                 <notify v-show="Object.keys(dataNotify).length > 0" :dataNotify="dataNotify" @eventClose="eventClose"/>
             </div>
             <div class="card-body">
-                <form @submit.prevent="doLogin()">
+                <form @submit.prevent="doLogin()" autocomplete="off">
                     <div class="form-group">
                         <label>Nombre Usuario</label>
                         <div class="input-group mb-1">
@@ -39,25 +39,26 @@
             </div>
         </div>
 
-        <modal v-if="modal.show" :data-props="{loading,params}"/>
+        <modal-error-login v-if="modal.show" :data-props="{loading,params,dataError}"/>
 
     </div>
 </template>
 
 <script>
-  import AuthService from '../../services/AuthService'
-  import Logo        from '../layouts/Logo'
-  import Notify      from '../layouts/Notify'
-  import Modal       from '../layouts/Modal'
+  import AuthService     from '../../services/AuthService'
+  import Logo            from '../layouts/Logo'
+  import Notify          from '../layouts/Notify'
+  import ModalErrorLogin from '../layouts/ModalErrorLogin'
 
   export default {
     name: 'Login',
-    components: {Modal, Notify, Logo},
+    components: {ModalErrorLogin, Notify, Logo},
     data: () => ({
       loading: {btn: false},
       validate: null,
-      modalId: '#modalLogin',
+      modalId: '#modalErrorLogin',
       data: [],
+      dataError:'',
       dataNotify: {},
       params: {
         username: '',

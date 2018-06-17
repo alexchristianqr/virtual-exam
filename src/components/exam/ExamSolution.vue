@@ -78,39 +78,49 @@
             <div v-if="!loadingTable && dataExamSolution.dataExam.length" v-for="(v,k) in dataExamSolution.dataExam">
                 <table class="table table-vue">
                     <thead>
-                    <tr>
-                        <th colspan="5">
-                            <div class="row">
-                                <div class="col-1 mt-auto mb-auto">
-                                    <span>{{k+1}}.-</span>
-                                </div>
-                                <div class="col-10 pl-0 mt-3 mb-0">
-                                    <span v-html="v.question_name"></span>
-                                </div>
-                                <div v-show="v.user_option_answer_id == null" class="col-1 text-right mt-auto mb-auto" title="Pregunta sin Rpta!">
-                                    <i class="fa fa-exclamation-triangle text-warning"></i>
-                                </div>
-                            </div>
+                    <tr class="bg-light">
+                        <th class="pb-0">
+                            <!-- Pregunta -->
+                            <table class="w-100">
+                                <tr>
+                                    <td width="2%" style="border-top: none">
+                                        <span>{{k+1}}.-</span>
+                                    </td>
+                                    <td width="96%" style="border-top: none">
+                                        <span v-html="v.question_name"></span>
+                                    </td>
+                                    <td width="2%" class="mx-auto" style="border-top: none">
+                                        <template v-if="v.user_option_answer_id == null">
+                                            <i class="fa fa-exclamation-triangle text-warning"></i>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </table>
                         </th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(vv,kk) in dataExamSolution.dataExam[k].options_answers">
-                        <td width="90%">
-                            <b>{{util.returnLetter(kk)}})&nbsp;</b>
-                            <div class="form-check form-check-inline">
-                                <label class="form-check-label" :for="util.returnLetter(kk)+v.id">{{vv.name}}</label>
-                            </div>
-                        </td>
-                        <td width="10%" class="text-right">
-                            <template v-if="vv.id == v.option_answer_id && vv.id == v.user_option_answer_id">
-                                <i class="fa fa-check text-success" title="Esta es la rpta correcta"></i>
-                                <i class="fa fa-check text-success" title="Esta es la rpta que marcaste"></i>
-                            </template>
-                            <template v-else>
-                                <i v-if="vv.id == v.option_answer_id" class="fa fa-check text-success" title="Esta es la rpta correcta"></i>
-                                <i v-if="vv.id == v.user_option_answer_id" class="fa fa-close text-danger" title="Esta es la rpta que marcaste"></i>
-                            </template>
+                        <td class="pt-0 pb-0">
+                            <!-- Opciones de Respuesta -->
+                            <table class="w-100">
+                                <tr>
+                                    <td width="2%" style="border-top: none">
+                                        <b>{{util.returnLetter(kk)}})&nbsp;</b>
+                                    </td>
+                                    <td width="96%" class="my-auto" style="border-top: none">{{vv.name}}</td>
+                                    <td width="2%" class="mx-auto" style="border-top: none">
+                                        <template v-if="vv.id == v.option_answer_id && vv.id == v.user_option_answer_id">
+                                            <i class="fa fa-check text-success" title="Esta es la rpta correcta" style="cursor: pointer"></i>
+                                            <i class="fa fa-check text-success" title="Esta es la rpta que marcaste" style="cursor: pointer"></i>
+                                        </template>
+                                        <template v-else>
+                                            <i v-if="vv.id == v.option_answer_id" class="fa fa-check text-success" title="Esta es la rpta correcta" style="cursor: pointer"></i>
+                                            <i v-if="vv.id == v.user_option_answer_id" class="fa fa-close text-danger" title="Esta es la rpta que marcaste" style="cursor: pointer"></i>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </table>
                         </td>
                     </tr>
                     </tbody>

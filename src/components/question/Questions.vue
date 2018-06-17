@@ -50,18 +50,18 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-sm">
+                    <table class="table table-sm table-hover">
                         <thead>
                         <tr>
                             <th><b>#</b></th>
-                            <th>Nombre Pregunta</th>
-                            <th>Actualizado</th>
+                            <th width="55%">Pregunta</th>
+                            <th class="pl-3">Actualizado</th>
                             <th>Nivel</th>
                             <th width="5%" class="text-center">Estado</th>
                             <th width="10%" class="text-right">Acción</th>
                         </tr>
                         </thead>
-                        <tbody v-if="loadingTable" class="table">
+                        <tbody v-if="loadingTable">
                         <tr>
                             <td colspan="6" class="text-dark text-center">
                                 <div style="padding: 3em 2em 0 2em">
@@ -74,15 +74,15 @@
                         <tbody v-if="!loadingTable && dataQuestion.length">
                         <tr v-for="(v,k) in dataQuestion">
                             <th>{{k+1}}</th>
-                            <td>{{v.name}}</td>
-                            <td>{{v.updated_at}}</td>
+                            <td v-html="v.name"></td>
+                            <td class="pl-3">{{v.updated_at}}</td>
                             <td>{{dataLevels(v.level)}}</td>
                             <td class="text-center">
                                 <i v-if="v.status === 'A' " class="fa fa-circle text-success"></i>
                                 <i v-else="" class="fa fa-circle text-danger"></i>
                             </td>
                             <td class="text-right">
-                                <div class="btn-group dropdown" role="group">
+                                <div class="btn-group dropdown btn-group-sm" role="group">
                                     <router-link class="btn btn-warning btn-sm" :to="{name:'edit-question',params:{dataQuestion:v}}">
                                         <i class="fa fa-edit fa-fw"></i>
                                     </router-link>

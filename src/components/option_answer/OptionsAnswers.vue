@@ -87,9 +87,9 @@
                             </td>
                             <td class="text-right">
                                 <div class="btn-group dropdown btn-group-sm" role="group">
-                                    <router-link class="btn btn-warning btn-sm"
-                                                 :to="{name:'edit-option-answer',params:{dataOptionAnswer:v}}"><i
-                                            class="fa fa-edit fa-fw"></i></router-link>
+                                    <router-link class="btn btn-warning btn-sm" :to="{name:'edit-option-answer',params:{dataOptionAnswer:v}}">
+                                        <i class="fa fa-edit fa-fw"></i>
+                                    </router-link>
                                     <div class="btn-group open" role="group">
                                         <button type="button" class="btn btn-light btn-sm dropdown-toggle"
                                                 data-toggle="dropdown" aria-expanded="true">
