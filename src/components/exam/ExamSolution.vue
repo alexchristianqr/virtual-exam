@@ -111,8 +111,7 @@
                                     <td width="96%" class="my-auto" style="border-top: none">{{vv.name}}</td>
                                     <td width="2%" class="mx-auto" style="border-top: none">
                                         <template v-if="vv.id == v.option_answer_id && vv.id == v.user_option_answer_id">
-                                            <i class="fa fa-check text-success" title="Esta es la rpta correcta" style="cursor: pointer"></i>
-                                            <i class="fa fa-check text-success" title="Esta es la rpta que marcaste" style="cursor: pointer"></i>
+                                            <i class="fa fa-check text-success" title="Esta es la rpta que marcaste y la rpta correcta" style="cursor: pointer"></i>
                                         </template>
                                         <template v-else>
                                             <i v-if="vv.id == v.option_answer_id" class="fa fa-check text-success" title="Esta es la rpta correcta" style="cursor: pointer"></i>
