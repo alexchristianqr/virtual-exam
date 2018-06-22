@@ -4,7 +4,7 @@
             <div class="card-header bg-light text-dark">
                 <div class="row">
                     <div class="col-6 mt-auto mb-auto">
-                        <span class="card-title">Usuarios Historial</span>
+                        <span class="card-title">Usuarios Historial de Examenes</span>
                     </div>
                     <div class="col-6  mt-auto mb-auto text-right">
                         <router-link class="btn btn-link text-secondary" :to="'/users'">
@@ -26,7 +26,6 @@
                         <th>Fecha Final</th>
                         <!--<th>Proyecto</th>-->
                         <th>Nota</th>
-                        <th hidden width="5%" class="text-center">Estado</th>
                         <th width="20%" class="text-right">Acción</th>
                     </tr>
                     </thead>
@@ -47,27 +46,6 @@
                                 <b title="Nota Media" v-if="parseInt(v.score) > 10 && parseInt(v.score) <= 12" class="text-secondary">{{v.score}}</b>
                                 <b title="Nota Aprobada" v-if="parseInt(v.score) > 12" class="text-success">{{v.score}}</b>
                             </template>
-                        </td>
-                        <td hidden class="text-center">
-                            <i v-if="v.status_table === 'A' " class="fa fa-circle text-success"></i>
-                            <i v-if="v.status_table === 'I' " class="fa fa-circle text-danger"></i>
-                        </td>
-                        <td hidden class="text-right">
-                            <div class="btn-group dropdown" role="group">
-                                <button class="btn btn-warning btn-sm">Ver Solución</button>
-                                <div class="btn-group open" role="group">
-                                    <button type="button" class="btn btn-light btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-                                        <li title="Exportar">
-                                            <a href="#" class="dropdown-item text-muted"><small><i class="fa fa-area-chart fa-fw"></i>Indicador</small></a>
-                                            <a href="#" class="dropdown-item text-muted"><small><i class="fa fa-clock-o fa-fw"></i>Tiempo Promedio</small></a>
-                                            <a href="#" class="dropdown-item text-muted"><small><i class="fa fa-file-photo-o fa-fw"></i>Grafico Progresivo</small></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                         </td>
                         <td class="text-right">
                             <template v-if="v.user_survey_theme_status.toUpperCase() == 'P' ">
