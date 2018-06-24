@@ -60,7 +60,7 @@
                     </thead>
                     <tbody v-if="loadingTable" class="table">
                     <tr>
-                        <td colspan="4" class="text-dark text-center">
+                        <td colspan="5" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
                                 <i class="fa fa-circle-o-notch fa-spin fa-2x mb-2"></i>
                                 <p>Obteniendo Informacion!</p>
@@ -84,7 +84,7 @@
                     </tbody>
                     <tbody v-else-if="!loadingTable && dataUsers.length < 1">
                     <tr>
-                        <td colspan="4" class="text-dark text-center">
+                        <td colspan="5" class="text-dark text-center">
                             <div style="padding: 3em 2em 0 2em">
                                 <i class="fa fa-exclamation-triangle fa-2x mb-2"></i>
                                 <p>No hay información disponible!</p>

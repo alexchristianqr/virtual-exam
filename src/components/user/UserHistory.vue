@@ -30,7 +30,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(v,k) in dataUserHistory">
+                    <!--<tbody v-if="loadingTable" class="table">-->
+                    <tr v-if="loadingTable">
+                        <td colspan="7" class="text-dark text-center">
+                            <div style="padding: 3em 2em 0 2em">
+                                <i class="fa fa-circle-o-notch fa-spin fa-2x mb-2"></i>
+                                <p>Obteniendo Informacion!</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <!--</tbody>-->
+                    <tr v-if="!loadingTable && dataUserHistory.length" v-for="(v,k) in dataUserHistory">
                         <th>{{k+1}}</th>
                         <td>{{v.name}}</td>
                         <td>{{v.theme_name}}</td>
@@ -74,6 +84,16 @@
                             </template>
                         </td>
                     </tr>
+                    <!--<tbody v-else-if="!loadingTable && dataUsers.length < 1">-->
+                    <tr v-else-if="!loadingTable && dataUserHistory.length < 1">
+                        <td colspan="7" class="text-dark text-center">
+                            <div style="padding: 3em 2em 0 2em">
+                                <i class="fa fa-exclamation-triangle fa-2x mb-2"></i>
+                                <p>No hay información disponible!</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <!--</tbody>-->
                     </tbody>
                 </table>
             </div>
@@ -89,6 +109,7 @@
     name: 'UserHistory',
     data:()=>({
       util:Util,
+      loadingTable: true,
       dataUserHistory:[],
       params:{
         user_id:'A',
