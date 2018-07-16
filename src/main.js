@@ -6,8 +6,9 @@ import router  from './router'
 import Axios   from 'axios'
 import Sbadmin from './assets/js/sb-admin'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 Axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+Axios.defaults.headers.common['Content-Type'] = 'application/json'
 
 new Vue({
   el: '#app',
