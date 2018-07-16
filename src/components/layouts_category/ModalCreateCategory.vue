@@ -11,49 +11,15 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-12">
-                                <div class="form-group">
+                                <div class="form-group-sm">
                                     <label>Nombre Categoria</label>
                                     <input title="tema" v-model="params.name" type="text" class="form-control" required>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <div class="form-group row">
-                                        <div class="col-sm-3">Seleccionar Usuarios</div>
-                                        <div class="col-sm-9">
-                                            <div class="form-check">
-                                                <input v-model="checkedAll" class="form-check-input" type="checkbox"
-                                                       id="gridCheck1" @click="checkedAllUsers()">
-                                                <label class="form-check-label" for="gridCheck1">Todos</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <vue-multiselect v-model="selectedUserId"
-                                                     :options="dataUsers"
-                                                     :disabled="checkedAll"
-                                                     required
-                                                     label="value"
-                                                     track-by="id"
-                                                     selectedLabel="Seleccionado"
-                                                     deselectLabel="Remover"
-                                                     selectLabel="Seleccionar"
-                                                     placeholder="Buscar"
-                                                     :multiple="true"
-                                                     :close-on-select="false"
-                                                     :clear-on-select="true"
-                                                     :hide-selected="true"
-                                                     :preserve-search="true"
-                                                     :preselect-first="true"
-                                                     @input="selectedUsers()">
-                                        <span slot="noResult">No se han encontrado registros</span>
-                                    </vue-multiselect>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer bg-light">
-                        <button type="reset" class="btn btn-outline-secondary w-20" @click="closeModal()">Cancelar
-                        </button>
+                        <button type="reset" class="btn btn-outline-secondary w-20" @click="closeModal()">Cancelar</button>
                         <button type="submit" class="btn btn-outline-primary w-20">Aceptar</button>
                     </div>
                 </form>
@@ -84,7 +50,6 @@
       selectedUserId: null,
       params: {
         name: '',
-        user_id: [],
       },
     }),
     created() {
@@ -94,35 +59,12 @@
       load() {
         AuthService.dispatch('getUsers', {self: this})
       },
-      restart() {
-        this.checkedAll = false
-        this.params.name = ''
-        this.selectedUserId = null
-        this.params.user_id = []
-      },
       createCategory() {
-        if (this.params.user_id.length == 0) {
-          alert('Debe seleccionar uno o mas usuarios.')
-          return false
-        } else {
           SurveyService.dispatch('createSurvey', {self: this})
-        }
       },
       closeModal() {
         this.dataProps.loadModal.createCategory = false
         Util.closeModal(this.modalId)
-      },
-      checkedAllUsers() {
-        this.params.user_id = []
-        if (!this.checkedAll) {
-          this.selectedUserId = null
-          this.dataUsers.forEach((v) => {
-            this.params.user_id.push(v)
-          })
-        }
-      },
-      selectedUsers() {
-        this.params.user_id = this.selectedUserId
       },
     },
   }

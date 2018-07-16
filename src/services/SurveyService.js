@@ -44,12 +44,23 @@ export default new Vuex.Store({
     createSurvey ({commit}, {self}) {
       Axios.post(Env.API_LARAVEL + '/create-survey', self.params).then((r) => {
         if (r.status === 200) {
+          self.params.name = ''
+          Util.closeModal(self.modalId)
+          self.$emit('eventClose')
+        }
+      }).catch((e) => {
+        console.error(e)
+      })
+    },
+    createUserSurvey ({commit}, {self}) {
+      Axios.post(Env.API_LARAVEL + '/create-user-survey', self.params).then((r) => {
+        if (r.status === 200) {
           self.restart()
           Util.closeModal(self.modalId)
           self.$emit('eventClose')
         }
       }).catch((e) => {
-        Util.fnError(e, self)
+        console.error(e)
       })
     },
   }

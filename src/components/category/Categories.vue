@@ -15,7 +15,7 @@
                             </button>
                         </template>
                         <template v-if="util.validateRole([role.SUPER])">
-                            <button @click.prevent="openModal('#modalAssignCategory',2)" type="button" class="btn btn-outline-secondary">
+                            <button @click.prevent="openModal('#modalAssignCategory',2)" type="button" class="btn btn-outline-primary">
                                 <i class="fa fa-plus fa-fw"></i>
                                 <span>Asignar Categoria / Usuario</span>
                             </button>

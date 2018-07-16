@@ -2,7 +2,7 @@
     <div class="modal fade in" id="modalAssignCategory" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form @submit.prevent="assignCategory()">
+                <form @submit.prevent="createUserSurvey()">
                     <div class="modal-header bg-light">
                         <h5 class="modal-title">
                             <span class="text-secondary">Asignar Categoria / Usuario</span>
@@ -13,15 +13,28 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Seleccionar Categoria</label>
-                                    <select class="form-control" v-model="params.survey_id" required>
-                                        <option value="" disabled selected>Seleccionar Categoria</option>
-                                        <option v-for="(v) in dataProps.dataSurvey" :value="v.id">{{v.name}}</option>
-                                    </select>
+                                    <vue-multiselect v-model="selectedSurveyId"
+                                                     :options="dataProps.dataSurvey"
+                                                     required
+                                                     label="name"
+                                                     track-by="id"
+                                                     selectedLabel="Seleccionado"
+                                                     deselectLabel="Remover"
+                                                     selectLabel="Seleccionar"
+                                                     placeholder="Buscar"
+                                                     :multiple="true"
+                                                     :close-on-select="false"
+                                                     :clear-on-select="true"
+                                                     :hide-selected="true"
+                                                     :preserve-search="true"
+                                                     @input="selectedSurveys()">
+                                        <span slot="noResult">No se han encontrado registros</span>
+                                    </vue-multiselect>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <div class="form-group row">
+                                    <div class="mb-2 row">
                                         <div class="col-sm-3">Seleccionar Usuarios</div>
                                         <div class="col-sm-9">
                                             <div class="form-check">
@@ -83,10 +96,11 @@
       dataUsers: [],
       checkedAll: false,
       selectedUserId: null,
+      selectedSurveyId: null,
       params: {
         name: '',
         user_id: [],
-        survey_id : ''
+        survey_id : []
       },
     }),
     created() {
@@ -100,15 +114,19 @@
         this.checkedAll = false
         this.params.name = ''
         this.selectedUserId = null
-        this.params.survey_id = ''
+        this.selectedSurveyId = null
+        this.params.survey_id = []
         this.params.user_id = []
       },
-      assignCategory() {
-        if (this.params.user_id.length == 0) {
+      createUserSurvey() {
+        if (this.params.survey_id.length == 0) {
+          alert('Debe seleccionar uno o mas categorias.')
+          return false
+        } else if (this.params.user_id.length == 0) {
           alert('Debe seleccionar uno o mas usuarios.')
           return false
         } else {
-          SurveyService.dispatch('assignSurvey', {self: this})
+          SurveyService.dispatch('createUserSurvey', {self: this})
         }
       },
       checkedAllUsers() {
@@ -119,6 +137,9 @@
             this.params.user_id.push(v)
           })
         }
+      },
+      selectedSurveys(){
+        this.params.survey_id = this.selectedSurveyId
       },
       selectedUsers() {
         this.params.user_id = this.selectedUserId
