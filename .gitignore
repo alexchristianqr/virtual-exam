@@ -16,3 +16,5 @@ yarn-error.log*
 # Config Developer
 package-lock.json
 dist
+.env.default
+.env
