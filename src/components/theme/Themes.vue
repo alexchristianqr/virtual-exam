@@ -240,9 +240,15 @@
         user_survey_theme_id: '',
       },
     }),
+    beforeMount(){
+      window.clearInterval(window.datainterval);
+    },
     created () {
-      // Eliminamos el storage de seguridad para la solucion de examenes
+      //Eliminamos del storage el token de login
+      Storage.remove('data_token')
+      //Eliminamos el storage de seguridad para la solucion de examenes
       Storage.remove('$h4sh')
+      //Funcion de carga inicial
       this.load()
     },
     computed: {
@@ -253,7 +259,7 @@
     methods: {
       load () {
         this.params.user_id = Storage.get('s-u-$4p14').id
-          SurveyService.dispatch('getSurveysByUserSurvey', {self: this})
+        SurveyService.dispatch('getSurveysByUserSurvey', {self: this})
       },
       change () {
         this.loadingTable = true

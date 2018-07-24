@@ -10,8 +10,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   actions: {
-
-    /*doLogin ({commit}, {self}) {
+    /*doLoginAD ({commit}, {self}) {
       Axios.post(Env.API_LARAVEL + '/login', self.params).then((r) => {
         if (r.status === 200) {
           self.dataNotify = {}
@@ -31,29 +30,38 @@ export default new Vuex.Store({
         self.loading = false
       })
     },*/
+    generateToken(){
+      Axios.get(Env.API_NODEJS + '/authtoken/generate').then((r) => {
+        Storage.set('data_token',r.data.token)
+      }).catch((e)=>{
+        console.error(e)
+      })
+    },
     doLoginAD ({commit}, {self}) {
-      Axios.post(Env.API_NODEJS + '/api/exam/authenticate', self.params).
-      then((r) => {
+      Axios.post(Env.API_NODEJS + '/api/ldap-service/authenticate', self.params, {headers:{'x-access-token':Storage.get('data_token')}}).then((r) => {
         if (r.status === 200) {
           const new_data_auth = {
-            email: null,
-            id: null,
             name: r.data.name_complet,
+            username: r.data.username,
+            id: null,
+            email: null,
             project: {id: null, name: null, status: null},
             role: {id: null, name: null, status: null},
             status: null,
-            phone: r.data.phone_number,
-            username: r.data.username,
           }
           self.dataNotify = {}
           Storage.set('s-u-$4p14', new_data_auth)
           Util.setCookie('co-stg-a-u-au', new_data_auth, 1)
-          this.dispatch('validateIfExist',
-            {self: {self, new_data_auth: new_data_auth}})
+          this.dispatch('validateIfExist', {self: {self, new_data_auth: new_data_auth}})
         }
-      }).
-      catch((e) => {
+      }).catch((e) => {
         if (e.response != undefined) {
+          console.log(e.response)
+          if(e.response.status === 404){
+            if(e.response.data.message != undefined){
+              e.response.data = '<span>El Token se ha vencido, para refrescar haga click en el boton con el icono <b><i class="fa fa-refresh"></i></b></span>'
+            }
+          }
           self.dataNotify = e.response
           self.dataNotify.classAlert = 'alert alert-danger alert-dismissible fade show mb-0 border-0 '
           self.dataNotify.style = 'border-radius:0'
@@ -65,6 +73,8 @@ export default new Vuex.Store({
           self.modal.show = true
           if (e.response.status == 401) {
             self.dataError = e.response.data
+          } else if(e.response.status == 404){
+            self.dataError = '<span>Estimado <b>Usuario</b>, el token se ha vencido, haga click en el boton con el icono <i class="fa fa-refresh"></i>.</span>'
           } else {
             self.dataError = '<span>Estimado <b>Usuario</b>, estamos presentando problemas en nuestros servicios; por favor vuelva intentarlo de nuevo o mas tarde.</span>'
           }
