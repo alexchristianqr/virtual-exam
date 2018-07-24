@@ -33,7 +33,6 @@ export default new Vuex.Store({
         if (r.status === 200) {
           self.restart()
           Util.closeModal(self.modalId)
-          // self.$emit('eventClose')
         }
       }).catch((e) => {
         console.error(e)

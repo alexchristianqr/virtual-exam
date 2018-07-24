@@ -29,8 +29,7 @@ export default new Vuex.Store({
         JSON.stringify(self.params.option_answer_ids))
       formData.append('level', self.params.level)
       formData.append('status', self.params.status)
-      Axios.post(Env.API_LARAVEL + '/create-exam', formData,
-        {headers: {'Content-Type': 'multipart/form-data'}}).then((r) => {
+      Axios.post(Env.API_LARAVEL + '/create-exam', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then((r) => {
         if (r.status === 200) {
           self.$router.replace({name: 'themes'})
         }
@@ -56,8 +55,7 @@ export default new Vuex.Store({
       })
     },
     loadExamSolution({commit}, {self}) {
-      Axios.get(Env.API_LARAVEL + '/load-exam-solution', {params: self.params}).
-      then((r) => {
+      Axios.get(Env.API_LARAVEL + '/load-exam-solution', {params: self.params}).then((r) => {
         if (r.status === 200) {
           self.loadingTable = false
           self.dataExamSolution = r.data.dataExamSolution
