@@ -57,7 +57,7 @@ export default new Vuex.Store({
       }).catch((e) => {
         if (e.response != undefined) {
           console.log(e.response)
-          if(e.response.status === 404){
+          if(e.response.status === 404 || e.response.status === 401){
             if(e.response.data.message != undefined){
               e.response.data = '<span>El Token se ha vencido, para refrescar haga click en el boton con el icono <b><i class="fa fa-refresh"></i></b></span>'
             }
