@@ -1,8 +1,26 @@
-# Evaluaciones Virtuales
+# Proyecto: Evaluaciones Virtuales
+El proyecto de Evaluaciones Virtules es una aplicación web Single Page Aplicación(SPA), que cubre las actividades fisicas de evaluaciones escritas en virtuales.
 
-Aplicación web, cuya finalidad cumple temas de capacitación en linea, creación de preguntas, respuestas, estadística de desarrollo y más.
+Cuenta con multiples roles como 'Root', 'Administrador' e 'Invitado' entre otros.
 
-## Build Setup
+Sección de Mantenimiento y Gestión de Examenes,Usuarios e Historial en su version v2.1.
+
+## Arquitectura
+- Rest
+
+## Tecnología
+* Principal
+  - Vuejs Framework
+  - ES6
+  
+* Secundario
+  - Webpack
+  - Vuex
+  - Vue-Router
+  - Axios
+  - Dotenv
+
+## Ejecutar para modo Desarrollador
 
 ``` bash
 # install dependencies
@@ -10,9 +28,6 @@ npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
-
-# build for production with minification
-npm run build
 
 # build for production and view the bundle analyzer report
 npm run build --report
