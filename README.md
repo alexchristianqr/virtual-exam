@@ -10,7 +10,7 @@ Sección de Mantenimiento y Gestión de Examenes,Usuarios e Historial en su vers
 
 ## Tecnología
 * Principal
-  - Vuejs Framework
+  - Framework Frontend Vuejs
   - ES6
   
 * Secundario
