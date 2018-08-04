@@ -6,14 +6,14 @@ Cuenta con multiples roles como 'Root', 'Administrador' e 'Invitado' entre otros
 Sección de Mantenimiento y Gestión de Examenes,Usuarios e Historial en su version v2.1.
 
 ## Arquitectura
-- Rest
+- Web Componentes
 
 ## Tecnología
-* Principal
+* Primaria
   - Framework Frontend Vuejs
   - ES6
   
-* Secundario
+* Secundaria
   - Webpack
   - Vuex
   - Vue-Router
