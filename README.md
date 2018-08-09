@@ -1,4 +1,4 @@
-# Proyecto: Evaluaciones Virtuales
+# Evaluaciones Virtuales
 El proyecto de Evaluaciones Virtules es una aplicación web Single Page Aplicación(SPA), que cubre las actividades fisicas de evaluaciones escritas en virtuales.
 
 Cuenta con multiples roles como 'Root', 'Administrador' e 'Invitado' entre otros.
