@@ -394,7 +394,7 @@
                 })
               }
             } else {
-              if (this.tempChecked.length >= 1) {
+              if (this.tempChecked.length >= 0) {
                 $.each(this.dataExam, (kk, vv) => {
                   if (this.tempChecked[kk] == undefined) {
                     this.tempChecked[kk] = {question_id: vv.id, option_answer_id: null}
