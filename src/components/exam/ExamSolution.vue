@@ -91,7 +91,7 @@
                                     </td>
                                     <td width="2%" class="mx-auto" style="border-top: none">
                                         <template v-if="v.user_option_answer_id == null">
-                                            <i class="fa fa-exclamation-triangle text-warning" title="Esta es la pregunta vacia" style="cursor: pointer"></i>
+                                            <i class="fa fa-exclamation-triangle text-warning" title="Esta es la pregunta con respuesta vacia" style="cursor: pointer"></i>
                                         </template>
                                     </td>
                                 </tr>
